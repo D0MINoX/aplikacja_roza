@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.MainPage">
+
+    <Grid RowDefinitions="Auto, *, Auto">
+
+       
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="20">
+
+                <Border Padding="20"  BackgroundColor="PaleVioletRed" Stroke="Transparent">
+                   
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15" />
+                    </Border.StrokeShape>
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="MyRosaryGroup_Tapped" />
+                    </Border.GestureRecognizers>
+                    <Label Text="Moja Róża" FontAttributes="Bold" />
+                </Border>
+                <Border Padding="20" BackgroundColor="LightBlue" Stroke="Transparent">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15" />
+                    </Border.StrokeShape>
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="RosaryMeditations_Tapped" />
+                    </Border.GestureRecognizers>
+                    <Label Text="Rozważania różańcowe" FontAttributes="Bold" />
+                </Border>
+                <Border Padding="20" BackgroundColor="LightGreen" Stroke="Transparent" >
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15" />
+                    </Border.StrokeShape>
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Prayers_Tapped" />
+                    </Border.GestureRecognizers>
+                    <Label Text="Modlitwy" FontAttributes="Bold" />
+                </Border >
+                <Border Padding="20" BackgroundColor="Coral" Stroke="Transparent">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15" />
+                    </Border.StrokeShape>
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Retreat_Tapped" />
+                    </Border.GestureRecognizers>
+                    <Label Text="Rekolekcje" FontAttributes="Bold" />
+                </Border>
+                <Border Padding="20" BackgroundColor="Turquoise" Stroke="Transparent">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15" />
+                    </Border.StrokeShape>
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OrderMass_Tapped" />
+                    </Border.GestureRecognizers>
+                    <Label Text="Zamów Mszę" FontAttributes="Bold" />
+                </Border>
+                <Border Padding="20" BackgroundColor="DeepSkyBlue" Stroke="Transparent">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15" />
+                    </Border.StrokeShape>
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="News_Tapped" />
+                    </Border.GestureRecognizers>
+                    <Label Text="Aktualności" FontAttributes="Bold" />
+                </Border>
+
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="2" BackgroundColor="#E6C435">
+            <Grid ColumnDefinitions="*, *, *, *, *">
+                <Border>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Login_Tapped"/>
+                    </Border.GestureRecognizers>
+                        <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Image Source="book_icon.png" HeightRequest="24" WidthRequest="24" />
+                        <Label Text="Logowanie" HorizontalOptions="Center" TextColor="#444" FontSize="12" />
+                    </VerticalStackLayout>
+                </Border>
+               
+
+                <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image Source="book_icon.png" HeightRequest="24" WidthRequest="24" />
+                    <Label Text="Rozwiązania" HorizontalOptions="Center" TextColor="#444" FontSize="12" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image Source="settings_icon.png" HeightRequest="24" WidthRequest="24" />
+                    <Label Text="Ustawienia" HorizontalOptions="Center" TextColor="#444" FontSize="12" />
+                </VerticalStackLayout>
+                
+                <VerticalStackLayout Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image Source="settings_icon.png" HeightRequest="24" WidthRequest="24" />
+                    <Label Text="Ustawienia" HorizontalOptions="Center" TextColor="#444" FontSize="12" />
+                </VerticalStackLayout>
+                
+                <VerticalStackLayout Grid.Column="4" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image Source="settings_icon.png" HeightRequest="24" WidthRequest="24" />
+                    <Label Text="Ustawienia" HorizontalOptions="Center" TextColor="#444" FontSize="12" />
+                </VerticalStackLayout>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+</ContentPage>

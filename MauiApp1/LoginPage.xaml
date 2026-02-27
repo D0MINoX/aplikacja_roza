@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.LoginPage"
+             Title="LoginPage">
+    <VerticalStackLayout VerticalOptions="Center" Padding="30" Spacing="20">
+
+        <Border Padding="25" 
+                StrokeShape="RoundRectangle 20"
+                BackgroundColor="White"
+                StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,10" Radius="20" Opacity="0.1" />
+            </Border.Shadow>
+
+            <VerticalStackLayout Spacing="15">
+                <Label Text="Witaj ponownie!" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       HorizontalOptions="Center" 
+                       TextColor="#333" />
+
+                <Label Text="Zaloguj się do swojego konta" 
+                       HorizontalOptions="Center" 
+                       TextColor="Gray" />
+
+                <Entry x:Name="EmailEntry" 
+                       Placeholder="Email" 
+                       Keyboard="Email" 
+                       HeightRequest="45" />
+
+                <Entry x:Name="PasswordEntry" 
+                       Placeholder="Hasło" 
+                       IsPassword="True" 
+                       HeightRequest="45" />
+
+                <Button Text="ZALOGUJ SIĘ" 
+                        Clicked="OnLoginClicked"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Margin="0,10,0,0"
+                        BackgroundColor="{StaticResource Primary}" />
+            </VerticalStackLayout>
+        </Border>
+
+        
+
+    </VerticalStackLayout>
+</ContentPage>
