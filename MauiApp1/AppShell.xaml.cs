@@ -12,6 +12,8 @@
             Routing.RegisterRoute("OrderMass", typeof(OrderMassPage));
             Routing.RegisterRoute("News", typeof(NewsPage));
             Routing.RegisterRoute("Login", typeof(LoginPage));
+            Routing.RegisterRoute("Home", typeof(MainPage));
+            Routing.RegisterRoute("Settings", typeof(SettingsPage));
         }
     }
 }
