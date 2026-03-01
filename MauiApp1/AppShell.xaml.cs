@@ -14,6 +14,9 @@
             Routing.RegisterRoute("Login", typeof(LoginPage));
             Routing.RegisterRoute("Home", typeof(MainPage));
             Routing.RegisterRoute("Settings", typeof(SettingsPage));
+            Routing.RegisterRoute("Messages", typeof(MessagesPage));
+            Routing.RegisterRoute("SendMessage", typeof(SendMessagePage));
+            Routing.RegisterRoute("ViewGroups", typeof(GroupsPage));
         }
     }
 }

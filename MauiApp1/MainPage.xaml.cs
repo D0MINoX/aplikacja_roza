@@ -10,20 +10,10 @@
 
         private async void MyRosaryGroup_Tapped(object sender, TappedEventArgs e)
         {
-            var current = Shell.Current?.CurrentState?.Location?.ToString() ?? "";
-
-            if (current.Contains("MyRosaryGroup", StringComparison.OrdinalIgnoreCase))
-                return;
-
             await Shell.Current.GoToAsync("MyRosaryGroup");
         }
         private async void RosaryMeditations_Tapped(object sender, TappedEventArgs e)
         {
-            var current = Shell.Current?.CurrentState?.Location?.ToString() ?? "";
-
-            if (current.Contains("RosaryMeditations", StringComparison.OrdinalIgnoreCase))
-                return;
-
             await Shell.Current.GoToAsync("RosaryMeditations");
         }
 
