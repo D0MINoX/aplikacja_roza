@@ -10,10 +10,14 @@
 
         private async void MyRosaryGroup_Tapped(object sender, TappedEventArgs e)
         {
+           
+
             await Shell.Current.GoToAsync("MyRosaryGroup");
         }
         private async void RosaryMeditations_Tapped(object sender, TappedEventArgs e)
         {
+            
+
             await Shell.Current.GoToAsync("RosaryMeditations");
         }
 
@@ -37,7 +41,7 @@
 
         private async void Login_Tapped(object sender, TappedEventArgs e)
         {
-            await Shell.Current.GoToAsync("Login",animate: true);
+            await Shell.Current.GoToAsync("Login");
         }
     }
 }
