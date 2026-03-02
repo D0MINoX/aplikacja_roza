@@ -33,11 +33,10 @@ public partial class ProfilePage : ContentPage
         var handler = new JwtSecurityTokenHandler();
         var jsonToken = handler.ReadJwtToken(token);
 
-        // Zamiast ClaimTypes.Name, użyj bezpośrednio stringa "unique_name" (lub "name")
+      
         var nameClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "unique_name" || c.Type == ClaimTypes.Name);
         string userName = nameClaim?.Value ?? "Brak Imienia";
 
-        // Zamiast ClaimTypes.Role, użyj bezpośrednio stringa "role"
         var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
         string userRole = roleClaim?.Value ?? "Brak Roli";
 
