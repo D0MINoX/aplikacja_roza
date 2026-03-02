@@ -8,7 +8,7 @@ public partial class BottomMenu : ContentView
 	}
     private async void HomeButton_Tapped(object sender, TappedEventArgs e)
     {
-        await Shell.Current.GoToAsync("Home");
+        await Shell.Current.GoToAsync("//Home");
     }
     private async void MeditationsButton_Tapped(object sender, TappedEventArgs e)
     {

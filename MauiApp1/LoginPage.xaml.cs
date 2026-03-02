@@ -7,6 +7,7 @@ public partial class LoginPage : ContentPage
 	{
 		InitializeComponent();
         _authService = authService;
+        CheckLoginStatus();
     }
     private async void OnLoginClicked(object sender, EventArgs e)
     {
@@ -18,8 +19,9 @@ public partial class LoginPage : ContentPage
             if (success)
             {
                 await DisplayAlertAsync("Sukces", "Zalogowano!", "OK");
-                // Przejdź do głównej strony
-                await Shell.Current.GoToAsync("//MainPage");
+                string token = "twoj_wygenerowany_token_jwt"; // Pobierasz go z AuthService [cite: 2026-01-12]
+
+                await Shell.Current.GoToAsync("Profile");
             }
             else
             {
@@ -30,6 +32,15 @@ public partial class LoginPage : ContentPage
         catch (Exception ex)
         {
             await DisplayAlertAsync("Błąd techniczny", ex.Message, "OK");
+        }
+    }
+    private async void CheckLoginStatus()
+    {
+        bool hasToken = await _authService.CheckAndSetTokenAsync();
+
+        if (hasToken)
+        {
+            await Shell.Current.GoToAsync("Profile");
         }
     }
 }

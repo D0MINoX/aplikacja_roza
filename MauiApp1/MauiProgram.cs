@@ -42,6 +42,7 @@ namespace MauiApp1
             builder.Services.AddTransient<OrderMassPage>();
             builder.Services.AddTransient<NewsPage>();
             builder.Services.AddTransient<LoginPage>();
+            builder.Services.AddTransient<ProfilePage>();
             return builder.Build();
         }
     }
