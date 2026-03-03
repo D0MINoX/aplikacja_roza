@@ -20,21 +20,19 @@
             <!-- change date & short of meditation -->
             <Grid RowDefinitions="auto,auto" Grid.Row="1">
                 <Border Background="{StaticResource Kafelki}" Grid.Row="0">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="MeditationTapped"/>
+                    </Border.GestureRecognizers>
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="10"/>
                     </Border.StrokeShape>
-                    <Grid RowDefinitions="auto,auto,auto" RowSpacing="10" Padding="20">
+                    <Grid RowDefinitions="auto,auto,auto" RowSpacing="10" Padding="20" >
                         <!-- data -->
-                        <Label Grid.Row="0" x:Name="DateLabel"/>
+                        <Label Grid.Row="0" x:Name="DateLabel" InputTransparent="True"/>
                         <!-- tekst rozważania -->
-                        <Label Grid.Row="1" TextColor="{StaticResource Text}" VerticalOptions="Center" MaxLines="6" LineBreakMode="TailTruncation" x:Name="MeditationLabel">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped=""/>
-                            </Label.GestureRecognizers>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </Label>
+                        <Label Grid.Row="1" TextColor="{StaticResource Text}" VerticalOptions="Center" MaxLines="6" LineBreakMode="TailTruncation" x:Name="MeditationLabel" InputTransparent="True"/>
+
+
                         <!-- przyciski do zmiany daty -->
                         <Grid ColumnDefinitions="*,*" Grid.Row="2">
                             <Border Grid.Column="0" Background="{StaticResource Menu}" HorizontalOptions="Start" Padding="10" WidthRequest="100">
@@ -44,7 +42,7 @@
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="PreviousTapped"/>
                                 </Border.GestureRecognizers>
-                                <Label TextColor="{StaticResource Text}" HorizontalOptions="Center">
+                                <Label TextColor="{StaticResource Text}" HorizontalOptions="Center" InputTransparent="True">
                                     Wstecz
                                 </Label>
                             </Border>
@@ -55,7 +53,7 @@
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="NextTapped"/>
                                 </Border.GestureRecognizers>
-                                <Label TextColor="{StaticResource Text}" HorizontalOptions="Center">
+                                <Label TextColor="{StaticResource Text}" HorizontalOptions="Center" InputTransparent="True">
                                     Dalej
                                 </Label>
                             </Border>

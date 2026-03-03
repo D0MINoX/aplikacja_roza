@@ -34,6 +34,7 @@ namespace MauiApp1
                 builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<AuthService>();
+            builder.Services.AddSingleton<MeditationsService>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<MyRosaryPage>();
             builder.Services.AddTransient<RosaryMeditationsPage>();
