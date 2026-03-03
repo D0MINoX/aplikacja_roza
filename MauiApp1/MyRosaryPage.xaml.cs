@@ -21,4 +21,9 @@ public partial class MyRosaryPage : ContentPage
     {
         await Shell.Current.GoToAsync("ViewGroups");
     }
+
+    private async Task Login_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("Login");
+    }
 }

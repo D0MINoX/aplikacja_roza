@@ -5,9 +5,11 @@ public partial class LoginPage : ContentPage
     private readonly AuthService _authService;
     public LoginPage(AuthService authService)
 	{
-		InitializeComponent();
         _authService = authService;
         CheckLoginStatus();
+        InitializeComponent();
+       
+       
     }
     private async void OnLoginClicked(object sender, EventArgs e)
     {
@@ -19,7 +21,7 @@ public partial class LoginPage : ContentPage
             if (success)
             {
                 await DisplayAlertAsync("Sukces", "Zalogowano!", "OK");
-                string token = "twoj_wygenerowany_token_jwt"; // Pobierasz go z AuthService [cite: 2026-01-12]
+                string token;
 
                 await Shell.Current.GoToAsync("Profile");
             }

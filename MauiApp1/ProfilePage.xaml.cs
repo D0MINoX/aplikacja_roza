@@ -39,9 +39,36 @@ public partial class ProfilePage : ContentPage
 
         var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
         string userRole = roleClaim?.Value ?? "Brak Roli";
+        var rosaryClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "rosary" || c.Type == "Rosary");
+        string rosaryRole = rosaryClaim?.Value ?? "Brak Róży";
 
-        Name.Text = userName;
-        Role.Text = userRole;
+        List<string> roles = ["admin", "główny zeletor","zelator","Członek rózy"];
 
+        Name.Text ="Witaj "+ userName;
+        Role.Text = "Rola:"+roles[int.Parse(userRole)];
+       
+         switch (int.Parse(rosaryRole))
+         {
+            case -1:
+                Rosary.Text = "Dołącz do róży";
+                break;
+            case 0:
+                Rosary.Text = "lista róż";
+                break;
+            default:
+                Rosary.Text = "Moja róża: " + rosaryRole;
+                break;
+            }
+      
+    }
+
+    private async void MyRosary_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("MyRosaryGroup");
+
+    }
+    private async Task RosaryJoin_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("RosaryJoin");
     }
 }

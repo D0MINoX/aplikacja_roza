@@ -19,6 +19,7 @@
             Routing.RegisterRoute("ViewGroups", typeof(GroupsPage));
             Routing.RegisterRoute("FullMeditaion", typeof(FullMeditationPage));
             Routing.RegisterRoute("Profile", typeof(ProfilePage));
+            Routing.RegisterRoute("JoinRosary", typeof(ProfilePage));
         }
     }
 }

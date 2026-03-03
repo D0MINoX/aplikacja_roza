@@ -24,6 +24,9 @@
                     <!-- Guest -->
                     <!-- Przycisk logowania -->
                     <Border Background="{StaticResource Kafelki}" HeightRequest="100">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Login_Tapped"/>
+                        </Border.GestureRecognizers>
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
                         </Border.StrokeShape>
