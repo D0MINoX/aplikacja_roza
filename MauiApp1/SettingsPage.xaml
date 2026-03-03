@@ -1,12 +1,78 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.SettingsPage"
              Title="SettingsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <Grid RowDefinitions="*,auto">
+        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="100">
+            <!-- Header -->
+            <Border Grid.Row="0" Background="{StaticResource Kafelki}" Padding="15">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="auto,auto">
+                    <Image Grid.Column="0" Source="settings_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
+                    <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center" FontSize="Large">
+                        Ustawienia
+                    </Label>
+                </Grid>
+            </Border>
+
+            <!-- Options -->
+            <ScrollView Grid.Row="1">
+                <VerticalStackLayout Spacing="50">
+                    <!-- Zaloguj się -->
+                    <Border Background="{StaticResource Kafelki}" HeightRequest="100" x:Name="LogIn">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Login_Tapped"/>
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
+                            <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
+                            <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center">
+                                Zaloguj się
+                            </Label>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Wyloguj -->
+                    <Border Background="{StaticResource Kafelki}" HeightRequest="100" x:Name="LogOut">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Logout_Tapped"/>
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
+                            <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
+                            <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center">
+                                Wyloguj się
+                            </Label>
+                        </Grid>
+                    </Border>
+
+                    <!-- Motyw -->
+                    <Border Background="{StaticResource Kafelki}" HeightRequest="100">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped=""/>
+                        </Border.GestureRecognizers>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
+                            <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
+                            <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center">
+                                Zmień motyw
+                            </Label>
+                        </Grid>
+                    </Border>
+                    
+                    
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+        <mauiapp1:BottomMenu Grid.Row="1"/>
+    </Grid>
 </ContentPage>
