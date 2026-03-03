@@ -7,6 +7,9 @@
         <ScrollView Grid.Row="0" Padding="20,0">
             <VerticalStackLayout Spacing="100">
                 <Border Background="#F9DF74">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
                     <VerticalStackLayout Spacing="10">
                         <Label TextColor="#1F1F1F">
                             Tu skończyłeś!
@@ -19,6 +22,9 @@
                 </Border>
                 <VerticalStackLayout Spacing="50">
                     <Border Background="#F9DF74" HeightRequest="100">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
                         <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="MyRosaryGroup_Tapped"/>
@@ -30,6 +36,9 @@
                         </Grid>
                     </Border>
                     <Border Background="#F9DF74" HeightRequest="100">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
                         <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="RosaryMeditations_Tapped"/>
@@ -37,17 +46,6 @@
                             <Image Grid.Column="0" Source="book_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
                             <Label Grid.Column="1" TextColor="#1F1F1F" VerticalOptions="Center">
                                 Rozważania różańcowe
-                            </Label>
-                        </Grid>
-                    </Border>
-                    <Border Background="#F9DF74" HeightRequest="100">
-                        <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="Login_Tapped"/>
-                            </Grid.GestureRecognizers>
-                            <Image Grid.Column="0" Source="book_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="#1F1F1F" VerticalOptions="Center">
-                                LOGOWANIE
                             </Label>
                         </Grid>
                     </Border>

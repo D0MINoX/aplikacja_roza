@@ -31,9 +31,6 @@
                             <RoundRectangle CornerRadius="10"/>
                         </Border.StrokeShape>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Tapped=""/>
-                            </Grid.GestureRecognizers>
                             <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
                             <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center" LineBreakMode="WordWrap" MaxLines="2" HorizontalTextAlignment="Center">
                                 Jesteś zelatorem lub członkiem róży?
@@ -45,13 +42,13 @@
                     <!-- Member -->
                     <!-- Wiadomości od Zelatora -->
                     <Border Background="{StaticResource Kafelki}" HeightRequest="100">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Messages_Tapped"/>
+                        </Border.GestureRecognizers>
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
                         </Border.StrokeShape>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Tapped=""/>
-                            </Grid.GestureRecognizers>
                             <Image Grid.Column="0" Source="message_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
                             <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center" HorizontalOptions="Center">
                                 Wiadomości od Zelatora
@@ -62,13 +59,13 @@
                     <!-- Zelator -->
                     <!-- Wyślij wiadomość -->
                     <Border Background="{StaticResource Kafelki}" HeightRequest="100">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="SendMessage_Tapped"/>
+                        </Border.GestureRecognizers>
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
                         </Border.StrokeShape>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="SendMessage_Tapped"/>
-                            </Grid.GestureRecognizers>
                             <Image Grid.Column="0" Source="message_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
                             <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center" HorizontalOptions="Center">
                                 Wyślij wiadomość do róży
@@ -82,10 +79,10 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
                         </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="ViewGroups_Tapped"/>
+                        </Border.GestureRecognizers>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="ViewGroups_Tapped"/>
-                            </Grid.GestureRecognizers>
                             <Image Grid.Column="0" Source="message_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
                             <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center" HorizontalOptions="Center">
                                 Lista róż
