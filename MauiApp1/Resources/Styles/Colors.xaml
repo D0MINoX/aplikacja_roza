@@ -7,6 +7,7 @@
 
     <Color x:Key="Kafelki">#F9DF74</Color>
     <Color x:Key="Menu">#D4B52F</Color>
+    <Color x:Key="Outline">#C1A428</Color>
     <Color x:Key="Text">#1F1F1F</Color>
     <Color x:Key="FadedText">#AA1F1F1F</Color>
     

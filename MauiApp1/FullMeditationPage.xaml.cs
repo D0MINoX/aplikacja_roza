@@ -18,12 +18,16 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             _meditationText = query["MeditationContent"] as string;
 
      
-            if (FullDescriptionLabel != null)
+            if (FullMeditation != null)
             {
-                FullDescriptionLabel.Text = _meditationText;
+                FullMeditation.Text = _meditationText;
             }
         }
     }
 
- 
+    private async void CompletedTapped(object sender, TappedEventArgs e)
+    {
+        Complete.Background = (Color)Application.Current.Resources["Kafelki"];
+
+    }
 }
