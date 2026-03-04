@@ -18,7 +18,7 @@
                 </Grid>
             </Border>
             <!-- change date & short of meditation -->
-            <Grid RowDefinitions="auto,auto" Grid.Row="1">
+            <Grid RowDefinitions="auto,auto" Grid.Row="1" RowSpacing="50">
                 <Border Background="{StaticResource Kafelki}" Grid.Row="0">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="MeditationTapped"/>
