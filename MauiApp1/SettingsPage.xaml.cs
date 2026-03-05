@@ -44,4 +44,10 @@ public partial class SettingsPage : ContentPage
         }
         IsLogged();
     }
+
+    private async void Profile_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("Profile");
+
+    }
 }

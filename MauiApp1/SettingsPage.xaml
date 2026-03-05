@@ -52,7 +52,20 @@
                             </Label>
                         </Grid>
                     </Border>
-
+                    <Border Background="{StaticResource Kafelki}" HeightRequest="100">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Profile_Tapped"/>
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
+                        <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center">
+                            Profil
+                        </Label>
+                    </Grid>
+                    </Border>
                     <!-- Motyw -->
                     <Border Background="{StaticResource Kafelki}" HeightRequest="100">
                         <Border.GestureRecognizers>

@@ -7,14 +7,14 @@
         {
             _httpClient = httpClient;
         }
-        public async Task<string> GetOnlyDescription(DateTime date, string title)
+        public async Task<string> GetOnlyDescription(int date, string title)
         {
-            string dateStr = date.ToString("yyyy-MM-dd");
+            
          
             try
             {
                 // Budujemy pełny URL z parametrami
-                var response = await _httpClient.GetAsync($"api/meditations/search?date={dateStr}&title={title}");
+                var response = await _httpClient.GetAsync($"api/meditations/search?date={date}&title={title}");
 
                 if (response.IsSuccessStatusCode)
                 {

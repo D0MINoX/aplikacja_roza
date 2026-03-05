@@ -2,15 +2,20 @@ namespace MauiApp1;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using MauiApp1.Models;
+using Microsoft.Maui.Controls.Shapes;
 
 public partial class ProfilePage : ContentPage
 {
     private readonly AuthService _authService;
-    public ProfilePage(AuthService authService)
+    private readonly RosaryService _rosaryService;
+    public ProfilePage(AuthService authService,RosaryService rosaryService)
 	{
 		InitializeComponent();
         _authService = authService;
+        _rosaryService = rosaryService;
         DecodeToken(_authService.Token);
+        RosariesShow();
     }
 
     private async void Logout_Clicked(object sender, EventArgs e)
@@ -39,29 +44,66 @@ public partial class ProfilePage : ContentPage
 
         var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
         string userRole = roleClaim?.Value ?? "Brak Roli";
-        var rosaryClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "rosary" || c.Type == "Rosary");
-        string rosaryRole = rosaryClaim?.Value ?? "Brak Róży";
 
         List<string> roles = ["admin", "główny zeletor","zelator","Członek rózy"];
 
         Name.Text ="Witaj "+ userName;
         Role.Text = "Rola:"+roles[int.Parse(userRole)];
        
-         switch (int.Parse(rosaryRole))
-         {
-            case -1:
-                Rosary.Text = "Dołącz do róży";
-                break;
-            case 0:
-                Rosary.Text = "lista róż";
-                break;
-            default:
-                Rosary.Text = "Moja róża: " + rosaryRole;
-                break;
-            }
       
     }
 
+    private async void RosariesShow()
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadJwtToken(_authService.Token);
+        var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
+        if (IdClaim != null && int.TryParse(IdClaim.Value, out int Id))
+        {
+            List<RosaryInfo> rosaryInfos = await _rosaryService.GetUserRosariesAsync(Id);
+            MainThread.BeginInvokeOnMainThread(() =>
+        {
+            RosariesContainer.Children.Clear(); // Czyścimy listę
+
+            foreach (var rosary in rosaryInfos)
+            {
+                try 
+                {
+                    var border = CreateRosaryCard(rosary.Name);
+                    RosariesContainer.Children.Add(border);
+                }
+                catch (Exception ex)
+                {
+                    // Debugowanie, jeśli zasób "Kafelki" nadal robi problem
+                    System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
+                }
+            }
+        });
+       
+        }
+    }
+    private Border CreateRosaryCard(string rosary)
+{
+    // Tworzenie Border (odpowiednik Twojego XAML)
+    var border = new Border
+    {
+        Padding = new Thickness(15),
+        BackgroundColor = Colors.YellowGreen,
+        StrokeShape = new RoundRectangle { CornerRadius = 10 },
+        Margin = new Thickness(0, 5)
+    };
+
+    // Zawartość kafelka (np. nazwa róży)
+    var label = new Label
+    {
+        Text = rosary,
+        TextColor = Colors.White,
+        FontAttributes = FontAttributes.Bold,
+        FontSize = 18
+    };
+    border.Content = label;
+    return border;
+}
     private async void MyRosary_Tapped(object sender, TappedEventArgs e)
     {
         await Shell.Current.GoToAsync("MyRosaryGroup");

@@ -24,7 +24,20 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             }
         }
     }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        UpdateUI();
+    }
 
+    private void UpdateUI()
+    {
+        
+        if (FullMeditation != null && !string.IsNullOrEmpty(_meditationText))
+        {
+            FullMeditation.Text = _meditationText;
+        }
+    }
     private async void CompletedTapped(object sender, TappedEventArgs e)
     {
         Complete.Background = (Color)Application.Current.Resources["Kafelki"];
