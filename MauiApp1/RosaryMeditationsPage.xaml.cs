@@ -4,26 +4,66 @@ public partial class RosaryMeditationsPage : ContentPage
 {
     public int date;
     public MeditationsService _meditationService;
+    private bool _isBusy = false;
     public RosaryMeditationsPage(MeditationsService meditationService)
     {
         InitializeComponent();
-        date = 1;
+     
         _meditationService = meditationService;
-        GroupPicker.SelectedItem = "Radosne";
-        DetailPicker.SelectedItem = "Zwiastowanie Najświętszej Maryi Pannie";
-        UpdateDate();
+
+    }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        _isBusy = true; // Zaciągamy hamulec ręczny na czas ładowania
+
+        // 1. Odczytujemy dane
+        date = Preferences.Default.Get("LastDate", 1);
+        int savedGroupIdx = Preferences.Default.Get("LastGroupIndex", 0);
+        string savedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
+
+        // 2. Ustawiamy Grupę i ładujemy listę
+        GroupPicker.SelectedIndex = savedGroupIdx;
+        Mysteries();
+
+        // 3. Ustawiamy konkretną tajemnicę (SelectedItem zamiast Index)
+        if (DetailPicker.ItemsSource is List<string> list && list.Contains(savedMystery))
+        {
+            DetailPicker.SelectedItem = savedMystery;
+        }
+        else
+        {
+            DetailPicker.SelectedIndex = 0;
+        }
+
+        _isBusy = false; // Puszczamy hamulec
+
+        UpdateDate(); // Teraz robimy pierwsze pobranie z API
     }
 
     private async void UpdateDate()
     {
-        DateLabel.Text = "dzień " + date;
-        var picker = DetailPicker;
-        int selectedIndex = picker.SelectedIndex;
-        if (selectedIndex != -1)
-        {
-            string description = await _meditationService.GetOnlyDescription(this.date, picker.SelectedItem.ToString());
-            MeditationLabel.Text = description ?? "Brak rozważania";
+        if (_isBusy) return; // Jeśli trwa ustawianie pickerów, nie rób nic
 
+        DateLabel.Text = "dzień " + date;
+
+        // Zapisuj do pamięci tylko jeśli wartości są poprawne
+        Preferences.Default.Set("LastDate", date);
+
+        if (GroupPicker.SelectedIndex != -1)
+            Preferences.Default.Set("LastGroupIndex", GroupPicker.SelectedIndex);
+
+        if (DetailPicker.SelectedItem != null)
+            Preferences.Default.Set("LastMystery", DetailPicker.SelectedItem.ToString());
+
+        // Ładowanie z API
+        if (DetailPicker.SelectedItem != null)
+        {
+            MeditationLabel.Text = "Ładowanie ....";
+            string selectedMystery = DetailPicker.SelectedItem.ToString();
+            string description = await _meditationService.GetOnlyDescription(this.date, selectedMystery);
+            MeditationLabel.Text = description ?? "Brak rozważania";
         }
     }
 
@@ -58,9 +98,33 @@ public partial class RosaryMeditationsPage : ContentPage
 
     private void OnGroupChanged(object sender, EventArgs e)
     {
-        var group = GroupPicker.SelectedItem.ToString();
-        DetailPicker.IsEnabled = true;
+        if (_isBusy) return;
 
+        Mysteries();
+        // Po zmianie grupy, DetailPicker traci wybór, więc ustawiamy pierwszy
+        if (DetailPicker.ItemsSource?.Count > 0)
+        {
+            DetailPicker.SelectedIndex = 0;
+        }
+        UpdateDate();
+    }
+
+    private void OnDetailChanged(object sender, EventArgs e)
+    {
+        if (_isBusy) return;
+        UpdateDate();
+    }
+    private void Mysteries()
+    {
+        var group = GroupPicker.SelectedItem?.ToString();
+       
+        if (string.IsNullOrEmpty(group))
+        {
+            DetailPicker.IsEnabled = false;
+            return;
+        }
+
+        DetailPicker.IsEnabled = true;
         DetailPicker.ItemsSource = group switch
         {
             "Radosne" => new List<string>
@@ -97,11 +161,5 @@ public partial class RosaryMeditationsPage : ContentPage
                 },
             _ => new List<string>()
         };
-    }
-
-    private async void OnDetailChanged(object sender, EventArgs e)
-    {
-        UpdateDate();
-
     }
 }
