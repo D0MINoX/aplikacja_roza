@@ -64,27 +64,35 @@ public partial class ProfilePage : ContentPage
             MainThread.BeginInvokeOnMainThread(() =>
         {
             RosariesContainer.Children.Clear(); // Czyścimy listę
-
-            foreach (var rosary in rosaryInfos)
+            if (rosaryInfos == null || rosaryInfos.Count == 0)
             {
-                try 
+
+                RosariesContainer.Children.Add(CreateJoinButton());
+            }
+            else
+            {
+                foreach (var rosary in rosaryInfos)
                 {
-                    var border = CreateRosaryCard(rosary.Name);
-                    RosariesContainer.Children.Add(border);
-                }
-                catch (Exception ex)
-                {
-                    // Debugowanie, jeśli zasób "Kafelki" nadal robi problem
-                    System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
+                    try
+                    {
+                        var border = CreateRosaryCard(rosary.Name);
+                        RosariesContainer.Children.Add(border);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Debugowanie, jeśli zasób "Kafelki" nadal robi problem
+                        System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
+                    }
                 }
             }
         });
-       
+
         }
+       
     }
     private Border CreateRosaryCard(string rosary)
 {
-    // Tworzenie Border (odpowiednik Twojego XAML)
+
     var border = new Border
     {
         Padding = new Thickness(15),
@@ -93,7 +101,7 @@ public partial class ProfilePage : ContentPage
         Margin = new Thickness(0, 5)
     };
 
-    // Zawartość kafelka (np. nazwa róży)
+    
     var label = new Label
     {
         Text = rosary,
@@ -112,5 +120,32 @@ public partial class ProfilePage : ContentPage
     private async Task RosaryJoin_Tapped(object sender, TappedEventArgs e)
     {
         await Shell.Current.GoToAsync("RosaryJoin");
+    }
+    private Border CreateJoinButton()
+    {
+        var border = new Border
+        {
+            Padding = new Thickness(15),
+            BackgroundColor = Colors.YellowGreen,
+            StrokeShape = new RoundRectangle { CornerRadius = 10 },
+            Margin = new Thickness(0, 5),
+        };
+
+        var tapGesture = new TapGestureRecognizer();
+        tapGesture.Tapped += async (s, e) =>
+        {
+            await Shell.Current.GoToAsync("JoinRosary");
+        };
+
+        border.GestureRecognizers.Add(tapGesture);
+        border.Content = new Label
+        {
+            Text = "Dołącz do róży",
+            TextColor = Colors.White,
+            FontAttributes = FontAttributes.Bold,
+            FontSize = 18
+        };
+
+        return border;
     }
 }

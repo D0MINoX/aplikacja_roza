@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.RegisterPage"
+             xmlns:mauiapp1="clr-namespace:MauiApp1"
+             Title="RegisterPage">
+    <Grid RowDefinitions="*,auto">
+        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="50">
+            <!-- Header -->
+            <Border Grid.Row="0" Background="{StaticResource Kafelki}" Padding="15">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="auto,auto">
+                    <Image Grid.Column="0" Source="book_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
+                    <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center" FontSize="Large">
+                        Rejestracja
+                    </Label>
+                </Grid>
+            </Border>
+
+            <!-- Panel z logowaniem -->
+            <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
+                <Border Padding="25"
+                     StrokeShape="RoundRectangle 20"
+                     BackgroundColor="{StaticResource Kafelki}"
+                     StrokeThickness="0">
+
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Utwórz swoje konto" 
+                            FontSize="24" 
+                            FontAttributes="Bold" 
+                            HorizontalOptions="Center" 
+                            TextColor="{StaticResource Text}" />
+
+                        <Entry x:Name="EmailEntry" 
+                             
+                            Placeholder="Email" 
+                            Keyboard="Email"
+                            HeightRequest="45"
+                            PlaceholderColor="{StaticResource FadedText}"
+                            TextColor="{StaticResource Text}">
+                        </Entry>
+                        
+                        <Entry x:Name="PasswordEntry" 
+                            Placeholder="Hasło" 
+                            IsPassword="True" 
+                            HeightRequest="45"
+                            PlaceholderColor="{StaticResource FadedText}"
+                            TextColor="{StaticResource Text}"/>
+                        <Entry x:Name="PasswordRetype" 
+                             Placeholder="Powtórz Hasło" 
+                             IsPassword="True" 
+                             HeightRequest="45"
+                             PlaceholderColor="{StaticResource FadedText}"
+                             TextColor="{StaticResource Text}"/>
+
+                        <Button Text="ZAREJESTRUJ SIĘ" 
+                          Clicked="Register_Clicked"
+                          CornerRadius="10"
+                          HeightRequest="50"
+                          Margin="0,10,0,0"
+                          BackgroundColor="{StaticResource Menu}"
+                          TextColor="{StaticResource Text}"/>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </Grid>
+        <mauiapp1:BottomMenu Grid.Row="1"/>
+    </Grid>
+</ContentPage>

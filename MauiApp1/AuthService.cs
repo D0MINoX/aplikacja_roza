@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text;
 using MauiApp1.Models;
@@ -41,7 +42,26 @@ namespace MauiApp1
             return false;
         }
 
-        // --- WYLOGOWANIE ---
+        public async Task<bool> RegisterAsync(string username, string password)
+        {
+            var registerData = new { username = username, password = password };
+            try {
+                var response = await _httpClient.PostAsJsonAsync("api/Auth/register", registerData);
+                if (!response.IsSuccessStatusCode)
+                {
+                    // ODCZYTAJ TREŚĆ BŁĘDU Z API
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"API ERROR: {response.StatusCode} - {errorContent}");
+                    return false;
+                }
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine($"Błąd rejestracji: {ex.Message}");
+                return false;
+            }
+            }
         public async Task<bool> Logout()
         {
             try

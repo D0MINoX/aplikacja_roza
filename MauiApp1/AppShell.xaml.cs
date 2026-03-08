@@ -12,7 +12,7 @@
             Routing.RegisterRoute("OrderMass", typeof(OrderMassPage));
             Routing.RegisterRoute("News", typeof(NewsPage));
             Routing.RegisterRoute("Login", typeof(LoginPage));
-            Routing.RegisterRoute("Home", typeof(MainPage));
+           
             Routing.RegisterRoute("Settings", typeof(SettingsPage));
             Routing.RegisterRoute("Messages", typeof(MessagesPage));
             Routing.RegisterRoute("SendMessage", typeof(SendMessagePage));
@@ -20,6 +20,7 @@
             Routing.RegisterRoute("FullMeditation", typeof(FullMeditationPage));
             Routing.RegisterRoute("Profile", typeof(ProfilePage));
             Routing.RegisterRoute("JoinRosary", typeof(JoinRosaryPage));
+            Routing.RegisterRoute("Register", typeof(RegisterPage));
         }
     }
 }

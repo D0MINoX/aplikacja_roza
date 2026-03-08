@@ -5,7 +5,7 @@
              Title="LoginPage">
 
     <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="100">
+        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="50">
             <!-- Header -->
             <Border Grid.Row="0" Background="{StaticResource Kafelki}" Padding="15">
                 <Border.StrokeShape>
@@ -20,7 +20,7 @@
             </Border>
             
             <!-- Panel z logowaniem -->
-            <VerticalStackLayout Padding="30" Spacing="20" Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
                 <Border Padding="25"
                         StrokeShape="RoundRectangle 20"
                         BackgroundColor="{StaticResource Kafelki}"
@@ -54,6 +54,13 @@
                                 Margin="0,10,0,0"
                                 BackgroundColor="{StaticResource Menu}"
                                 TextColor="{StaticResource Text}"/>
+                        <Button Text="ZAREJESTRUJ SIĘ" 
+                             Clicked="OnRegisterClicked"
+                             CornerRadius="10"
+                             HeightRequest="50"
+                             Margin="0,10,0,0"
+                             BackgroundColor="{StaticResource Menu}"
+                             TextColor="{StaticResource Text}"/>
                     </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>

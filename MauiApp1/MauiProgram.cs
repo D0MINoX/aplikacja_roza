@@ -47,6 +47,7 @@ namespace MauiApp1
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<ProfilePage>();
             builder.Services.AddTransient<JoinRosaryPage>();
+            builder.Services.AddTransient<RegisterPage>();
             return builder.Build();
         }
     }
