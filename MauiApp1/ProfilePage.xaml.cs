@@ -67,7 +67,7 @@ public partial class ProfilePage : ContentPage
             if (rosaryInfos == null || rosaryInfos.Count == 0)
             {
 
-                RosariesContainer.Children.Add(CreateJoinButton());
+                RosariesContainer.Children.Add(CreateJoinButton(Id));
             }
             else
             {
@@ -92,20 +92,26 @@ public partial class ProfilePage : ContentPage
     }
     private Border CreateRosaryCard(string rosary)
 {
+        var colorKafelki = (Color)Application.Current.Resources["Kafelki"];
+        var colorMenu = (Color)Application.Current.Resources["Menu"];
+        var colorOutline = (Color)Application.Current.Resources["Outline"];
+        var colorText = (Color)Application.Current.Resources["Text"];
 
-    var border = new Border
+        var border = new Border
     {
         Padding = new Thickness(15),
-        BackgroundColor = Colors.YellowGreen,
-        StrokeShape = new RoundRectangle { CornerRadius = 10 },
+        BackgroundColor = colorKafelki,
+            Stroke = colorOutline,
+            StrokeThickness = 2,
+            StrokeShape = new RoundRectangle { CornerRadius = 10 },
         Margin = new Thickness(0, 5)
     };
+        border.BackgroundColor = colorMenu;
 
-    
     var label = new Label
     {
         Text = rosary,
-        TextColor = Colors.White,
+        TextColor = colorText,
         FontAttributes = FontAttributes.Bold,
         FontSize = 18
     };
@@ -117,31 +123,38 @@ public partial class ProfilePage : ContentPage
         await Shell.Current.GoToAsync("MyRosaryGroup");
 
     }
-    private async Task RosaryJoin_Tapped(object sender, TappedEventArgs e)
+   
+    private Border CreateJoinButton(int UserId)
     {
-        await Shell.Current.GoToAsync("RosaryJoin");
-    }
-    private Border CreateJoinButton()
-    {
+        var colorKafelki = (Color)Application.Current.Resources["Kafelki"];
+        var colorMenu = (Color)Application.Current.Resources["Menu"];
+        var colorOutline = (Color)Application.Current.Resources["Outline"];
+        var colorText = (Color)Application.Current.Resources["Text"];
         var border = new Border
         {
             Padding = new Thickness(15),
-            BackgroundColor = Colors.YellowGreen,
+            BackgroundColor = colorKafelki,
+            Stroke = colorOutline,
+            StrokeThickness = 2,
             StrokeShape = new RoundRectangle { CornerRadius = 10 },
             Margin = new Thickness(0, 5),
         };
-
+        var navigationParameter = new Dictionary<string, object>
+{
+    { "UserId",UserId } 
+};
         var tapGesture = new TapGestureRecognizer();
         tapGesture.Tapped += async (s, e) =>
         {
-            await Shell.Current.GoToAsync("JoinRosary");
+            
+            await Shell.Current.GoToAsync("JoinRosary",navigationParameter);
         };
 
         border.GestureRecognizers.Add(tapGesture);
         border.Content = new Label
         {
             Text = "Dołącz do róży",
-            TextColor = Colors.White,
+            TextColor = colorText,
             FontAttributes = FontAttributes.Bold,
             FontSize = 18
         };
