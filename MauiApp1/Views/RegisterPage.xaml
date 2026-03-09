@@ -19,7 +19,7 @@
                 </Grid>
             </Border>
 
-            <!-- Panel z logowaniem -->
+            <!-- Panel z rejestracją -->
             <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
                 <Border Padding="25"
                      StrokeShape="RoundRectangle 20"
@@ -33,21 +33,32 @@
                             HorizontalOptions="Center" 
                             TextColor="{StaticResource Text}" />
 
+                        <Entry x:Name="NameEntry" 
+                            Placeholder="Imię" 
+                            HeightRequest="45"
+                            PlaceholderColor="{StaticResource FadedText}"
+                            TextColor="{StaticResource Text}"/>
+
+                        <Entry x:Name="SurnameEntry" 
+                            Placeholder="Nazwisko" 
+                            HeightRequest="45"
+                            PlaceholderColor="{StaticResource FadedText}"
+                            TextColor="{StaticResource Text}"/>
+
                         <Entry x:Name="EmailEntry" 
-                             
                             Placeholder="Email" 
                             Keyboard="Email"
                             HeightRequest="45"
                             PlaceholderColor="{StaticResource FadedText}"
-                            TextColor="{StaticResource Text}">
-                        </Entry>
-                        
+                            TextColor="{StaticResource Text}"/>
+
                         <Entry x:Name="PasswordEntry" 
                             Placeholder="Hasło" 
                             IsPassword="True" 
                             HeightRequest="45"
                             PlaceholderColor="{StaticResource FadedText}"
                             TextColor="{StaticResource Text}"/>
+                        
                         <Entry x:Name="PasswordRetype" 
                              Placeholder="Powtórz Hasło" 
                              IsPassword="True" 
