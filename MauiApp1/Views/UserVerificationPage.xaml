@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.UserVerificationPage"
+             Title="UserVerificationPage">
+    <Grid RowDefinitions="Auto, *" Margin="10">
+        <Grid Grid.Row="0" ColumnDefinitions="*, *, 150" BackgroundColor="{StaticResource Menu}" Padding="10">
+            <Label Text="Użytkownik" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>
+            <Label Text="Email" FontAttributes="Bold" TextColor="White" Grid.Column="1"/>
+            <Label Text="Akcje" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="2"/>
+        </Grid>
+
+        <CollectionView Grid.Row="1" x:Name="UsersList">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border StrokeShape="RoundRectangle 0" StrokeThickness="0.5" Stroke="{StaticResource Outline}">
+                        <Grid ColumnDefinitions="*, *, 150" Padding="10" BackgroundColor="{StaticResource Kafelki}">
+
+                            <Label Text="{Binding Name}" VerticalOptions="Center" Grid.Column="0"/>
+                            <Label Text="{Binding Email}" VerticalOptions="Center" Grid.Column="1" FontSize="12"/>
+
+                            <HorizontalStackLayout Grid.Column="2" Spacing="5" HorizontalOptions="Center">
+                                <Button Text="✓" 
+                                    FontSize="12"
+                                    BackgroundColor="Green" 
+                                    TextColor="White"
+                                    HeightRequest="35" WidthRequest="35" Padding="0"
+                                    Clicked="OnVerifyClicked" 
+                                    CommandParameter="{Binding .}"
+                                    IsVisible="{Binding IsVerified, Converter={StaticResource InvertedBoolConverter}}"/>
+
+                                <Button Text="🗑" 
+                                    FontSize="12"
+                                    BackgroundColor="Red" 
+                                    TextColor="White"
+                                    HeightRequest="35" WidthRequest="35" Padding="0"
+                                    Clicked="OnDeleteClicked" 
+                                    CommandParameter="{Binding .}"/>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

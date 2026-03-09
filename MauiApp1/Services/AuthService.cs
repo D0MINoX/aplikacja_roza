@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 using System.Text;
 using MauiApp1.Models;
 
-namespace MauiApp1
+namespace MauiApp1.Services
 {
     public class AuthService
     {

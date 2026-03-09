@@ -3,6 +3,7 @@ namespace MauiApp1;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MauiApp1.Models;
+using MauiApp1.Services;
 using Microsoft.Maui.Controls.Shapes;
 
 public partial class ProfilePage : ContentPage
@@ -49,8 +50,13 @@ public partial class ProfilePage : ContentPage
 
         Name.Text ="Witaj "+ userName;
         Role.Text = "Rola:"+roles[int.Parse(userRole)];
-       
-      
+#if WINDOWS || MACCATALYST
+        if (int.Parse(userRole) < 3)
+        {
+            var adminBTN = CreateAdminButton();
+            adminBtn.Children.Add(adminBTN);
+        }
+#endif
     }
 
     private async void RosariesShow()
@@ -160,5 +166,40 @@ public partial class ProfilePage : ContentPage
         };
 
         return border;
+    }
+    private Border CreateAdminButton()
+    {
+        var colorKafelki = (Color)Application.Current.Resources["Kafelki"];
+        var colorMenu = (Color)Application.Current.Resources["Menu"];
+        var colorOutline = (Color)Application.Current.Resources["Outline"];
+        var colorText = (Color)Application.Current.Resources["Text"];
+        var border = new Border
+        {
+            Padding = new Thickness(15),
+            BackgroundColor = colorKafelki,
+            Stroke = colorOutline,
+            StrokeThickness = 2,
+            StrokeShape = new RoundRectangle { CornerRadius = 10 },
+            Margin = new Thickness(0, 5),
+        };
+        
+        var tapGesture = new TapGestureRecognizer();
+        tapGesture.Tapped += async (s, e) =>
+        {
+
+            await Shell.Current.GoToAsync("AdminPage");
+        };
+
+        border.GestureRecognizers.Add(tapGesture);
+        border.Content = new Label
+        {
+            Text = "Panel Administracyjny",
+            TextColor = colorText,
+            FontAttributes = FontAttributes.Bold,
+            FontSize = 18
+        };
+
+        return border;
+
     }
 }

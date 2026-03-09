@@ -51,7 +51,7 @@ namespace MauiApp1
                 return new List<RosaryInfo>();
             }
         }
-        public async Task<bool> JoinRosaryAsync(int UserId,int RosaryId)
+        public async Task<(bool IsSuccess, string ErrorMessage)> JoinRosaryAsync(int UserId,int RosaryId)
         {
             string url = $"api/Rosaries/JoinRosary";
             var requestData = new { UserId = UserId, RosaryId = RosaryId };
@@ -61,15 +61,14 @@ namespace MauiApp1
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    Debug.WriteLine($"API ERROR: {response.StatusCode} - {errorContent}");
-                    return false;
+                    return (false, errorContent ?? "Nieznany błąd serwera");
                 }
-                return true;
+                return (true, null);
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                Debug.WriteLine($"Błąd rejestracji: {ex.Message}");
-                return false;
+                return (false, $"Błąd sieci: {ex.Message}");
             }
         }
     }

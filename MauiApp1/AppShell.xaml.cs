@@ -1,4 +1,6 @@
-﻿namespace MauiApp1
+﻿using MauiApp1.Views;
+
+namespace MauiApp1
 {
     public partial class AppShell : Shell
     {
@@ -7,20 +9,18 @@
             InitializeComponent();
             Routing.RegisterRoute("MyRosaryGroup", typeof(MyRosaryPage));
             Routing.RegisterRoute("RosaryMeditations", typeof(RosaryMeditationsPage));
-            Routing.RegisterRoute("Prayers", typeof(PrayersPage));
-            Routing.RegisterRoute("Retreat", typeof(RetreatPage));
-            Routing.RegisterRoute("OrderMass", typeof(OrderMassPage));
-            Routing.RegisterRoute("News", typeof(NewsPage));
+            
             Routing.RegisterRoute("Login", typeof(LoginPage));
            
             Routing.RegisterRoute("Settings", typeof(SettingsPage));
-            Routing.RegisterRoute("Messages", typeof(MessagesPage));
-            Routing.RegisterRoute("SendMessage", typeof(SendMessagePage));
             Routing.RegisterRoute("ViewGroups", typeof(GroupsPage));
             Routing.RegisterRoute("FullMeditation", typeof(FullMeditationPage));
             Routing.RegisterRoute("Profile", typeof(ProfilePage));
             Routing.RegisterRoute("JoinRosary", typeof(JoinRosaryPage));
             Routing.RegisterRoute("Register", typeof(RegisterPage));
+            Routing.RegisterRoute("AdminPage", typeof(AdminPage));
+            Routing.RegisterRoute("RosaryMenagement", typeof(RosaryMenagementPage));
+            Routing.RegisterRoute("UserVerification", typeof(UserVerificationPage));
         }
     }
 }

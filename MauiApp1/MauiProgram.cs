@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MauiApp1.Services;
+using Microsoft.Extensions.Logging;
+using MauiApp1.Views;
 
 namespace MauiApp1
 {
@@ -40,14 +42,13 @@ namespace MauiApp1
             
             builder.Services.AddTransient<MyRosaryPage>();
             builder.Services.AddTransient<RosaryMeditationsPage>();
-            builder.Services.AddTransient<PrayersPage>();
-            builder.Services.AddTransient<RetreatPage>();
-            builder.Services.AddTransient<OrderMassPage>();
-            builder.Services.AddTransient<NewsPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<ProfilePage>();
             builder.Services.AddTransient<JoinRosaryPage>();
             builder.Services.AddTransient<RegisterPage>();
+            builder.Services.AddTransient<AdminPage>();
+            builder.Services.AddTransient<RosaryMenagementPage>();
+            builder.Services.AddTransient<UserVerificationPage>();
             return builder.Build();
         }
     }

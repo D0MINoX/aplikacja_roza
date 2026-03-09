@@ -104,17 +104,27 @@ public partial class JoinRosaryPage : ContentPage, IQueryAttributable
 
     private async void JoinButton_Tapped(object sender, TappedEventArgs e)
     {
-        bool isSuccess = await _rosaryService.JoinRosaryAsync(_userId, _selectedRosaryId);
-        if (isSuccess)
+        if (_selectedRosaryId == -1)
         {
-            await DisplayAlertAsync("INFO", "Dołączono do róży nr. " + _selectedRosaryId + "poczekaj na zatwierdzenie przez Zelatora", "OK");
+            await DisplayAlertAsync("Błąd", "Najpierw wybierz różę z listy!", "OK");
+            return;
+        }
+        var result = await _rosaryService.JoinRosaryAsync(_userId, _selectedRosaryId);
+
+        if (result.IsSuccess)
+        {
+            await DisplayAlertAsync("INFO",
+                $"Wysłano prośbę do róży nr {_selectedRosaryId}. Poczekaj na zatwierdzenie przez Zelatora.",
+                "OK");
+
             await Shell.Current.GoToAsync("//Home");
         }
         else
         {
-            await DisplayAlertAsync("ALERT", "błąd dołączenia do róży", "OK");
+            // Wyświetlamy konkretny błąd otrzymany z API
+            await DisplayAlertAsync("BŁĄD API", result.ErrorMessage, "OK");
         }
-        
-       
+
+
     }
 }
