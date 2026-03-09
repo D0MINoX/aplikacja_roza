@@ -39,5 +39,56 @@ namespace MauiApp1.Services
                 return (false, null, $"Błąd połączenia: {ex.Message}");
             }
         }
+
+        public async Task<(bool isSuccess,string ErrorMessage)> VerifyUser(int userId,int rosaryId)
+        {
+            string url = $"api/Admin/{userId}/Authorization/{rosaryId}";
+            try
+            {
+                var response = await _httpClient.PutAsync(url,null);
+               
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    return (true,content);
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return (false, errorContent ?? $"Błąd serwera: {response.StatusCode}");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Błąd połączenia: {ex.Message}");
+            }
+        }
+        public async Task<(bool isSuccess, string ErrorMessage)> DeleteUser(int userId, int rosaryId)
+        {
+            string url = $"api/Admin/delete-membership/{userId}/{rosaryId}";
+            try
+            {
+                var response = await _httpClient.DeleteAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    return (true, content);
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return (false, errorContent ?? $"Błąd serwera: {response.StatusCode}");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Błąd połączenia: {ex.Message}");
+            }
+        }
     }
 }

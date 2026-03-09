@@ -1,14 +1,23 @@
 namespace MauiApp1.Views;
 
+[QueryProperty(nameof(RosaryId), "RosaryId")]
 public partial class RosaryMenagementPage : ContentPage
 {
+	
+	public int RosaryId {  get; set; }
 	public RosaryMenagementPage()
 	{
+
 		InitializeComponent();
 	}
 
     private async void UserVerification_Tapped(object sender, TappedEventArgs e)
     {
-		await Shell.Current.GoToAsync("UserVerification");
+        var navigationParameter = new Dictionary<string, object>
+        {
+            { "RosaryId", RosaryId }
+        };
+        await Shell.Current.GoToAsync("UserVerification", navigationParameter);
+        
     }
 }

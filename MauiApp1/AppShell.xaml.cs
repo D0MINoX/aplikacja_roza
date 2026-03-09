@@ -13,7 +13,7 @@ namespace MauiApp1
             Routing.RegisterRoute("Login", typeof(LoginPage));
            
             Routing.RegisterRoute("Settings", typeof(SettingsPage));
-            Routing.RegisterRoute("ViewGroups", typeof(GroupsPage));
+            
             Routing.RegisterRoute("FullMeditation", typeof(FullMeditationPage));
             Routing.RegisterRoute("Profile", typeof(ProfilePage));
             Routing.RegisterRoute("JoinRosary", typeof(JoinRosaryPage));
@@ -21,6 +21,7 @@ namespace MauiApp1
             Routing.RegisterRoute("AdminPage", typeof(AdminPage));
             Routing.RegisterRoute("RosaryMenagement", typeof(RosaryMenagementPage));
             Routing.RegisterRoute("UserVerification", typeof(UserVerificationPage));
+            Routing.RegisterRoute("AdminRosaries", typeof(AdminRosariesPage));
         }
     }
 }

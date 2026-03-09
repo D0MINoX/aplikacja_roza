@@ -9,6 +9,6 @@ public partial class AdminPage : ContentPage
 
     private async void RosaryMenagement_Tapped(object sender, TappedEventArgs e)
     {
-		await Shell.Current.GoToAsync("RosaryMenagement");
+		await Shell.Current.GoToAsync("AdminRosaries");
     }
 }

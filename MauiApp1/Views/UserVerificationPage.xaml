@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:MauiApp1.Converters"
              x:Class="MauiApp1.Views.UserVerificationPage"
              Title="UserVerificationPage">
+    <ContentPage.Resources>
+        <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </ContentPage.Resources>
     <Grid RowDefinitions="Auto, *" Margin="10">
         <Grid Grid.Row="0" ColumnDefinitions="*, *, 150" BackgroundColor="{StaticResource Menu}" Padding="10">
             <Label Text="Użytkownik" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>

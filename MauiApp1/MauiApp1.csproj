@@ -70,10 +70,10 @@
 	  <MauiXaml Update="Views\AdminPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\FullMeditationPage.xaml">
+	  <MauiXaml Update="Views\AdminRosariesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\GroupsPage.xaml">
+	  <MauiXaml Update="Views\FullMeditationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\JoinRosaryPage.xaml">

@@ -2,38 +2,53 @@ using MauiApp1.Models;
 using MauiApp1.Services;
 namespace MauiApp1.Views;
 
+[QueryProperty(nameof(RosaryId), "RosaryId")]
 public partial class UserVerificationPage : ContentPage
 {
     private readonly AdminService _adminService;
+    public int RosaryId { get; set; }
 	public UserVerificationPage(AdminService adminService)
 	{
         _adminService = adminService;
+        
 		InitializeComponent();
-        LoadUsers(2);
+      
     }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (RosaryId != 0)
+        {
+            LoadUsers(RosaryId);
+        }
+    }
+
     private async void OnVerifyClicked(object sender, EventArgs e)
     {
         var button = sender as Button;
-        var user = button.BindingContext as UserInfo;
+        var user = button.BindingContext as AdminUserView;
 
-        bool confirm = await DisplayAlertAsync("Weryfikacja", $"Czy chcesz zweryfikować {user.Name}?", "Tak", "Nie");
+        var confirm = await DisplayAlertAsync("Weryfikacja", $"Czy chcesz zweryfikować {user.UserName}?", "Tak", "Nie");
         if (confirm)
         {
-            // Wywołaj swoje API: await _adminService.VerifyUser(user.Id);
-            user.IsVerified = true;
+             await _adminService.VerifyUser(user.UserId,RosaryId);
+       
             // Odśwież listę
+            LoadUsers(RosaryId);
         }
     }
  
     private async void OnDeleteClicked(object sender, EventArgs e)
     {
         var button = sender as Button;
-        var user = button.BindingContext as UserInfo;
+        var user = button.BindingContext as AdminUserView;
 
-        bool confirm = await DisplayAlertAsync("UWAGA", $"Czy na pewno usunąć użytkownika {user.Name}?", "USUŃ", "Anuluj");
+        bool confirm = await DisplayAlertAsync("UWAGA", $"Czy na pewno usunąć użytkownika {user.UserName}?", "USUŃ", "Anuluj");
         if (confirm)
         {
-            // Wywołaj API: await _adminService.DeleteUser(user.Id);
+              await _adminService.DeleteUser(user.UserId,RosaryId);
+            LoadUsers(RosaryId);
         }
     }
     private async void LoadUsers(int id)
@@ -42,15 +57,13 @@ public partial class UserVerificationPage : ContentPage
 
         if (result.isSuccess)
         {
-            // Wyświetlamy pobraną listę w CollectionView
             UsersList.ItemsSource = result.Data;
         }
         else
         {
-            // Wyświetlamy konkretny błąd z API użytkownikowi
+
             await DisplayAlertAsync("Błąd", result.ErrorMessage, "OK");
 
-            // Opcjonalnie: wyczyść listę, jeśli wystąpił błąd
             UsersList.ItemsSource = null;
         }
     }
