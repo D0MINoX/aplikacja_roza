@@ -15,15 +15,22 @@ public partial class RegisterPage : ContentPage
 	}
 	private async void Register_Clicked(object sender, EventArgs e)
     {
+        string name = NameEntry.Text;
+        string surname = SurnameEntry.Text;
         string email = EmailEntry.Text;
         string password = PasswordEntry.Text;
-
+        string passwordRetype = PasswordRetype.Text;
+        if (name=="" && surname=="" && email=="" && password=="" && passwordRetype=="")
+        {
+            await DisplayAlertAsync("Błąd", "Każede pole musi zostać wypełnione", "OK");
+            return;
+        }
         if (!ValidateEmail(email.Trim()))
         {
             await DisplayAlertAsync("Błąd", "Podaj poprawny adres e-mail", "OK");
             return;
         }
-        else if(PasswordEntry.Text!=PasswordRetype.Text)
+        else if(password!=passwordRetype)
         {
             await DisplayAlertAsync("Błąd", "Hasła są różne", "OK");
             return;
@@ -32,7 +39,7 @@ public partial class RegisterPage : ContentPage
         else
         {
            
-            bool isSuccess = await _authService.RegisterAsync(email, password);
+            bool isSuccess = await _authService.RegisterAsync(name, surname, email, password);
         
       
 

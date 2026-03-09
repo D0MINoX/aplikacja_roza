@@ -41,7 +41,7 @@
                                 CommandParameter="{Binding .}"
                                 IsVisible="{Binding IsAuthorized, Converter={StaticResource InvertedBoolConverter}}"/>
 
-                                <Button Text="🗑" 
+                                <Button Text="🗑"
                                 FontSize="12"
                                 BackgroundColor="Red" 
                                 TextColor="White"
