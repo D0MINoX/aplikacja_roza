@@ -16,26 +16,34 @@
                     <Border StrokeShape="RoundRectangle 0" StrokeThickness="0.5" Stroke="{StaticResource Outline}">
                         <Grid ColumnDefinitions="*, *, 150" Padding="10" BackgroundColor="{StaticResource Kafelki}">
 
-                            <Label Text="{Binding Name}" VerticalOptions="Center" Grid.Column="0"/>
-                            <Label Text="{Binding Email}" VerticalOptions="Center" Grid.Column="1" FontSize="12"/>
+                            <HorizontalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                <Label Text="{Binding UserName}" />
+                                <Label Text="   " />
+                                <Label Text="{Binding UserSurname}" />
+                            </HorizontalStackLayout>
+
+                            <Label Text="{Binding RosaryName}" 
+                           VerticalOptions="Center" 
+                           Grid.Column="1" 
+                           FontSize="12"/>
 
                             <HorizontalStackLayout Grid.Column="2" Spacing="5" HorizontalOptions="Center">
                                 <Button Text="✓" 
-                                    FontSize="12"
-                                    BackgroundColor="Green" 
-                                    TextColor="White"
-                                    HeightRequest="35" WidthRequest="35" Padding="0"
-                                    Clicked="OnVerifyClicked" 
-                                    CommandParameter="{Binding .}"
-                                    IsVisible="{Binding IsVerified, Converter={StaticResource InvertedBoolConverter}}"/>
+                                FontSize="12"
+                                BackgroundColor="Green" 
+                                TextColor="White"
+                                HeightRequest="35" WidthRequest="35" Padding="0"
+                                Clicked="OnVerifyClicked" 
+                                CommandParameter="{Binding .}"
+                                IsVisible="{Binding IsAuthorized, Converter={StaticResource InvertedBoolConverter}}"/>
 
                                 <Button Text="🗑" 
-                                    FontSize="12"
-                                    BackgroundColor="Red" 
-                                    TextColor="White"
-                                    HeightRequest="35" WidthRequest="35" Padding="0"
-                                    Clicked="OnDeleteClicked" 
-                                    CommandParameter="{Binding .}"/>
+                                FontSize="12"
+                                BackgroundColor="Red" 
+                                TextColor="White"
+                                HeightRequest="35" WidthRequest="35" Padding="0"
+                                Clicked="OnDeleteClicked" 
+                                CommandParameter="{Binding .}"/>
                             </HorizontalStackLayout>
                         </Grid>
                     </Border>

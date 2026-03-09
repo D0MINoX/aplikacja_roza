@@ -71,5 +71,6 @@ namespace MauiApp1
                 return (false, $"Błąd sieci: {ex.Message}");
             }
         }
+       
     }
 }

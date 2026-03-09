@@ -1,12 +1,15 @@
 using MauiApp1.Models;
+using MauiApp1.Services;
 namespace MauiApp1.Views;
 
 public partial class UserVerificationPage : ContentPage
 {
-	public UserVerificationPage()
+    private readonly AdminService _adminService;
+	public UserVerificationPage(AdminService adminService)
 	{
+        _adminService = adminService;
 		InitializeComponent();
-        LoadDummyData();
+        LoadUsers(2);
     }
     private async void OnVerifyClicked(object sender, EventArgs e)
     {
@@ -21,7 +24,7 @@ public partial class UserVerificationPage : ContentPage
             // Odśwież listę
         }
     }
-
+ 
     private async void OnDeleteClicked(object sender, EventArgs e)
     {
         var button = sender as Button;
@@ -33,18 +36,22 @@ public partial class UserVerificationPage : ContentPage
             // Wywołaj API: await _adminService.DeleteUser(user.Id);
         }
     }
-    private void LoadDummyData()
+    private async void LoadUsers(int id)
     {
-        var mockUsers = new List<UserInfo>
-        {
-            new UserInfo { Id = 1, Name = "Jan Kowalski", Email = "jan.k@op.pl", IsVerified = true },
-            new UserInfo { Id = 2, Name = "Anna Nowak", Email = "anowak@gmail.com", IsVerified = false },
-            new UserInfo { Id = 3, Name = "Piotr Zieliński", Email = "piotrek.z@wp.pl", IsVerified = false },
-            new UserInfo { Id = 4, Name = "Maria Woźniak", Email = "m.wozniak@onet.pl", IsVerified = true },
-            new UserInfo { Id = 5, Name = "Tomasz Mazur", Email = "tomasz.m@interia.pl", IsVerified = false }
-        };
+        var result = await _adminService.AdminUsers(id);
 
-       
-        UsersList.ItemsSource = mockUsers;
+        if (result.isSuccess)
+        {
+            // Wyświetlamy pobraną listę w CollectionView
+            UsersList.ItemsSource = result.Data;
+        }
+        else
+        {
+            // Wyświetlamy konkretny błąd z API użytkownikowi
+            await DisplayAlertAsync("Błąd", result.ErrorMessage, "OK");
+
+            // Opcjonalnie: wyczyść listę, jeśli wystąpił błąd
+            UsersList.ItemsSource = null;
+        }
     }
 }
