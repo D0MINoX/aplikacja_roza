@@ -124,6 +124,8 @@ public partial class RosaryMeditationsPage : ContentPage
             return;
         }
 
+        ThemeManager.SetTheme(group);
+
         DetailPicker.IsEnabled = true;
         DetailPicker.ItemsSource = group switch
         {
