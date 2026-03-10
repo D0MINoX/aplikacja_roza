@@ -6,13 +6,13 @@
     <Grid RowDefinitions="*,auto">
         <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="100">
             <!-- Header -->
-            <Border Grid.Row="0" Background="{StaticResource Kafelki}" Padding="15">
+            <Border Grid.Row="0" Background="{DynamicResource Primary}" Padding="15">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="10"/>
                 </Border.StrokeShape>
                 <Grid ColumnDefinitions="auto,auto">
                     <Image Grid.Column="0" Source="settings_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                    <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center" FontSize="Large">
+                    <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
                         Ustawienia
                     </Label>
                 </Grid>
@@ -22,7 +22,7 @@
             <ScrollView Grid.Row="1">
                 <VerticalStackLayout Spacing="50">
                     <!-- Zaloguj się -->
-                    <Border Background="{StaticResource Kafelki}" HeightRequest="100" x:Name="LogIn">
+                    <Border Background="{DynamicResource Primary}" HeightRequest="100" x:Name="LogIn">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
                         </Border.StrokeShape>
@@ -31,14 +31,14 @@
                         </Border.GestureRecognizers>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
                             <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center">
+                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
                                 Zaloguj się
                             </Label>
                         </Grid>
                     </Border>
                     
                     <!-- Wyloguj -->
-                    <Border Background="{StaticResource Kafelki}" HeightRequest="100" x:Name="LogOut">
+                    <Border Background="{DynamicResource Primary}" HeightRequest="100" x:Name="LogOut">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
                         </Border.StrokeShape>
@@ -47,12 +47,12 @@
                         </Border.GestureRecognizers>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
                             <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center">
+                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
                                 Wyloguj się
                             </Label>
                         </Grid>
                     </Border>
-                    <Border Background="{StaticResource Kafelki}" HeightRequest="100">
+                    <Border Background="{DynamicResource Primary}" HeightRequest="100">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Profile_Tapped"/>
                     </Border.GestureRecognizers>
@@ -61,13 +61,13 @@
                     </Border.StrokeShape>
                     <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
                         <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                        <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center">
+                        <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
                             Profil
                         </Label>
                     </Grid>
                     </Border>
                     <!-- Motyw -->
-                    <Border Background="{StaticResource Kafelki}" HeightRequest="100">
+                    <Border Background="{DynamicResource Primary}" HeightRequest="100">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped=""/>
                         </Border.GestureRecognizers>
@@ -76,7 +76,7 @@
                         </Border.StrokeShape>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
                             <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center">
+                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
                                 Zmień motyw
                             </Label>
                         </Grid>

@@ -52,15 +52,15 @@ public partial class AdminRosariesPage : ContentPage
     }
     private Border CreateRosaryCard(string rosary,int rosaryId)
     {
-        var colorKafelki = (Color)Application.Current.Resources["Kafelki"];
-        var colorMenu = (Color)Application.Current.Resources["Menu"];
-        var colorOutline = (Color)Application.Current.Resources["Outline"];
+        var colorPrimary = (Color)Application.Current.Resources["Primary"];
+        var colorMenu = (Color)Application.Current.Resources["Secondary"];
+        var colorOutline = (Color)Application.Current.Resources["Accent"];
         var colorText = (Color)Application.Current.Resources["Text"];
 
         var border = new Border
         {
             Padding = new Thickness(15),
-            BackgroundColor = colorKafelki,
+            BackgroundColor = colorPrimary,
             Stroke = colorOutline,
             StrokeThickness = 2,
             StrokeShape = new RoundRectangle { CornerRadius = 10 },

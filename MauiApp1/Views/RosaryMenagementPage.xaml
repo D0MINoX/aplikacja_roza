@@ -4,7 +4,7 @@
              x:Class="MauiApp1.Views.RosaryMenagementPage"
              Title="RosaryMenagementPage">
     <VerticalStackLayout>
-        <Border  Background="{StaticResource Kafelki}" Padding="15">
+        <Border  Background="{DynamicResource Primary}" Padding="15">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="UserVerification_Tapped"/>
             </Border.GestureRecognizers>
@@ -13,7 +13,7 @@
             </Border.StrokeShape>
             <Grid ColumnDefinitions="auto,auto">
                 <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center" FontSize="Large">
+                <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
                     weryfikacja użytkowników
                 </Label>
             </Grid>

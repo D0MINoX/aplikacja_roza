@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Resources.Styles.RadosneTheme">
 
     <Color x:Key="Primary">#FBD028</Color>
     <Color x:Key="Secondary">#D4B52F</Color>
     <Color x:Key="Accent">#C1A428</Color>
     <Color x:Key="Text">#1F1F1F</Color>
     <Color x:Key="FadedText">#AA1F1F1F</Color>
-
+    
 </ResourceDictionary>

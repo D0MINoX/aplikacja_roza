@@ -7,13 +7,13 @@
     <Grid RowDefinitions="*,auto">
         <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="50">
             <!-- Header -->
-            <Border Grid.Row="0" Background="{StaticResource Kafelki}" Padding="15">
+            <Border Grid.Row="0" Background="{DynamicResource Primary}" Padding="15">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="10"/>
                 </Border.StrokeShape>
                 <Grid ColumnDefinitions="auto,auto">
                     <Image Grid.Column="0" Source="book_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                    <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center" FontSize="Large">
+                    <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
                         Panel logowania
                     </Label>
                 </Grid>
@@ -23,7 +23,7 @@
             <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
                 <Border Padding="25"
                         StrokeShape="RoundRectangle 20"
-                        BackgroundColor="{StaticResource Kafelki}"
+                        BackgroundColor="{DynamicResource Primary}"
                         StrokeThickness="0">
 
                     <VerticalStackLayout Spacing="15">
@@ -31,36 +31,36 @@
                                FontSize="24" 
                                FontAttributes="Bold" 
                                HorizontalOptions="Center" 
-                               TextColor="{StaticResource Text}" />
+                               TextColor="{DynamicResource Text}" />
 
                         <Entry x:Name="EmailEntry" 
                                Placeholder="Email" 
                                Keyboard="Email"
                                HeightRequest="45"
-                               PlaceholderColor="{StaticResource FadedText}"
-                               TextColor="{StaticResource Text}"/>
+                               PlaceholderColor="{DynamicResource FadedText}"
+                               TextColor="{DynamicResource Text}"/>
 
                         <Entry x:Name="PasswordEntry" 
                                Placeholder="Hasło" 
                                IsPassword="True" 
                                HeightRequest="45"
-                               PlaceholderColor="{StaticResource FadedText}"
-                               TextColor="{StaticResource Text}"/>
+                               PlaceholderColor="{DynamicResource FadedText}"
+                               TextColor="{DynamicResource Text}"/>
 
                         <Button Text="ZALOGUJ SIĘ" 
                                 Clicked="OnLoginClicked"
                                 CornerRadius="10"
                                 HeightRequest="50"
                                 Margin="0,10,0,0"
-                                BackgroundColor="{StaticResource Menu}"
-                                TextColor="{StaticResource Text}"/>
+                                BackgroundColor="{DynamicResource Secondary}"
+                                TextColor="{DynamicResource Text}"/>
                         <Button Text="ZAREJESTRUJ SIĘ" 
                              Clicked="OnRegisterClicked"
                              CornerRadius="10"
                              HeightRequest="50"
                              Margin="0,10,0,0"
-                             BackgroundColor="{StaticResource Menu}"
-                             TextColor="{StaticResource Text}"/>
+                             BackgroundColor="{DynamicResource Secondary}"
+                             TextColor="{DynamicResource Text}"/>
                     </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>

@@ -45,7 +45,7 @@ public partial class JoinRosaryPage : ContentPage, IQueryAttributable
                         }
                         catch (Exception ex)
                         {
-                            // Debugowanie, jeśli zasób "Kafelki" nadal robi problem
+                            // Debugowanie, jeśli zasób "Primary" nadal robi problem
                             System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
                         }
                     }
@@ -57,14 +57,14 @@ public partial class JoinRosaryPage : ContentPage, IQueryAttributable
     private Border CreateRosaryCard(RosaryInfo rosary)
     {
 
-        var colorKafelki = (Color)Application.Current.Resources["Kafelki"];
-        var colorMenu = (Color)Application.Current.Resources["Menu"];
-        var colorOutline = (Color)Application.Current.Resources["Outline"];
+        var colorPrimary = (Color)Application.Current.Resources["Primary"];
+        var colorMenu = (Color)Application.Current.Resources["Secondary"];
+        var colorOutline = (Color)Application.Current.Resources["Accent"];
         var colorText = (Color)Application.Current.Resources["Text"];
         var border = new Border
         {
             Padding = new Thickness(15),
-            BackgroundColor = colorKafelki, 
+            BackgroundColor = colorPrimary, 
             Stroke = colorOutline,        
             StrokeThickness = 2,
             StrokeShape = new RoundRectangle { CornerRadius = 10 },
@@ -77,7 +77,7 @@ public partial class JoinRosaryPage : ContentPage, IQueryAttributable
         
             foreach (var child in RosariesContainer.Children)
             {
-                if (child is Border b) b.BackgroundColor = colorKafelki;
+                if (child is Border b) b.BackgroundColor = colorPrimary;
             }
 
      

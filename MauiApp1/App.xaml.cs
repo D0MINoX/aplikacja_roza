@@ -7,6 +7,7 @@ namespace MauiApp1
         public App()
         {
             InitializeComponent();
+            ThemeManager.SetTheme("Chwalebne");
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

@@ -6,26 +6,26 @@
     <Grid RowDefinitions="*,auto">
         <Grid RowDefinitions="auto,auto,auto" Padding="5" Grid.Row="0" RowSpacing="10">
             <!-- Header -->
-            <Border Grid.Row="0" Background="{StaticResource Kafelki}" Padding="15">
+            <Border Grid.Row="0" Background="{DynamicResource Primary}" Padding="15">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="10"/>
                 </Border.StrokeShape>
                 <Grid ColumnDefinitions="auto,auto,auto">
                     <Image Grid.Column="0" Source="book_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                    <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center" FontSize="Large">
+                    <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
                         Rozważania różańcowe
                     </Label>
                 </Grid>
             </Border>
-            <Border Grid.Row="1" Background="{StaticResource Kafelki}">
+            <Border Grid.Row="1" Background="{DynamicResource Primary}">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="10"/>
                     </Border.StrokeShape>
                     <VerticalStackLayout Spacing="10"  >
                     <Picker x:Name="GroupPicker" Title="Wybierz część różańca"                  
                     SelectedIndexChanged="OnGroupChanged"
-                    TitleColor="{StaticResource Text}"
-                    TextColor="{StaticResource Text}">
+                    TitleColor="{DynamicResource Text}"
+                    TextColor="{DynamicResource Text}">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
                                 <x:String>Radosne</x:String>
@@ -37,14 +37,14 @@
                     </Picker>
           
                 <Picker x:Name="DetailPicker" Title="Wybierz tajemnicę"
-                        TitleColor="{StaticResource Text}"
-                        TextColor="{StaticResource Text}"
+                        TitleColor="{DynamicResource Text}"
+                        TextColor="{DynamicResource Text}"
                 SelectedIndexChanged="OnDetailChanged" />
                 </VerticalStackLayout>
             </Border>
             <!-- change date & short of meditation -->
             <Grid RowDefinitions="auto,auto" Grid.Row="2" RowSpacing="10">
-                <Border Background="{StaticResource Kafelki}" Grid.Row="0">
+                <Border Background="{DynamicResource Primary}" Grid.Row="0">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="MeditationTapped"/>
                     </Border.GestureRecognizers>
@@ -55,30 +55,30 @@
                         <!-- data -->
                         <Label Grid.Row="0" x:Name="DateLabel" InputTransparent="True"/>
                         <!-- tekst rozważania -->
-                        <Label Grid.Row="1" TextColor="{StaticResource Text}" VerticalOptions="Center" MaxLines="6" LineBreakMode="TailTruncation" x:Name="MeditationLabel" InputTransparent="True"/>
+                        <Label Grid.Row="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" MaxLines="6" LineBreakMode="TailTruncation" x:Name="MeditationLabel" InputTransparent="True"/>
 
 
                         <!-- przyciski do zmiany daty -->
                         <Grid ColumnDefinitions="*,*" Grid.Row="2">
-                            <Border Grid.Column="0" Background="{StaticResource Menu}" HorizontalOptions="Start" Padding="10" WidthRequest="100">
+                            <Border Grid.Column="0" Background="{DynamicResource Secondary}" HorizontalOptions="Start" Padding="10" WidthRequest="100">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="10"/>
                                 </Border.StrokeShape>
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="PreviousTapped"/>
                                 </Border.GestureRecognizers>
-                                <Label TextColor="{StaticResource Text}" HorizontalOptions="Center" InputTransparent="True">
+                                <Label TextColor="{DynamicResource Text}" HorizontalOptions="Center" InputTransparent="True">
                                     Wstecz
                                 </Label>
                             </Border>
-                            <Border Grid.Column="1" Background="{StaticResource Menu}" HorizontalOptions="End" Padding="10" WidthRequest="100">
+                            <Border Grid.Column="1" Background="{DynamicResource Secondary}" HorizontalOptions="End" Padding="10" WidthRequest="100">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="10"/>
                                 </Border.StrokeShape>
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="NextTapped"/>
                                 </Border.GestureRecognizers>
-                                <Label TextColor="{StaticResource Text}" HorizontalOptions="Center" InputTransparent="True">
+                                <Label TextColor="{DynamicResource Text}" HorizontalOptions="Center" InputTransparent="True">
                                     Dalej
                                 </Label>
                             </Border>
@@ -86,7 +86,7 @@
                     </Grid>
                 </Border>
                 <!-- YT button -->
-                <Border Background="{StaticResource Kafelki}" HeightRequest="100" Grid.Row="1">
+                <Border Background="{DynamicResource Primary}" HeightRequest="100" Grid.Row="1">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="10"/>
                     </Border.StrokeShape>
@@ -95,7 +95,7 @@
                             <TapGestureRecognizer Tapped=""/>
                         </Grid.GestureRecognizers>
                         <Image Grid.Column="0" Source="play_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                        <Label Grid.Column="1" TextColor="{StaticResource Text}" VerticalOptions="Center">
+                        <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
                             Obejrzyj film
                         </Label>
                     </Grid>

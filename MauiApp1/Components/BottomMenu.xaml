@@ -2,7 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp1.BottomMenu">
-    <Border Background="#D4B52F" Padding="15">
+    <Border Background="{DynamicResource Secondary}" Padding="15">
         <Border.StrokeShape>
             <RoundRectangle CornerRadius="20,20,0,0"/>
         </Border.StrokeShape>
@@ -13,7 +13,7 @@
                         <TapGestureRecognizer Tapped="HomeButton_Tapped"/>
                     </Image.GestureRecognizers>
                 </Image>
-                <Label Grid.Row="1" TextColor="#1F1F1F" HorizontalOptions="Center">
+                <Label Grid.Row="1" TextColor="{DynamicResource Text}" HorizontalOptions="Center">
                     Start
                 </Label>
             </Grid>
@@ -23,7 +23,7 @@
                         <TapGestureRecognizer Tapped="MeditationsButton_Tapped"/>
                     </Image.GestureRecognizers>
                 </Image>
-                <Label Grid.Row="1" TextColor="#1F1F1F" HorizontalOptions="Center">
+                <Label Grid.Row="1" TextColor="{DynamicResource Text}" HorizontalOptions="Center">
                     Rozważania
                 </Label>
             </Grid>
@@ -33,7 +33,7 @@
                         <TapGestureRecognizer Tapped="SettingsButton_Tapped"/>
                     </Image.GestureRecognizers>
                 </Image>
-                <Label Grid.Row="1" TextColor="#1F1F1F" HorizontalOptions="Center">
+                <Label Grid.Row="1" TextColor="{DynamicResource Text}" HorizontalOptions="Center">
                     Ustawienia
                 </Label>
             </Grid>

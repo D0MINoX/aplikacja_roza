@@ -86,7 +86,7 @@ public partial class ProfilePage : ContentPage
                     }
                     catch (Exception ex)
                     {
-                        // Debugowanie, jeśli zasób "Kafelki" nadal robi problem
+                        // Debugowanie, jeśli zasób "Primary" nadal robi problem
                         System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
                     }
                 }
@@ -98,15 +98,15 @@ public partial class ProfilePage : ContentPage
     }
     private Border CreateRosaryCard(string rosary)
 {
-        var colorKafelki = (Color)Application.Current.Resources["Kafelki"];
-        var colorMenu = (Color)Application.Current.Resources["Menu"];
-        var colorOutline = (Color)Application.Current.Resources["Outline"];
+        var colorPrimary = (Color)Application.Current.Resources["Primary"];
+        var colorMenu = (Color)Application.Current.Resources["Secondary"];
+        var colorOutline = (Color)Application.Current.Resources["Accent"];
         var colorText = (Color)Application.Current.Resources["Text"];
 
         var border = new Border
     {
         Padding = new Thickness(15),
-        BackgroundColor = colorKafelki,
+        BackgroundColor = colorPrimary,
             Stroke = colorOutline,
             StrokeThickness = 2,
             StrokeShape = new RoundRectangle { CornerRadius = 10 },
@@ -132,14 +132,14 @@ public partial class ProfilePage : ContentPage
    
     private Border CreateJoinButton(int UserId)
     {
-        var colorKafelki = (Color)Application.Current.Resources["Kafelki"];
-        var colorMenu = (Color)Application.Current.Resources["Menu"];
-        var colorOutline = (Color)Application.Current.Resources["Outline"];
+        var colorPrimary = (Color)Application.Current.Resources["Primary"];
+        var colorMenu = (Color)Application.Current.Resources["Secondary"];
+        var colorOutline = (Color)Application.Current.Resources["Accent"];
         var colorText = (Color)Application.Current.Resources["Text"];
         var border = new Border
         {
             Padding = new Thickness(15),
-            BackgroundColor = colorKafelki,
+            BackgroundColor = colorPrimary,
             Stroke = colorOutline,
             StrokeThickness = 2,
             StrokeShape = new RoundRectangle { CornerRadius = 10 },
@@ -169,14 +169,14 @@ public partial class ProfilePage : ContentPage
     }
     private Border CreateAdminButton()
     {
-        var colorKafelki = (Color)Application.Current.Resources["Kafelki"];
-        var colorMenu = (Color)Application.Current.Resources["Menu"];
-        var colorOutline = (Color)Application.Current.Resources["Outline"];
+        var colorPrimary = (Color)Application.Current.Resources["Primary"];
+        var colorMenu = (Color)Application.Current.Resources["Secondary"];
+        var colorOutline = (Color)Application.Current.Resources["Accent"];
         var colorText = (Color)Application.Current.Resources["Text"];
         var border = new Border
         {
             Padding = new Thickness(15),
-            BackgroundColor = colorKafelki,
+            BackgroundColor = colorPrimary,
             Stroke = colorOutline,
             StrokeThickness = 2,
             StrokeShape = new RoundRectangle { CornerRadius = 10 },
