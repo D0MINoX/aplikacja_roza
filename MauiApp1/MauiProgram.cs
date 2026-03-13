@@ -16,24 +16,15 @@ namespace MauiApp1
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-#if DEBUG
+            string baseAddress = "https://api.rosaryapi.pl";
+
          
-            var handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
-            string baseAddress = "";
-#if WINDOWS
-               baseAddress= "https://localhost:7206";
-#elif ANDROID
-            baseAddress = "https://10.0.2.2:7206";
-#endif
-            builder.Services.AddSingleton(new HttpClient(handler)
+            builder.Services.AddSingleton(new HttpClient
             {
                 BaseAddress = new Uri(baseAddress)
             });
-        
-#endif
 #if DEBUG
-                builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<MeditationsService>();
