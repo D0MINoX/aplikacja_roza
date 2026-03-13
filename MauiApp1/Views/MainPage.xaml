@@ -6,51 +6,42 @@
     <Grid RowDefinitions="*,auto">
         <ScrollView Grid.Row="0" Padding="20,0">
             <VerticalStackLayout Spacing="100">
-                <Border Background="{DynamicResource Primary}">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="10"/>
-                    </Border.StrokeShape>
+                <Border Style="{StaticResource MenuOption}" HeightRequest="-1">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Meditation_Tapped"/>
                     </Border.GestureRecognizers>
                     <VerticalStackLayout Spacing="10">
-                        <Label TextColor="{DynamicResource Text}" x:Name="DateLabel">
+                        <Label x:Name="DateLabel">
                             Tu skończyłeś!
                         </Label>
-                        <Label TextColor="{DynamicResource Text}" x:Name="MysteryLabel">
+                        <Label x:Name="MysteryLabel">
                             Tu skończyłeś!
                         </Label>
-                        <Label TextColor="{DynamicResource Text}" MaxLines="5" LineBreakMode="TailTruncation" x:Name="MeditationLabel">
+                        <Label MaxLines="5" LineBreakMode="TailTruncation" x:Name="MeditationLabel">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                         </Label>
                         <ProgressBar HeightRequest="5" Progress="0.25" ProgressColor="{DynamicResource Text}"></ProgressBar>
                     </VerticalStackLayout>
                 </Border>
                 <VerticalStackLayout Spacing="50">
-                    <Border Background="{DynamicResource Primary}" HeightRequest="100">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10"/>
-                        </Border.StrokeShape>
+                    <Border Style="{StaticResource MenuOption}">
                         <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="MyRosaryGroup_Tapped"/>
                             </Grid.GestureRecognizers>
-                            <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
+                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                                 Moja róża
                             </Label>
                         </Grid>
                     </Border>
-                    <Border Background="{DynamicResource Primary}" HeightRequest="100">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10"/>
-                        </Border.StrokeShape>
+                    <Border Style="{StaticResource MenuOption}">
                         <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="RosaryMeditations_Tapped"/>
                             </Grid.GestureRecognizers>
-                            <Image Grid.Column="0" Source="book_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
+                            <Image Grid.Column="0" Source="book_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                                 Rozważania różańcowe
                             </Label>
                         </Grid>

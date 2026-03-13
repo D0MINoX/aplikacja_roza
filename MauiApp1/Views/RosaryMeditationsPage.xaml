@@ -6,22 +6,16 @@
     <Grid RowDefinitions="*,auto">
         <Grid RowDefinitions="auto,auto,auto" Padding="5" Grid.Row="0" RowSpacing="10">
             <!-- Header -->
-            <Border Grid.Row="0" Background="{DynamicResource Primary}" Padding="15">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="10"/>
-                </Border.StrokeShape>
+            <Border Grid.Row="0" Style="{StaticResource Header}">
                 <Grid ColumnDefinitions="auto,auto,auto">
-                    <Image Grid.Column="0" Source="book_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                    <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
+                    <Image Grid.Column="0" Source="book_icon.png" Style="{StaticResource HeaderImage}"/>
+                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
                         Rozważania różańcowe
                     </Label>
                 </Grid>
             </Border>
-            <Border Grid.Row="1" Background="{DynamicResource Primary}">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="10"/>
-                    </Border.StrokeShape>
-                    <VerticalStackLayout Spacing="10"  >
+            <Border Grid.Row="1" Style="{StaticResource MenuOption}" HeightRequest="-1">
+                <VerticalStackLayout Spacing="10"  >
                     <Picker x:Name="GroupPicker" Title="Wybierz część różańca"                  
                     SelectedIndexChanged="OnGroupChanged"
                     TitleColor="{DynamicResource Text}"
@@ -44,19 +38,15 @@
             </Border>
             <!-- change date & short of meditation -->
             <Grid RowDefinitions="auto,auto" Grid.Row="2" RowSpacing="10">
-                <Border Background="{DynamicResource Primary}" Grid.Row="0">
+                <Border Grid.Row="0" Style="{StaticResource MenuOption}" HeightRequest="-1">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="MeditationTapped"/>
                     </Border.GestureRecognizers>
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="10"/>
-                    </Border.StrokeShape>
-                    <Grid RowDefinitions="auto,auto,auto" RowSpacing="10" Padding="20" >
+                    <Grid RowDefinitions="auto,auto,auto" RowSpacing="10" Padding="10" >
                         <!-- data -->
                         <Label Grid.Row="0" x:Name="DateLabel" InputTransparent="True"/>
                         <!-- tekst rozważania -->
-                        <Label Grid.Row="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" MaxLines="6" LineBreakMode="TailTruncation" x:Name="MeditationLabel" InputTransparent="True"/>
-
+                        <Label Grid.Row="1" VerticalOptions="Center" MaxLines="6" LineBreakMode="TailTruncation" x:Name="MeditationLabel" InputTransparent="True"/>
 
                         <!-- przyciski do zmiany daty -->
                         <Grid ColumnDefinitions="*,*" Grid.Row="2">
@@ -67,7 +57,7 @@
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="PreviousTapped"/>
                                 </Border.GestureRecognizers>
-                                <Label TextColor="{DynamicResource Text}" HorizontalOptions="Center" InputTransparent="True">
+                                <Label HorizontalOptions="Center" InputTransparent="True">
                                     Wstecz
                                 </Label>
                             </Border>
@@ -78,7 +68,7 @@
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="NextTapped"/>
                                 </Border.GestureRecognizers>
-                                <Label TextColor="{DynamicResource Text}" HorizontalOptions="Center" InputTransparent="True">
+                                <Label HorizontalOptions="Center" InputTransparent="True">
                                     Dalej
                                 </Label>
                             </Border>
@@ -86,14 +76,10 @@
                     </Grid>
                 </Border>
                 <!-- YT button -->
-                <Border Background="{DynamicResource Primary}" HeightRequest="100" Grid.Row="1">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="10"/>
-                    </Border.StrokeShape>
+                <Border Grid.Row="1" Style="{StaticResource MenuOption}">
                     <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                       
-                        <Image Grid.Column="0" Source="play_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                        <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
+                        <Image Grid.Column="0" Source="play_icon.png" Style="{StaticResource OptionImage}"/>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                             Obejrzyj film
                         </Label>
                     </Grid>

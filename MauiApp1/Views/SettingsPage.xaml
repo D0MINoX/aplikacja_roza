@@ -5,6 +5,7 @@
              Title="SettingsPage">
     <Grid RowDefinitions="*,auto">
         <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="100">
+            
             <!-- Header -->
             <Border Grid.Row="0" Background="{DynamicResource Primary}" Padding="15">
                 <Border.StrokeShape>
@@ -12,7 +13,7 @@
                 </Border.StrokeShape>
                 <Grid ColumnDefinitions="auto,auto">
                     <Image Grid.Column="0" Source="settings_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                    <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
+                    <Label Grid.Column="1" Style="{StaticResource OptionLabel}" FontSize="Large">
                         Ustawienia
                     </Label>
                 </Grid>
@@ -21,66 +22,55 @@
             <!-- Options -->
             <ScrollView Grid.Row="1">
                 <VerticalStackLayout Spacing="50">
+                    
                     <!-- Zaloguj się -->
-                    <Border Background="{DynamicResource Primary}" HeightRequest="100" x:Name="LogIn">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10"/>
-                        </Border.StrokeShape>
+                    <Border Style="{StaticResource MenuOption}" x:Name="LogIn">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="Login_Tapped"/>
                         </Border.GestureRecognizers>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
+                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                                 Zaloguj się
                             </Label>
                         </Grid>
                     </Border>
                     
                     <!-- Wyloguj -->
-                    <Border Background="{DynamicResource Primary}" HeightRequest="100" x:Name="LogOut">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10"/>
-                        </Border.StrokeShape>
+                    <Border Style="{StaticResource MenuOption}" x:Name="LogOut">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="Logout_Tapped"/>
                         </Border.GestureRecognizers>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
+                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                                 Wyloguj się
                             </Label>
                         </Grid>
                     </Border>
-                    <Border Background="{DynamicResource Primary}" HeightRequest="100">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Profile_Tapped"/>
-                    </Border.GestureRecognizers>
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="10"/>
-                    </Border.StrokeShape>
-                    <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                        <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                        <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
-                            Profil
-                        </Label>
-                    </Grid>
-                    </Border>
-                    <!-- Motyw -->
-                    <Border Background="{DynamicResource Primary}" HeightRequest="100">
-                     
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10"/>
-                        </Border.StrokeShape>
+                    
+                    <!-- Profil -->
+                    <Border Style="{StaticResource MenuOption}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Profile_Tapped"/>
+                        </Border.GestureRecognizers>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
-                                Zmień motyw
+                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                                Profil
                             </Label>
                         </Grid>
                     </Border>
                     
-                    
+                    <!-- Motyw -->
+                    <Border Style="{StaticResource MenuOption}">
+                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
+                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                                Zmień motyw
+                            </Label>
+                        </Grid>
+                    </Border>
                 </VerticalStackLayout>
             </ScrollView>
         </Grid>

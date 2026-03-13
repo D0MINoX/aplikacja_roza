@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MauiApp1.Resources.Styles.DefaultStyles">
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource Text}"/>
+    </Style>
+    
+    <Style TargetType="Border" x:Key="MenuOption">
+        <Setter Property="Background" Value="{DynamicResource Primary}"/>
+        <Setter Property="StrokeShape">
+            <RoundRectangle CornerRadius="10"/>
+        </Setter>
+        <Setter Property="HeightRequest" Value="100"/>
+        <Setter Property="Padding" Value="10"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="OptionLabel">
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+    </Style>
+
+    <Style TargetType="Image" x:Key="OptionImage">
+        <Setter Property="HeightRequest" Value="70"/>
+        <Setter Property="WidthRequest" Value="70"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="Header">
+        <Setter Property="Background" Value="{DynamicResource Primary}"/>
+        <Setter Property="Padding" Value="15"/>
+        <Setter Property="StrokeShape">
+            <RoundRectangle CornerRadius="10"/>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Image" x:Key="HeaderImage">
+        <Setter Property="HeightRequest" Value="100"/>
+        <Setter Property="WidthRequest" Value="100"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="HeaderLabel">
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="FontSize" Value="Large"/>
+    </Style>
+
+</ResourceDictionary>

@@ -6,13 +6,10 @@
     <Grid RowDefinitions="*,auto">
         <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="100">
             <!-- Header -->
-            <Border Grid.Row="0" Background="{DynamicResource Primary}" Padding="15">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="10"/>
-                </Border.StrokeShape>
+            <Border Grid.Row="0" Style="{StaticResource Header}">
                 <Grid ColumnDefinitions="auto,auto">
-                    <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                    <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
+                    <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource HeaderImage}"/>
+                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
                         Moja róża
                     </Label>
                 </Grid>
@@ -23,16 +20,13 @@
                 <VerticalStackLayout Spacing="50">
                     <!-- Guest -->
                     <!-- Przycisk logowania -->
-                    <Border Background="{DynamicResource Primary}" HeightRequest="100">
+                    <Border Style="{StaticResource MenuOption}">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="Login_Tapped"/>
                         </Border.GestureRecognizers>
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10"/>
-                        </Border.StrokeShape>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" LineBreakMode="WordWrap" MaxLines="2" HorizontalTextAlignment="Center">
+                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}" LineBreakMode="WordWrap" MaxLines="2" HorizontalTextAlignment="Center">
                                 Jesteś zelatorem lub członkiem róży?
                                 Zaloguj się!
                             </Label>
@@ -41,16 +35,13 @@
                     
                     <!-- Member -->
                     <!-- Wiadomości od Zelatora -->
-                    <Border Background="{DynamicResource Primary}" HeightRequest="100">
+                    <Border Style="{StaticResource MenuOption}">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="Messages_Tapped"/>
                         </Border.GestureRecognizers>
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10"/>
-                        </Border.StrokeShape>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="message_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Image Grid.Column="0" Source="message_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                                 Wiadomości od Zelatora
                             </Label>
                         </Grid>
@@ -58,16 +49,13 @@
                     
                     <!-- Zelator -->
                     <!-- Wyślij wiadomość -->
-                    <Border Background="{DynamicResource Primary}" HeightRequest="100">
+                    <Border Style="{StaticResource MenuOption}">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="SendMessage_Tapped"/>
                         </Border.GestureRecognizers>
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10"/>
-                        </Border.StrokeShape>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="message_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Image Grid.Column="0" Source="message_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                                 Wyślij wiadomość do róży
                             </Label>
                         </Grid>
@@ -75,16 +63,13 @@
                     
                     <!-- Super Zelator -->
                     <!-- Lista róż -->
-                    <Border Background="{DynamicResource Primary}" HeightRequest="100">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10"/>
-                        </Border.StrokeShape>
+                    <Border Style="{StaticResource MenuOption}">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ViewGroups_Tapped"/>
                         </Border.GestureRecognizers>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="message_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Image Grid.Column="0" Source="message_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                                 Lista róż
                             </Label>
                         </Grid>
