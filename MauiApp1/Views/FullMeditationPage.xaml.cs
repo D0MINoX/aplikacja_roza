@@ -40,7 +40,10 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     }
     private async void CompletedTapped(object sender, TappedEventArgs e)
     {
-        Complete.Background = (Color)Application.Current.Resources["Primary"];
+        if (Application.Current.Resources.TryGetValue("Primary", out var color))
+        {
+            Complete.Background = (Color)color;
+        }
 
     }
 }

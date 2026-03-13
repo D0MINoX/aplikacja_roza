@@ -38,9 +38,7 @@
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="10"/>
                                 </Border.StrokeShape>
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="BackTapped"/>
-                                </Border.GestureRecognizers>
+                                
                                 <Label TextColor="{DynamicResource Text}" HorizontalOptions="Center" InputTransparent="True">
                                     Cofnij
                                 </Label>

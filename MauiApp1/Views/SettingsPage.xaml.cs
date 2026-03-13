@@ -6,9 +6,14 @@ public partial class SettingsPage : ContentPage
 {
     private readonly AuthService _authService;
     public SettingsPage(AuthService authService)
-	{
+    {
         _authService = authService;
-		InitializeComponent();
+        InitializeComponent();
+       
+    }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
         IsLogged();
     }
 

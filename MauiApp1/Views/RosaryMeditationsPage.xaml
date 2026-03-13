@@ -91,9 +91,7 @@
                         <RoundRectangle CornerRadius="10"/>
                     </Border.StrokeShape>
                     <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Tapped=""/>
-                        </Grid.GestureRecognizers>
+                       
                         <Image Grid.Column="0" Source="play_icon.png" HeightRequest="70" WidthRequest="70" VerticalOptions="Center" HorizontalOptions="Start"/>
                         <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center">
                             Obejrzyj film

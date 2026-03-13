@@ -68,9 +68,7 @@
                     </Border>
                     <!-- Motyw -->
                     <Border Background="{DynamicResource Primary}" HeightRequest="100">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped=""/>
-                        </Border.GestureRecognizers>
+                     
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
                         </Border.StrokeShape>

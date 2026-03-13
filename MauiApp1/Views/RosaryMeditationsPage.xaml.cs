@@ -45,25 +45,32 @@ public partial class RosaryMeditationsPage : ContentPage
     private async void UpdateDate()
     {
         if (_isBusy) return; // Jeśli trwa ustawianie pickerów, nie rób nic
-
-        DateLabel.Text = "dzień " + date;
-
-        // Zapisuj do pamięci tylko jeśli wartości są poprawne
-        Preferences.Default.Set("LastDate", date);
-
-        if (GroupPicker.SelectedIndex != -1)
-            Preferences.Default.Set("LastGroupIndex", GroupPicker.SelectedIndex);
-
-        if (DetailPicker.SelectedItem != null)
-            Preferences.Default.Set("LastMystery", DetailPicker.SelectedItem.ToString());
-
-        // Ładowanie z API
-        if (DetailPicker.SelectedItem != null)
+        try
         {
-            MeditationLabel.Text = "Ładowanie ....";
-            string selectedMystery = DetailPicker.SelectedItem.ToString();
-            string description = await _meditationService.GetOnlyDescription(this.date, selectedMystery);
-            MeditationLabel.Text = description ?? "Brak rozważania";
+            DateLabel.Text = "dzień " + date;
+
+            // Zapisuj do pamięci tylko jeśli wartości są poprawne
+            Preferences.Default.Set("LastDate", date);
+
+            if (GroupPicker.SelectedIndex != -1)
+                Preferences.Default.Set("LastGroupIndex", GroupPicker.SelectedIndex);
+
+            if (DetailPicker.SelectedItem != null)
+                Preferences.Default.Set("LastMystery", DetailPicker.SelectedItem.ToString());
+
+            // Ładowanie z API
+            if (DetailPicker.SelectedItem != null)
+            {
+                MeditationLabel.Text = "Ładowanie ....";
+                string selectedMystery = DetailPicker.SelectedItem.ToString();
+                string description = await _meditationService.GetOnlyDescription(this.date, selectedMystery);
+                MeditationLabel.Text = description ?? "Brak rozważania";
+            }
+        }
+        catch (Exception ex)
+        {
+            MeditationLabel.Text = "Błąd połączenia";
+            System.Diagnostics.Debug.WriteLine(ex.Message);
         }
     }
 
