@@ -13,7 +13,7 @@
         <Setter Property="StrokeShape">
             <RoundRectangle CornerRadius="10"/>
         </Setter>
-        <Setter Property="HeightRequest" Value="100"/>
+        <Setter Property="MinimumHeightRequest" Value="100"/>
         <Setter Property="Padding" Value="10"/>
     </Style>
 
@@ -46,6 +46,17 @@
     <Style TargetType="Label" x:Key="HeaderLabel">
         <Setter Property="VerticalOptions" Value="Center"/>
         <Setter Property="FontSize" Value="Large"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="NavButton">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Secondary}"/>
+        <Setter Property="Stroke" Value="{DynamicResource Accent}"/>
+        <Setter Property="StrokeThickness" Value="3"/>
+        <Setter Property="StrokeShape">
+            <RoundRectangle CornerRadius="10"/>
+        </Setter>
+        <Setter Property="MinimumWidthRequest" Value="100"/>
+        <Setter Property="Padding" Value="10"/>
     </Style>
 
 </ResourceDictionary>

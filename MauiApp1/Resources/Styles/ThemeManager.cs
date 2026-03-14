@@ -1,5 +1,4 @@
 ﻿using MauiApp1.Resources.Styles;
-using Microsoft.Maui.Storage;
 
 public static class ThemeManager
 {

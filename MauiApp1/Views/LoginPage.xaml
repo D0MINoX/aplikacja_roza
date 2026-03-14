@@ -5,7 +5,7 @@
              Title="LoginPage">
 
     <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="50">
+        <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="50" Padding="20">
             <!-- Header -->
             <Border Grid.Row="0" Style="{StaticResource Header}">
                 <Grid ColumnDefinitions="auto,auto">

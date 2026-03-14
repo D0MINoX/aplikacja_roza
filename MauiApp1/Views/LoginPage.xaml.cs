@@ -6,12 +6,12 @@ public partial class LoginPage : ContentPage
 {
     private readonly AuthService _authService;
     public LoginPage(AuthService authService)
-	{
+    {
         _authService = authService;
         CheckLoginStatus();
         InitializeComponent();
-       
-       
+
+
     }
     private async void OnLoginClicked(object sender, EventArgs e)
     {

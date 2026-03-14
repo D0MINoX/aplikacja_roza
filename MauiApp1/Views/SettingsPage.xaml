@@ -4,16 +4,12 @@
              x:Class="MauiApp1.SettingsPage"
              Title="SettingsPage">
     <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="100">
-            
+        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="50">
             <!-- Header -->
-            <Border Grid.Row="0" Background="{DynamicResource Primary}" Padding="15">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="10"/>
-                </Border.StrokeShape>
+            <Border Grid.Row="0" Style="{StaticResource Header}">
                 <Grid ColumnDefinitions="auto,auto">
-                    <Image Grid.Column="0" Source="settings_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                    <Label Grid.Column="1" Style="{StaticResource OptionLabel}" FontSize="Large">
+                    <Image Grid.Column="0" Source="settings_icon.png" Style="{StaticResource HeaderImage}"/>
+                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
                         Ustawienia
                     </Label>
                 </Grid>
@@ -21,7 +17,7 @@
 
             <!-- Options -->
             <ScrollView Grid.Row="1">
-                <VerticalStackLayout Spacing="50">
+                <VerticalStackLayout Spacing="20">
                     
                     <!-- Zaloguj się -->
                     <Border Style="{StaticResource MenuOption}" x:Name="LogIn">

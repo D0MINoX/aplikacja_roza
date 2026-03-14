@@ -4,7 +4,7 @@
              x:Class="MauiApp1.MainPage">
 
     <Grid RowDefinitions="*,auto">
-        <ScrollView Grid.Row="0" Padding="20,0">
+        <ScrollView Grid.Row="0" Padding="20">
             <VerticalStackLayout Spacing="100">
                 <Border Style="{StaticResource MenuOption}" HeightRequest="-1">
                     <Border.GestureRecognizers>

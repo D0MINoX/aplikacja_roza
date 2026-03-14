@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.FullMeditationPage"
              Title="FullMeditationPage">
-    <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,auto" Padding="20" Grid.Row="0" RowSpacing="10">
+    <Grid RowDefinitions="*,auto" RowSpacing="50">
+        <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="50" Padding="20">
             <!-- Header -->
             <Border Grid.Row="0" Style="{StaticResource Header}">
                 <Grid ColumnDefinitions="auto,auto" ColumnSpacing="10">
@@ -16,49 +16,37 @@
             </Border>
 
             <!-- Całe rozważanie -->
-            <Grid RowDefinitions="auto,auto" Grid.Row="1" RowSpacing="10">
-                <Border Grid.Row="0" Style="{StaticResource MenuOption}" HeightRequest="-1">
-                    <Grid RowDefinitions="auto,*,auto" RowSpacing="20" Padding="10" >
-                        <!-- data -->
-                        <Label Grid.Row="0" x:Name="DateLabel" InputTransparent="True"/>
-                        <!-- tekst rozważania -->
-                        <ScrollView Grid.Row="1" Orientation="Vertical" MaximumHeightRequest="400">
-                            <Label VerticalOptions="Center" x:Name="FullMeditation" InputTransparent="True"/>
-                        </ScrollView>
-                       
-                        <!-- przyciski -->
-                        <Grid ColumnDefinitions="*,*" Grid.Row="2">
-                            <Border Grid.Column="0" Background="{DynamicResource Secondary}" HorizontalOptions="Start" Padding="10" WidthRequest="100">
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="10"/>
-                                </Border.StrokeShape>
-                                
-                                <Label HorizontalOptions="Center" InputTransparent="True">
-                                    Cofnij
-                                </Label>
-                            </Border>
-                            <Border Grid.Column="1"
-                                    Background="{DynamicResource Secondary}"
-                                    HorizontalOptions="End"
-                                    Padding="10"
-                                    WidthRequest="100"
-                                    Stroke="{DynamicResource Accent}"
-                                    StrokeThickness="3"
-                                    x:Name="Complete">
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="10"/>
-                                </Border.StrokeShape>
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="CompletedTapped"/>
-                                </Border.GestureRecognizers>
-                                <Label HorizontalOptions="Center" InputTransparent="True">
-                                    Ukończono
-                                </Label>
-                            </Border>
-                        </Grid>
+            <Border Grid.Row="1" Style="{StaticResource MenuOption}">
+                <Grid RowDefinitions="auto,*,auto" RowSpacing="10" Padding="10" >
+                    <!-- data -->
+                    <Label Grid.Row="0" x:Name="DayLabel" InputTransparent="True"/>
+                    <!-- tekst rozważania -->
+                    <ScrollView Grid.Row="1" Orientation="Vertical">
+                        <Label VerticalOptions="Center" x:Name="FullMeditation" InputTransparent="True"/>
+                    </ScrollView>
+
+                    <!-- przyciski -->
+                    <Grid ColumnDefinitions="*,*" Grid.Row="2">
+                        <Border Grid.Column="0" HorizontalOptions="Start" Style="{StaticResource NavButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="BackTapped"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                Wróć
+                            </Label>
+                        </Border>
+                        <Border Grid.Column="1" HorizontalOptions="End" x:Name="Complete" Style="{StaticResource NavButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="CompletedTapped"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                Ukończono
+                            </Label>
+                        </Border>
                     </Grid>
-                </Border>
-            </Grid>
+                </Grid>
+            </Border>
         </Grid>
+        <mauiapp1:BottomMenu Grid.Row="1"></mauiapp1:BottomMenu>
     </Grid>
 </ContentPage>

@@ -1,5 +1,4 @@
 using MauiApp1.Services;
-using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace MauiApp1;
@@ -8,19 +7,19 @@ public partial class RegisterPage : ContentPage
 {
     private readonly AuthService _authService;
     public RegisterPage(AuthService authService)
-	{
+    {
         _authService = authService;
-		InitializeComponent();
-        
-	}
-	private async void Register_Clicked(object sender, EventArgs e)
+        InitializeComponent();
+
+    }
+    private async void Register_Clicked(object sender, EventArgs e)
     {
         string name = NameEntry.Text;
         string surname = SurnameEntry.Text;
         string email = EmailEntry.Text;
         string password = PasswordEntry.Text;
         string passwordRetype = PasswordRetype.Text;
-        if (name=="" && surname=="" && email=="" && password=="" && passwordRetype=="")
+        if (name == "" && surname == "" && email == "" && password == "" && passwordRetype == "")
         {
             await DisplayAlertAsync("Błąd", "Każede pole musi zostać wypełnione", "OK");
             return;
@@ -30,7 +29,7 @@ public partial class RegisterPage : ContentPage
             await DisplayAlertAsync("Błąd", "Podaj poprawny adres e-mail", "OK");
             return;
         }
-        else if(password!=passwordRetype)
+        else if (password != passwordRetype)
         {
             await DisplayAlertAsync("Błąd", "Hasła są różne", "OK");
             return;
@@ -38,15 +37,15 @@ public partial class RegisterPage : ContentPage
         }
         else
         {
-           
+
             bool isSuccess = await _authService.RegisterAsync(name, surname, email, password);
-        
-      
+
+
 
             if (isSuccess)
             {
                 await DisplayAlertAsync("Sukces", "Konto zostało utworzone!", "OK");
-               await Shell.Current.GoToAsync("..");
+                await Shell.Current.GoToAsync("..");
             }
             else
             {
@@ -57,7 +56,7 @@ public partial class RegisterPage : ContentPage
     }
     public static bool ValidateEmail(string email)
     {
-       
+
         string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
         return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);

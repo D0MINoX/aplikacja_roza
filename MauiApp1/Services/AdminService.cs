@@ -1,14 +1,11 @@
 ﻿using MauiApp1.Models;
-using System;
-using System.Collections.Generic;
 using System.Net.Http.Json;
-using System.Text;
 
 namespace MauiApp1.Services
 {
     public class AdminService
     {
-        
+
         private readonly HttpClient _httpClient;
         public AdminService(HttpClient httpClient)
         {
@@ -40,17 +37,17 @@ namespace MauiApp1.Services
             }
         }
 
-        public async Task<(bool isSuccess,string ErrorMessage)> VerifyUser(int userId,int rosaryId)
+        public async Task<(bool isSuccess, string ErrorMessage)> VerifyUser(int userId, int rosaryId)
         {
             string url = $"api/Admin/{userId}/Authorization/{rosaryId}";
             try
             {
-                var response = await _httpClient.PutAsync(url,null);
-               
+                var response = await _httpClient.PutAsync(url, null);
+
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    return (true,content);
+                    return (true, content);
                 }
                 else
                 {

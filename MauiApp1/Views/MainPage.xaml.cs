@@ -13,14 +13,10 @@
 
         private async void MyRosaryGroup_Tapped(object sender, TappedEventArgs e)
         {
-           
-
             await Shell.Current.GoToAsync("MyRosaryGroup");
         }
         private async void RosaryMeditations_Tapped(object sender, TappedEventArgs e)
         {
-            
-
             await Shell.Current.GoToAsync("RosaryMeditations");
         }
 
@@ -37,15 +33,15 @@
     };
             await Shell.Current.GoToAsync("FullMeditation", navigationParameter);
         }
-    
+
         private async Task UpdateMeditation()
         {
             MeditationLabel.Text = "Ładowanie ....";
             date = Preferences.Default.Get("LastDate", 1);
             string savedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
-            DateLabel.Text ="Dzień "+ date;
+            DateLabel.Text = "Dzień " + date;
             MysteryLabel.Text = savedMystery;
-       
+
             string description = await _meditationService.GetOnlyDescription(this.date, savedMystery);
             MeditationLabel.Text = description ?? "Brak rozważania";
         }

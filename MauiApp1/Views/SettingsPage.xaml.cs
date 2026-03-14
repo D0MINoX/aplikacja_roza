@@ -9,7 +9,7 @@ public partial class SettingsPage : ContentPage
     {
         _authService = authService;
         InitializeComponent();
-       
+
     }
     protected override void OnAppearing()
     {

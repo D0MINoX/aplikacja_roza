@@ -9,11 +9,11 @@ namespace MauiApp1
             InitializeComponent();
             Routing.RegisterRoute("MyRosaryGroup", typeof(MyRosaryPage));
             Routing.RegisterRoute("RosaryMeditations", typeof(RosaryMeditationsPage));
-            
+
             Routing.RegisterRoute("Login", typeof(LoginPage));
-           
+
             Routing.RegisterRoute("Settings", typeof(SettingsPage));
-            
+
             Routing.RegisterRoute("FullMeditation", typeof(FullMeditationPage));
             Routing.RegisterRoute("Profile", typeof(ProfilePage));
             Routing.RegisterRoute("JoinRosary", typeof(JoinRosaryPage));
