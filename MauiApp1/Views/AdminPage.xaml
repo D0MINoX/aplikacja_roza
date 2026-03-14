@@ -34,7 +34,7 @@
         </Border>
         <Border  Background="{DynamicResource Primary}" Padding="15">
             <Border.GestureRecognizers>
-                <TapGestureRecognizer Tapped="MyRosary_Tapped"/>
+                <TapGestureRecognizer Tapped="RosaryAdd_Tapped"/>
             </Border.GestureRecognizers>
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="10"/>

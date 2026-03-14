@@ -42,6 +42,7 @@ namespace MauiApp1
             builder.Services.AddTransient<RosaryMenagementPage>();
             builder.Services.AddTransient<UserVerificationPage>();
             builder.Services.AddTransient<AdminRosariesPage>();
+            builder.Services.AddTransient<RosaryAddPage>();
             return builder.Build();
         }
     }

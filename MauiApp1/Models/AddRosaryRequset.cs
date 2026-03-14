@@ -4,10 +4,10 @@ using System.Text;
 
 namespace MauiApp1.Models
 {
-    public class RosaryInfo
+    public class AddRosaryRequset
     {
-        public int Id { get; set; }
         public string Name { get; set; }
-       
+        public string Parish { get; set; }
+        public int ZelatorsId { get; set; }
     }
 }

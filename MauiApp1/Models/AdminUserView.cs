@@ -12,5 +12,6 @@ namespace MauiApp1.Models
         public string UserSurname { get; set; }
         public string RosaryName { get; set; }
         public bool IsAuthorized { get; set; }
+        public int Role { get; set; }   
     }
 }

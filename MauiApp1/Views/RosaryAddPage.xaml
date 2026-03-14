@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.RosaryAddPage"
+             Title="RosaryAddPage">
+    <VerticalStackLayout>
+        <Grid RowDefinitions="auto,*" Padding="20"  RowSpacing="50">
+            <!-- Header -->
+            <Border Grid.Row="0" Background="{DynamicResource Primary}" Padding="15">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="auto,*">
+                    <Image Grid.Column="0" Source="book_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
+                    <Label Grid.Column="1" TextColor="{DynamicResource Text}" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="Large">
+                        REJESTRACJA RÓŻY
+                    </Label>
+                </Grid>
+            </Border>
+
+            <!-- Panel z rejestracją -->
+            <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
+                <Border Padding="25"
+             StrokeShape="RoundRectangle 20"
+             BackgroundColor="{DynamicResource Primary}"
+             StrokeThickness="0">
+
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Utwórz nową różę" 
+                    FontSize="24" 
+                    FontAttributes="Bold" 
+                    HorizontalOptions="Center" 
+                    TextColor="{DynamicResource Text}" />
+
+                        <Entry x:Name="NameEntry" 
+                    Placeholder="Nazwa róży" 
+                    HeightRequest="45"
+                    PlaceholderColor="{DynamicResource FadedText}"
+                    TextColor="{DynamicResource Text}"/>
+
+                        <Entry x:Name="ParishEntry" 
+                    Placeholder="Parafia" 
+                    HeightRequest="45"
+                    PlaceholderColor="{DynamicResource FadedText}"
+                    TextColor="{DynamicResource Text}"/>
+
+                        <Picker x:Name="ZelatorPicker" Title="Wybierz zelatora róży"                  
+                         TitleColor="{DynamicResource Text}"
+                         TextColor="{DynamicResource Text}">
+                            
+                        </Picker>
+
+                        <Button Text="ZAREJESTRUJ RÓŻĘ" 
+                  Clicked="Register_Clicked"
+                  CornerRadius="10"
+                  HeightRequest="50"
+                  Margin="0,10,0,0"
+                  BackgroundColor="{DynamicResource Secondary}"
+                  TextColor="{DynamicResource Text}"/>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>
