@@ -31,7 +31,6 @@ namespace MauiApp1
             builder.Services.AddSingleton<RosaryService>();
             builder.Services.AddSingleton<AdminService>();
             builder.Services.AddTransient<MainPage>();
-
             builder.Services.AddTransient<MyRosaryPage>();
             builder.Services.AddTransient<RosaryMeditationsPage>();
             builder.Services.AddTransient<LoginPage>();
@@ -43,6 +42,8 @@ namespace MauiApp1
             builder.Services.AddTransient<UserVerificationPage>();
             builder.Services.AddTransient<AdminRosariesPage>();
             builder.Services.AddTransient<RosaryAddPage>();
+            builder.Services.AddTransient<MeditationAddPage>();
+            builder.Services.AddTransient<ChangeUserPrivilagiesPage>();
             return builder.Build();
         }
     }

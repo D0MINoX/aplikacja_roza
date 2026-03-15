@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.MeditationAddPage"
+             Title="MeditationAddPage">
+    <VerticalStackLayout>
+        <Grid RowDefinitions="auto,*" Padding="20"  RowSpacing="50">
+            <!-- Header -->
+            <Border Grid.Row="0" Background="{DynamicResource Primary}" Padding="15">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="auto,*">
+                    <Image Grid.Column="0" Source="book_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
+                    <Label Grid.Column="1" TextColor="{DynamicResource Text}" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="Large">
+                        EDYTUJ ROZWAŻANIE
+                    </Label>
+                </Grid>
+            </Border>
+
+            <!-- Panel z rejestracją -->
+            <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
+                <Border Padding="25"
+                     StrokeShape="RoundRectangle 20"
+                     BackgroundColor="{DynamicResource Primary}"
+                     StrokeThickness="0">
+
+                    <VerticalStackLayout Spacing="15">
+
+                        <Picker x:Name="MysteryPicker" Title="Wybierz tajemnicę"                  
+                             TitleColor="{DynamicResource Text}"
+                             TextColor="{DynamicResource Text}"
+                              SelectedIndexChanged="OnDetailChanged"
+                                >
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Zwiastowanie Najświętszej Maryi Pannie</x:String>
+                                    <x:String>Nawiedzenie św. Elżbiety</x:String>
+                                    <x:String>Narodzenie Pana Jezusa</x:String>
+                                    <x:String>Ofiarowanie Pana Jezusa w Świątyni</x:String>
+                                    <x:String>Odnalezienie Pana Jezusa w Świątyni</x:String>
+                                    <x:String>Chrzest Pana Jezusa w Jordanie</x:String>
+                                    <x:String>Objawienie się Pana Jezusa w Kanie Galilejskiej</x:String>
+                                    <x:String>Głoszenie Królestwa Bożego i wzywanie do nawrócenia</x:String>
+                                    <x:String>Przemienienie na górze Tabor</x:String>
+                                    <x:String>Ustanowienie Eucharystii</x:String>
+                                    <x:String>Modlitwa Pana Jezusa w Ogrójcu</x:String>
+                                    <x:String>Biczowanie Pana Jezusa</x:String>
+                                    <x:String>Cierniem ukoronowanie Pana Jezusa</x:String>
+                                    <x:String>Dźwiganie krzyża na Kalwarię</x:String>
+                                    <x:String>Śmierć Pana Jezusa na Krzyżu</x:String>
+                                    <x:String>Zmartwychwstanie Pana Jezusa</x:String>
+                                    <x:String>Wniebowstąpienie Pana Jezusa</x:String>
+                                    <x:String>Zesłanie Ducha Świętego</x:String>
+                                    <x:String>Wniebowzięcie Najświętszej Maryi Panny</x:String>
+                                    <x:String>Ukoronowanie Najświętszej Maryi Panny na Królową Nieba i Ziemi</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                        <Picker x:Name="DayPicker" Title="Wybierz dzień"                  
+                             TitleColor="{DynamicResource Text}"
+                             TextColor="{DynamicResource Text}"
+                             SelectedIndexChanged="OnDetailChanged"  
+                                >
+                        </Picker>
+
+                        <Editor 
+                            x:Name="DescriptionEditor"
+                            Placeholder="Wpisz treść rozważania..."
+                            AutoSize="TextChanges"
+                            MinimumHeightRequest="200"
+                            TextColor="{DynamicResource Text}"
+                            BackgroundColor="{DynamicResource Primary}"/>
+
+
+                        <Button Text="EDYTUJ ROZWAŻANIE" 
+                              Clicked="Edit_Clicked"
+                              CornerRadius="10"
+                              HeightRequest="50"
+                              Margin="0,10,0,0"
+                              BackgroundColor="{DynamicResource Secondary}"
+                              TextColor="{DynamicResource Text}"/>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

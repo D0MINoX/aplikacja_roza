@@ -6,9 +6,6 @@
     <VerticalStackLayout>
         <!-- Header -->
         <Border Style="{StaticResource Header}">
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Tapped="UserVerification_Tapped"/>
-            </Border.GestureRecognizers>
             <Grid ColumnDefinitions="auto,auto">
                 <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource HeaderImage}"/>
                 <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">

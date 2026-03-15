@@ -15,4 +15,13 @@ public partial class AdminPage : ContentPage
     {
         await Shell.Current.GoToAsync("RosaryAdd");
     }
+    private async void MeditationAdd_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("MeditationAdd");
+    }
+
+    private async void ChangePrivilagies_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("ChangeUserPrivilagies");
+    }
 }

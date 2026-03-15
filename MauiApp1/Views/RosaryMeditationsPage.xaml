@@ -21,7 +21,7 @@
                     <Border Grid.Row="0" Style="{StaticResource MenuOption}">
                         <VerticalStackLayout Spacing="10"  >
                             <Picker x:Name="GroupPicker" Title="Wybierz część różańca"                  
-                                    SelectedIndexChanged="OnGroupChanged"
+                                    SelectedIndexChanged="OnDetailChanged"
                                     TitleColor="{DynamicResource Text}"
                                     TextColor="{DynamicResource Text}">
                                 <Picker.ItemsSource>

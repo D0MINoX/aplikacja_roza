@@ -20,9 +20,9 @@
                     <Border StrokeShape="RoundRectangle 0" StrokeThickness="0.5" Stroke="{DynamicResource Accent}">
                         <Grid ColumnDefinitions="*, *, 150" Padding="10" BackgroundColor="{DynamicResource Primary}">
 
-                            <HorizontalStackLayout Grid.Column="0" VerticalOptions="Center">
+                            <HorizontalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="5">
                                 <Label Text="{Binding UserName}" />
-                                <Label Text="   " />
+                               
                                 <Label Text="{Binding UserSurname}" />
                             </HorizontalStackLayout>
 

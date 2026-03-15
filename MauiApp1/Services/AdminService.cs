@@ -1,6 +1,6 @@
 ﻿using MauiApp1.Models;
 using System.Net.Http.Json;
-
+using System.Diagnostics;
 namespace MauiApp1.Services
 {
     public class AdminService
@@ -130,6 +130,27 @@ namespace MauiApp1.Services
             catch (Exception ex)
             {
                 Debug.WriteLine($"Błąd rejestracji: {ex.Message}");
+                return false;
+            }
+        }
+        public async Task<bool> ModifyMeditationAsync(string Title, string Content, int Date)
+        {
+            var ModifyData = new { Title = Title,Content = Content,Date = Date };
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync("api/Admin/ModifyMeditation",ModifyData);
+                if (!response.IsSuccessStatusCode)
+                {
+                 
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"API ERROR: {response.StatusCode} - {errorContent}");
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd Zmiany rozważania: {ex.Message}");
                 return false;
             }
         }
