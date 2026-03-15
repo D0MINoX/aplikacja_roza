@@ -39,7 +39,7 @@
                                 HeightRequest="35" WidthRequest="35" Padding="0"
                                 Clicked="OnVerifyClicked" 
                                 CommandParameter="{Binding .}"
-                                IsVisible="{Binding IsAuthorized, Converter={DynamicResource InvertedBoolConverter}}"/>
+                                IsVisible="{Binding IsAuthorized, Converter={StaticResource InvertedBoolConverter}}"/>
 
                                 <Button Text="🗑"
                                 FontSize="12"
