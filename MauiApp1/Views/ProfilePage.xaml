@@ -14,7 +14,46 @@
                     </Label>
                 </Grid>
             </Border>
+
             <VerticalStackLayout Grid.Row="1" Spacing="20">
+                <Border Style="{StaticResource MenuOption}">
+                    <VerticalStackLayout>
+                        <Grid ColumnDefinitions="*,*">
+                            <Label Grid.Column="0" Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="Name"/>
+                            <Entry Grid.Column="0" IsVisible="False"/>
+                            <Border Grid.Column="1" x:Name="NameBtn" Style="{StaticResource EditButton}" HorizontalOptions="End">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="EditTapped"/>
+                                </Border.GestureRecognizers>
+                                <Label Style="{StaticResource OptionLabel}">
+                                    Edytuj
+                                </Label>
+                            </Border>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,*">
+                            <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="Role"/>
+                            <Border Grid.Column="1" Style="{StaticResource EditButton}" HorizontalOptions="End">
+                                <Label Style="{StaticResource OptionLabel}">
+                                    Edytuj
+                                </Label>
+                            </Border>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,*">
+                            <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start">
+                                siurek
+                            </Label>
+                            <Border Grid.Column="1" Style="{StaticResource EditButton}" HorizontalOptions="End">
+                                <Label Style="{StaticResource OptionLabel}">
+                                    Edytuj
+                                </Label>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+                
+                <VerticalStackLayout x:Name="adminBtn" IsVisible="False"/>
+                <VerticalStackLayout x:Name="RosariesContainer" IsVisible="False"/>
+                
                 <Border Style="{StaticResource MenuOption}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Logout_Clicked"/>
@@ -24,12 +63,6 @@
                     </Label>
                 </Border>
 
-                <Border Style="{StaticResource MenuOption}">
-                    <Label Style="{StaticResource OptionLabel}" x:Name="Name"/>
-                </Border>
-
-                <VerticalStackLayout x:Name="adminBtn"/>
-                <VerticalStackLayout x:Name="RosariesContainer"/>
             </VerticalStackLayout>
         </Grid>
         <mauiapp1:BottomMenu Grid.Row="1"/>

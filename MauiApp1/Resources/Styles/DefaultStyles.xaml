@@ -59,4 +59,15 @@
         <Setter Property="Padding" Value="10"/>
     </Style>
 
+    <Style TargetType="Border" x:Key="EditButton">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Secondary}"/>
+        <Setter Property="Stroke" Value="{DynamicResource Accent}"/>
+        <Setter Property="StrokeThickness" Value="3"/>
+        <Setter Property="StrokeShape">
+            <RoundRectangle CornerRadius="10"/>
+        </Setter>
+        <Setter Property="WidthRequest" Value="70"/>
+        <Setter Property="Padding" Value="5"/>
+    </Style>
+
 </ResourceDictionary>
