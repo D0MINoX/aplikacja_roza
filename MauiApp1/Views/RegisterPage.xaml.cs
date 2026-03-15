@@ -20,7 +20,7 @@ public partial class RegisterPage : ContentPage
         string email = EmailEntry.Text;
         string password = PasswordEntry.Text;
         string passwordRetype = PasswordRetype.Text;
-        if (name=="" && surname=="" && email=="" && password=="" && passwordRetype=="")
+        if (name=="" || surname=="" || email=="" || password=="" || passwordRetype=="")
         {
             await DisplayAlertAsync("Błąd", "Każede pole musi zostać wypełnione", "OK");
             return;
@@ -45,7 +45,7 @@ public partial class RegisterPage : ContentPage
 
             if (isSuccess)
             {
-                await DisplayAlertAsync("Sukces", "Konto zostało utworzone!", "OK");
+               await DisplayAlertAsync("Sukces", "Konto zostało utworzone!", "OK");
                await Shell.Current.GoToAsync("..");
             }
             else
