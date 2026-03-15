@@ -16,7 +16,7 @@ public partial class ProfilePage : ContentPage
         _authService = authService;
         _rosaryService = rosaryService;
         DecodeToken(_authService.Token);
-        RosariesShow();
+        //RosariesShow();
     }
 
     private async void Logout_Clicked(object sender, EventArgs e)
@@ -44,15 +44,20 @@ public partial class ProfilePage : ContentPage
         string userName = nameClaim?.Value ?? "Brak Imienia";
 
         var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
-        string userRole = roleClaim?.Value ?? "Brak Roli";
+        string userRole = roleClaim?.Value ?? "Nie jesteś człąkiem róży";
 
-        List<string> roles = ["admin", "główny zeletor", "zelator", "Członek rózy"];
+        List<string> roles = ["Rola: admin", "Rola: główny zeletor", "Zelator: ", "Członek rózy: "];
 
         Name.Text = "Witaj " + userName;
-        //Role.Text = "Rola:" + roles[int.Parse(userRole)];
+        Role.Text = roles[int.Parse(userRole)];
+        if (userRole == "2" || userRole == "3")
+        {
+            RosariesShow();
+        }
         #if WINDOWS || MACCATALYST
         if (int.Parse(userRole) < 3)
         {
+            adminBtn.IsVisible = true;
             var adminBTN = CreateAdminButton();
             adminBtn.Children.Add(adminBTN);
         }
@@ -68,58 +73,21 @@ public partial class ProfilePage : ContentPage
         {
             List<RosaryInfo> rosaryInfos = await _rosaryService.GetUserRosariesAsync(Id);
             MainThread.BeginInvokeOnMainThread(() =>
-        {
-            RosariesContainer.Children.Clear(); // Czyścimy listę
-            if (rosaryInfos == null || rosaryInfos.Count == 0)
             {
-
-                RosariesContainer.Children.Add(CreateJoinButton(Id));
-            }
-            else
-            {
-                foreach (var rosary in rosaryInfos)
+                RosariesContainer.Children.Clear(); // Czyścimy listę
+                if (rosaryInfos == null || rosaryInfos.Count == 0)
                 {
-                    try
-                    {
-                        var border = CreateRosaryCard(rosary.Name);
-                        RosariesContainer.Children.Add(border);
-                    }
-                    catch (Exception ex)
-                    {
-                        // Debugowanie, jeśli zasób "Primary" nadal robi problem
-                        System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
-                    }
+                    Role.Text += "Nie należysz do żadnej róży";
+                    RosariesContainer.IsVisible = true;
+                    RosariesContainer.Children.Add(CreateJoinButton(Id));
                 }
-            }
-        });
-
+                else
+                {
+                    Role.Text += rosaryInfos[0].Name;
+                }
+            });
         }
-
     }
-    private Border CreateRosaryCard(string rosary)
-    {
-        var borderStyle = (Style)Application.Current.Resources["MenuOption"];
-        var labelStyle = (Style)Application.Current.Resources["OptionLabel"];
-
-        var border = new Border
-        {
-            Style = borderStyle
-        };
-
-        var label = new Label
-        {
-            Text = rosary,
-            Style = labelStyle
-        };
-        border.Content = label;
-        return border;
-    }
-    private async void MyRosary_Tapped(object sender, TappedEventArgs e)
-    {
-        await Shell.Current.GoToAsync("MyRosaryGroup");
-
-    }
-
     private Border CreateJoinButton(int UserId)
     {
         var borderStyle = (Style)Application.Current.Resources["MenuOption"];
@@ -148,18 +116,12 @@ public partial class ProfilePage : ContentPage
     }
     private Border CreateAdminButton()
     {
-        var colorPrimary = (Color)Application.Current.Resources["Primary"];
-        var colorMenu = (Color)Application.Current.Resources["Secondary"];
-        var colorOutline = (Color)Application.Current.Resources["Accent"];
-        var colorText = (Color)Application.Current.Resources["Text"];
+        var borderStyle = (Style)Application.Current.Resources["MenuOption"];
+        var labelStyle = (Style)Application.Current.Resources["OptionLabel"];
+
         var border = new Border
         {
-            Padding = new Thickness(15),
-            BackgroundColor = colorPrimary,
-            Stroke = colorOutline,
-            StrokeThickness = 2,
-            StrokeShape = new RoundRectangle { CornerRadius = 10 },
-            Margin = new Thickness(0, 5),
+            Style = borderStyle
         };
 
         var tapGesture = new TapGestureRecognizer();
@@ -172,13 +134,24 @@ public partial class ProfilePage : ContentPage
         border.GestureRecognizers.Add(tapGesture);
         border.Content = new Label
         {
-            Text = "Panel Administracyjny",
-            TextColor = colorText,
-            FontAttributes = FontAttributes.Bold,
-            FontSize = 18
+            Style = labelStyle
         };
 
         return border;
 
+    }
+
+    private void EditTapped(object sender, EventArgs e)
+    {
+        
+        if (sender==NameBtn)
+        {
+            var label = (Label)NameBtn.Content;
+            if (label.Text=="Edytuj")
+            {
+                label.Text = "Zatwierdź";
+
+            }
+        }
     }
 }

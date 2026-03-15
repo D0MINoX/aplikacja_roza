@@ -1,6 +1,7 @@
 ﻿using MauiApp1.Models;
 using System.Diagnostics;
 using System.Net.Http.Json;
+using System.Diagnostics;
 
 namespace MauiApp1.Services
 {
