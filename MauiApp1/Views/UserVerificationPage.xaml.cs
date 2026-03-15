@@ -7,12 +7,12 @@ public partial class UserVerificationPage : ContentPage
 {
     private readonly AdminService _adminService;
     public int RosaryId { get; set; }
-	public UserVerificationPage(AdminService adminService)
-	{
+    public UserVerificationPage(AdminService adminService)
+    {
         _adminService = adminService;
-        
-		InitializeComponent();
-      
+
+        InitializeComponent();
+
     }
     protected override void OnAppearing()
     {
@@ -32,13 +32,13 @@ public partial class UserVerificationPage : ContentPage
         var confirm = await DisplayAlertAsync("Weryfikacja", $"Czy chcesz zweryfikować {user.UserName}?", "Tak", "Nie");
         if (confirm)
         {
-             await _adminService.VerifyUser(user.UserId,RosaryId);
-       
+            await _adminService.VerifyUser(user.UserId, RosaryId);
+
             // Odśwież listę
             LoadUsers(RosaryId);
         }
     }
- 
+
     private async void OnDeleteClicked(object sender, EventArgs e)
     {
         var button = sender as Button;
@@ -47,7 +47,7 @@ public partial class UserVerificationPage : ContentPage
         bool confirm = await DisplayAlertAsync("UWAGA", $"Czy na pewno usunąć użytkownika {user.UserName}?", "USUŃ", "Anuluj");
         if (confirm)
         {
-              await _adminService.DeleteUser(user.UserId,RosaryId);
+            await _adminService.DeleteUser(user.UserId, RosaryId);
             LoadUsers(RosaryId);
         }
     }

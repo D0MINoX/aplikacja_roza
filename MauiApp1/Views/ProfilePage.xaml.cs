@@ -1,18 +1,18 @@
 namespace MauiApp1;
 
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using MauiApp1.Models;
 using MauiApp1.Services;
 using Microsoft.Maui.Controls.Shapes;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 public partial class ProfilePage : ContentPage
 {
     private readonly AuthService _authService;
     private readonly RosaryService _rosaryService;
-    public ProfilePage(AuthService authService,RosaryService rosaryService)
-	{
-		InitializeComponent();
+    public ProfilePage(AuthService authService, RosaryService rosaryService)
+    {
+        InitializeComponent();
         _authService = authService;
         _rosaryService = rosaryService;
         DecodeToken(_authService.Token);
@@ -39,24 +39,24 @@ public partial class ProfilePage : ContentPage
         var handler = new JwtSecurityTokenHandler();
         var jsonToken = handler.ReadJwtToken(token);
 
-      
+
         var nameClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "unique_name" || c.Type == ClaimTypes.Name);
         string userName = nameClaim?.Value ?? "Brak Imienia";
 
         var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
         string userRole = roleClaim?.Value ?? "Brak Roli";
 
-        List<string> roles = ["admin", "główny zeletor","zelator","Członek rózy"];
+        List<string> roles = ["admin", "główny zeletor", "zelator", "Członek rózy"];
 
-        Name.Text ="Witaj "+ userName;
-        Role.Text = "Rola:"+roles[int.Parse(userRole)];
-#if WINDOWS || MACCATALYST
+        Name.Text = "Witaj " + userName;
+        //Role.Text = "Rola:" + roles[int.Parse(userRole)];
+        #if WINDOWS || MACCATALYST
         if (int.Parse(userRole) < 3)
         {
             var adminBTN = CreateAdminButton();
             adminBtn.Children.Add(adminBTN);
         }
-#endif
+        #endif
     }
 
     private async void RosariesShow()
@@ -94,75 +94,54 @@ public partial class ProfilePage : ContentPage
         });
 
         }
-       
+
     }
     private Border CreateRosaryCard(string rosary)
-{
-        var colorPrimary = (Color)Application.Current.Resources["Primary"];
-        var colorMenu = (Color)Application.Current.Resources["Secondary"];
-        var colorOutline = (Color)Application.Current.Resources["Accent"];
-        var colorText = (Color)Application.Current.Resources["Text"];
+    {
+        var borderStyle = (Style)Application.Current.Resources["MenuOption"];
+        var labelStyle = (Style)Application.Current.Resources["OptionLabel"];
 
         var border = new Border
-    {
-        Padding = new Thickness(15),
-        BackgroundColor = colorPrimary,
-            Stroke = colorOutline,
-            StrokeThickness = 2,
-            StrokeShape = new RoundRectangle { CornerRadius = 10 },
-        Margin = new Thickness(0, 5)
-    };
-        border.BackgroundColor = colorMenu;
+        {
+            Style = borderStyle
+        };
 
-    var label = new Label
-    {
-        Text = rosary,
-        TextColor = colorText,
-        FontAttributes = FontAttributes.Bold,
-        FontSize = 18
-    };
-    border.Content = label;
-    return border;
-}
+        var label = new Label
+        {
+            Text = rosary,
+            Style = labelStyle
+        };
+        border.Content = label;
+        return border;
+    }
     private async void MyRosary_Tapped(object sender, TappedEventArgs e)
     {
         await Shell.Current.GoToAsync("MyRosaryGroup");
 
     }
-   
+
     private Border CreateJoinButton(int UserId)
     {
-        var colorPrimary = (Color)Application.Current.Resources["Primary"];
-        var colorMenu = (Color)Application.Current.Resources["Secondary"];
-        var colorOutline = (Color)Application.Current.Resources["Accent"];
-        var colorText = (Color)Application.Current.Resources["Text"];
+        var borderStyle = (Style)Application.Current.Resources["MenuOption"];
+        var labelStyle = (Style)Application.Current.Resources["OptionLabel"];
+
         var border = new Border
         {
-            Padding = new Thickness(15),
-            BackgroundColor = colorPrimary,
-            Stroke = colorOutline,
-            StrokeThickness = 2,
-            StrokeShape = new RoundRectangle { CornerRadius = 10 },
-            Margin = new Thickness(0, 5),
+            Style = borderStyle
         };
-        var navigationParameter = new Dictionary<string, object>
-{
-    { "UserId",UserId } 
-};
+
+        var navigationParameter = new Dictionary<string, object> { { "UserId", UserId } };
         var tapGesture = new TapGestureRecognizer();
         tapGesture.Tapped += async (s, e) =>
         {
-            
-            await Shell.Current.GoToAsync("JoinRosary",navigationParameter);
+            await Shell.Current.GoToAsync("JoinRosary", navigationParameter);
         };
 
         border.GestureRecognizers.Add(tapGesture);
         border.Content = new Label
         {
             Text = "Dołącz do róży",
-            TextColor = colorText,
-            FontAttributes = FontAttributes.Bold,
-            FontSize = 18
+            Style = labelStyle
         };
 
         return border;
@@ -182,7 +161,7 @@ public partial class ProfilePage : ContentPage
             StrokeShape = new RoundRectangle { CornerRadius = 10 },
             Margin = new Thickness(0, 5),
         };
-        
+
         var tapGesture = new TapGestureRecognizer();
         tapGesture.Tapped += async (s, e) =>
         {

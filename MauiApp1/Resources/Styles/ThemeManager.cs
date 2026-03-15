@@ -1,5 +1,4 @@
 ﻿using MauiApp1.Resources.Styles;
-using Microsoft.Maui.Storage;
 
 public static class ThemeManager
 {
@@ -19,7 +18,14 @@ public static class ThemeManager
     {
         var merged = Application.Current!.Resources.MergedDictionaries;
 
-        merged.Clear();
+        var currentTheme = merged.FirstOrDefault(d =>
+            d is RadosneTheme ||
+            d is BolesneTheme ||
+            d is ChwalebneTheme ||
+            d is SwiatlaTheme);
+
+        if (currentTheme != null)
+            merged.Remove(currentTheme);
 
         switch (themeName)
         {

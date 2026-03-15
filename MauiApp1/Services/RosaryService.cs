@@ -1,10 +1,6 @@
 ﻿
 using MauiApp1.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http.Json;
-using System.Text;
 
 namespace MauiApp1
 {
@@ -33,7 +29,7 @@ namespace MauiApp1
                 return new List<RosaryInfo>();
             }
         }
-     
+
         public async Task<List<RosaryInfo>> GetAllRosariesAsync()
         {
             try
@@ -41,7 +37,7 @@ namespace MauiApp1
                 // Adres Twojego API
                 string url = $"api/Rosaries/rosaries";
 
-                
+
                 var response = await _httpClient.GetFromJsonAsync<List<RosaryInfo>>(url);
 
                 return response ?? new List<RosaryInfo>();
@@ -51,7 +47,7 @@ namespace MauiApp1
                 return new List<RosaryInfo>();
             }
         }
-        public async Task<(bool IsSuccess, string ErrorMessage)> JoinRosaryAsync(int UserId,int RosaryId)
+        public async Task<(bool IsSuccess, string ErrorMessage)> JoinRosaryAsync(int UserId, int RosaryId)
         {
             string url = $"api/Rosaries/JoinRosary";
             var requestData = new { UserId = UserId, RosaryId = RosaryId };
@@ -71,6 +67,6 @@ namespace MauiApp1
                 return (false, $"Błąd sieci: {ex.Message}");
             }
         }
-       
+
     }
 }

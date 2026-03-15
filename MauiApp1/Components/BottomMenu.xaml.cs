@@ -2,10 +2,10 @@ namespace MauiApp1;
 
 public partial class BottomMenu : ContentView
 {
-	public BottomMenu()
-	{
-		InitializeComponent();
-	}
+    public BottomMenu()
+    {
+        InitializeComponent();
+    }
     private async void HomeButton_Tapped(object sender, TappedEventArgs e)
     {
         await Shell.Current.GoToAsync("//Home");

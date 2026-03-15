@@ -5,15 +5,12 @@
              Title="LoginPage">
 
     <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="50">
+        <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="50" Padding="20">
             <!-- Header -->
-            <Border Grid.Row="0" Background="{DynamicResource Primary}" Padding="15">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="10"/>
-                </Border.StrokeShape>
+            <Border Grid.Row="0" Style="{StaticResource Header}">
                 <Grid ColumnDefinitions="auto,auto">
-                    <Image Grid.Column="0" Source="book_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                    <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
+                    <Image Grid.Column="0" Source="book_icon.png" Style="{StaticResource HeaderImage}"/>
+                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
                         Panel logowania
                     </Label>
                 </Grid>
