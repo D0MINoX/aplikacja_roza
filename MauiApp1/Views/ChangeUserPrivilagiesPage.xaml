@@ -2,34 +2,59 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp1.Views.ChangeUserPrivilagiesPage"
+              xmlns:conv="clr-namespace:MauiApp1.Converters"
              Title="ChangeUserPrivilagiesPage">
+    <ContentPage.Resources>
+        <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </ContentPage.Resources>
     <VerticalStackLayout>
         <Grid RowDefinitions="Auto, *" Margin="10">
-            <Grid Grid.Row="0" ColumnDefinitions="*, *, 150" BackgroundColor="{DynamicResource Secondary}" Padding="10">
-                <Label Text="Użytkownik" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>
-                <Label Text="Rola" FontAttributes="Bold" TextColor="White" Grid.Column="1"/>
-                <Label Text="Akcje" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="2"/>
+            <Grid Grid.Row="0" ColumnDefinitions="auto,*,*,*,*" ColumnSpacing="5" BackgroundColor="{DynamicResource Secondary}" Padding="10">
+                <Label Text="Id" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>
+                <Label Text="Użytkownik" FontAttributes="Bold" TextColor="White" Grid.Column="1"/>
+                <Label Text="e-mail" FontAttributes="Bold" TextColor="White" Grid.Column="2"/>
+                <Label Text="Rola" FontAttributes="Bold" TextColor="White" Grid.Column="3"/>
+                <Label Text="Akcje" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="4"/>
             </Grid>
 
             <CollectionView Grid.Row="1" x:Name="UsersList">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Border StrokeShape="RoundRectangle 0" StrokeThickness="0.5" Stroke="{DynamicResource Accent}">
-                            <Grid ColumnDefinitions="*, *, 150" Padding="10" BackgroundColor="{DynamicResource Primary}">
+                            <Grid ColumnDefinitions="auto, *, *,*,*" Padding="10" ColumnSpacing="5" BackgroundColor="{DynamicResource Primary}">
+                                <Label Grid.Column="0" Text="{Binding UserId}" VerticalOptions="Center" FontSize="12" />
+                            <HorizontalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="5">
+                                    <Label Text="{Binding UserName}" VerticalOptions="Center"  Grid.Column="2"  FontSize="12" />
+                                <Label Text="{Binding UserSurname}" />
+                            </HorizontalStackLayout>
 
-                                <HorizontalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="5">
-                                    <Label Text="{Binding UserName}" />
-                                    <Label Text="{Binding UserSurname}" />
-                                </HorizontalStackLayout>
+                            <Label Text="{Binding UserEmail}" VerticalOptions="Center" Grid.Column="2" FontSize="12"/>
+                                <Grid Grid.Column="3">
+                                    <Label Text="{Binding UserRoleName}" 
+                                       VerticalOptions="Center" 
+                                       IsVisible="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}"/>
 
-                                <Label Text="{Binding RosaryName}" 
-                        VerticalOptions="Center" 
-                        Grid.Column="1" 
-                        FontSize="12"/>
+                                    <Picker ItemsSource="{Binding AvailableRoles}"
+                                       ItemDisplayBinding="{Binding Name}"
+                                        SelectedItem="{Binding SelectedRoleObject, Mode=TwoWay}"
+                                        IsVisible="{Binding IsEditing}"
+                                        Title="Wybierz rolę" />
+                                </Grid>
 
-                                
+                                <Grid Grid.Column="4">
+                                    <Button Text="✏️" 
+                                        IsVisible="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}"
+                                        Clicked="OnEditClicked" 
+                                        CommandParameter="{Binding .}" />
+
+                                    <Button Text="💾" 
+                                        IsVisible="{Binding IsEditing}"
+                                        BackgroundColor="Green"
+                                        Clicked="OnSaveClicked" 
+                                        CommandParameter="{Binding .}" />
+                                </Grid>
                             </Grid>
-                        </Border>
+                    </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

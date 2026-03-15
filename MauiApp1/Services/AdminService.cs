@@ -1,6 +1,7 @@
 ﻿using MauiApp1.Models;
-using System.Net.Http.Json;
 using System.Diagnostics;
+using System.Net.Http.Json;
+
 namespace MauiApp1.Services
 {
     public class AdminService
@@ -155,5 +156,51 @@ namespace MauiApp1.Services
             }
         }
 
+        public async Task<(bool isSuccess, List<AdminUserView> Data, string ErrorMessage)> UsersPrivilagiesShow(int UserRole)
+        {
+            string url = $"api/Admin/usersShow/{UserRole}";
+            try
+            {
+                var response = await _httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadFromJsonAsync<List<AdminUserView>>();
+                    return (true, data, null);
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return (false, null, errorContent ?? $"Błąd serwera: {response.StatusCode}");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return (false, null, $"Błąd połączenia: {ex.Message}");
+            }
+        }
+
+        public async Task<bool> UpdateRole(int userId, int userRole)
+        {
+            var ModifyData = new { Id = userId,Role = userRole  };
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync("api/Admin/UpdateRole", ModifyData);
+                if (!response.IsSuccessStatusCode)
+                {
+
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"API ERROR: {response.StatusCode} - {errorContent}");
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd Zmiany rozważania: {ex.Message}");
+                return false;
+            }
+        }
     }
 }
