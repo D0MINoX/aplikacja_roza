@@ -87,5 +87,52 @@ namespace MauiApp1.Services
                 return (false, $"Błąd połączenia: {ex.Message}");
             }
         }
+
+        public async Task<(bool isSuccess, List<AdminUserView> Data, string ErrorMessage)> AdminZelators()
+        {
+            string url = $"api/Admin/zelatorsShow";
+            try
+            {
+                var response = await _httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadFromJsonAsync<List<AdminUserView>>();
+                    return (true, data, null);
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return (false, null, errorContent ?? $"Błąd serwera: {response.StatusCode}");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return (false, null, $"Błąd połączenia: {ex.Message}");
+            }
+        }
+        public async Task<bool> RegisterAsync(string name, string parish, int zelatorId)
+        {
+            var registerData = new { name = name, parish = parish,zelatorsId = zelatorId };
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/Admin/AddRosary", registerData);
+                if (!response.IsSuccessStatusCode)
+                {
+                    // ODCZYTAJ TREŚĆ BŁĘDU Z API
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"API ERROR: {response.StatusCode} - {errorContent}");
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd rejestracji: {ex.Message}");
+                return false;
+            }
+        }
+
     }
 }
