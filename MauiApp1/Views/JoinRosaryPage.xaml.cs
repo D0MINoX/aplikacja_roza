@@ -1,7 +1,5 @@
 using MauiApp1.Models;
 using Microsoft.Maui.Controls.Shapes;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace MauiApp1;
 
@@ -9,12 +7,12 @@ namespace MauiApp1;
 public partial class JoinRosaryPage : ContentPage, IQueryAttributable
 {
     private readonly RosaryService _rosaryService;
-    private  int _userId;
-	public JoinRosaryPage(RosaryService rosaryService)
-	{
-		InitializeComponent();
+    private int _userId;
+    public JoinRosaryPage(RosaryService rosaryService)
+    {
+        InitializeComponent();
         _rosaryService = rosaryService;
-       
+
     }
     protected override void OnAppearing()
     {
@@ -30,29 +28,29 @@ public partial class JoinRosaryPage : ContentPage, IQueryAttributable
     }
     private async void RosariesShow()
     {
-       
-            List<RosaryInfo> rosaryInfos = await _rosaryService.GetAllRosariesAsync();
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                RosariesContainer.Children.Clear(); // Czyścimy listę
-               
-                    foreach (var rosary in rosaryInfos)
-                    {
-                        try
-                        {
-                            var border = CreateRosaryCard(rosary);
-                            RosariesContainer.Children.Add(border);
-                        }
-                        catch (Exception ex)
-                        {
-                            // Debugowanie, jeśli zasób "Primary" nadal robi problem
-                            System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
-                        }
-                    }
-                
-            });
 
-        }
+        List<RosaryInfo> rosaryInfos = await _rosaryService.GetAllRosariesAsync();
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            RosariesContainer.Children.Clear(); // Czyścimy listę
+
+            foreach (var rosary in rosaryInfos)
+            {
+                try
+                {
+                    var border = CreateRosaryCard(rosary);
+                    RosariesContainer.Children.Add(border);
+                }
+                catch (Exception ex)
+                {
+                    // Debugowanie, jeśli zasób "Primary" nadal robi problem
+                    System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
+                }
+            }
+
+        });
+
+    }
     private int _selectedRosaryId = -1;
     private Border CreateRosaryCard(RosaryInfo rosary)
     {
@@ -64,8 +62,8 @@ public partial class JoinRosaryPage : ContentPage, IQueryAttributable
         var border = new Border
         {
             Padding = new Thickness(15),
-            BackgroundColor = colorPrimary, 
-            Stroke = colorOutline,        
+            BackgroundColor = colorPrimary,
+            Stroke = colorOutline,
             StrokeThickness = 2,
             StrokeShape = new RoundRectangle { CornerRadius = 10 },
             Margin = new Thickness(0, 5)
@@ -74,18 +72,18 @@ public partial class JoinRosaryPage : ContentPage, IQueryAttributable
 
         tapGesture.Tapped += (s, e) =>
         {
-        
+
             foreach (var child in RosariesContainer.Children)
             {
                 if (child is Border b) b.BackgroundColor = colorPrimary;
             }
 
-     
-            border.BackgroundColor = colorMenu; 
 
-           
+            border.BackgroundColor = colorMenu;
+
+
             _selectedRosaryId = rosary.Id;
-            
+
         };
         border.GestureRecognizers.Add(tapGesture);
         var label = new Label
@@ -97,7 +95,7 @@ public partial class JoinRosaryPage : ContentPage, IQueryAttributable
         };
         border.Content = label;
 
-       
+
         return border;
 
     }

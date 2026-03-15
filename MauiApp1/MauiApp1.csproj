@@ -73,6 +73,9 @@
 	  <MauiXaml Update="Resources\Styles\ChwalebneTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\DefaultStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\RadosneTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

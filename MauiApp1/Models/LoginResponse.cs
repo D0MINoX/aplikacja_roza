@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MauiApp1.Models
+﻿namespace MauiApp1.Models
 {
     public class LoginResponse
     {
-        public string Token {  get; set; }
+        public string Token { get; set; }
     }
 }

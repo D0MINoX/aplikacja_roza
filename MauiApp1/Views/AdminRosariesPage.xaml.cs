@@ -11,10 +11,10 @@ public partial class AdminRosariesPage : ContentPage
 
     private readonly AuthService _authService;
     private readonly RosaryService _rosaryService;
-    public AdminRosariesPage(AuthService authService,RosaryService rosaryService)
-	{
+    public AdminRosariesPage(AuthService authService, RosaryService rosaryService)
+    {
 
-		InitializeComponent();
+        InitializeComponent();
         _authService = authService;
         _rosaryService = rosaryService;
         RosariesShow();
@@ -29,28 +29,28 @@ public partial class AdminRosariesPage : ContentPage
             List<RosaryInfo> rosaryInfos = await _rosaryService.GetUserRosariesAsync(Id);
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                RosariesContainer.Children.Clear(); 
-              
-                    foreach (var rosary in rosaryInfos)
+                RosariesContainer.Children.Clear();
+
+                foreach (var rosary in rosaryInfos)
+                {
+                    try
                     {
-                        try
-                        {
-                            var border = CreateRosaryCard(rosary.Name, rosary.Id);
-                            RosariesContainer.Children.Add(border);
-                        }
-                        catch (Exception ex)
-                        {
-                            
-                            System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
-                        }
+                        var border = CreateRosaryCard(rosary.Name, rosary.Id);
+                        RosariesContainer.Children.Add(border);
                     }
-                
+                    catch (Exception ex)
+                    {
+
+                        System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
+                    }
+                }
+
             });
 
         }
 
     }
-    private Border CreateRosaryCard(string rosary,int rosaryId)
+    private Border CreateRosaryCard(string rosary, int rosaryId)
     {
         var colorPrimary = (Color)Application.Current.Resources["Primary"];
         var colorMenu = (Color)Application.Current.Resources["Secondary"];
@@ -70,7 +70,7 @@ public partial class AdminRosariesPage : ContentPage
         var tapGesture = new TapGestureRecognizer();
         tapGesture.Tapped += async (s, e) =>
         {
-           
+
             var navigationParameter = new Dictionary<string, object>
         {
             { "RosaryId", rosaryId }

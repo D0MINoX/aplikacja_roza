@@ -8,7 +8,7 @@ public partial class RosaryMeditationsPage : ContentPage
     public RosaryMeditationsPage(MeditationsService meditationService)
     {
         InitializeComponent();
-     
+
         _meditationService = meditationService;
 
     }
@@ -74,10 +74,18 @@ public partial class RosaryMeditationsPage : ContentPage
         }
     }
 
+    private async void PlayTapped(object sender, EventArgs e)
+    {
+        //do zrobienia link zalezny od rozwazania
+        await Browser.Default.OpenAsync(
+        new Uri("https://www.youtube.com"),
+        BrowserLaunchMode.SystemPreferred);
+    }
+
     private async void PreviousTapped(object sender, EventArgs e)
     {
 
-        
+
         if (--date < 1) date = 31;
         UpdateDate();
     }
@@ -124,7 +132,7 @@ public partial class RosaryMeditationsPage : ContentPage
     private void Mysteries()
     {
         var group = GroupPicker.SelectedItem?.ToString();
-       
+
         if (string.IsNullOrEmpty(group))
         {
             DetailPicker.IsEnabled = false;

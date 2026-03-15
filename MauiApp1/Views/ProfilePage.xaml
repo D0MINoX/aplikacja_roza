@@ -1,33 +1,37 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.ProfilePage"
              Title="ProfilePage">
-    <VerticalStackLayout>
-        <Label 
-            x:Name="Name"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Label x:Name="Role" VerticalOptions="Center" HorizontalOptions="Center"/>
-        <VerticalStackLayout x:Name="adminBtn"/>
-        <VerticalStackLayout  x:Name="RosariesContainer">
-            <Border  Background="{DynamicResource Primary}" Padding="15">
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="MyRosary_Tapped"/>
-                </Border.GestureRecognizers>
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="10"/>
-                </Border.StrokeShape>
-                <Grid ColumnDefinitions="auto,auto">
-                    <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                    <Label Grid.Column="1" x:Name="Rosary" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
-
+    <Grid RowDefinitions="*,auto" RowSpacing="50">
+        <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="50" Padding="20">
+            <!-- Header -->
+            <Border Grid.Row="0" Style="{StaticResource Header}">
+                <Grid ColumnDefinitions="auto,auto" ColumnSpacing="10">
+                    <Image Grid.Column="0" Source="book_icon.png" Style="{StaticResource HeaderImage}"/>
+                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
+                        Profil
                     </Label>
                 </Grid>
             </Border>
-        </VerticalStackLayout>
-        
-       
-        <Button Clicked="Logout_Clicked" Text="Wyloguj"/>
-    </VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="1" Spacing="20">
+                <Border Style="{StaticResource MenuOption}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Logout_Clicked"/>
+                    </Border.GestureRecognizers>
+                    <Label Style="{StaticResource OptionLabel}">
+                        Wyloguj się
+                    </Label>
+                </Border>
+
+                <Border Style="{StaticResource MenuOption}">
+                    <Label Style="{StaticResource OptionLabel}" x:Name="Name"/>
+                </Border>
+
+                <VerticalStackLayout x:Name="adminBtn"/>
+                <VerticalStackLayout x:Name="RosariesContainer"/>
+            </VerticalStackLayout>
+        </Grid>
+        <mauiapp1:BottomMenu Grid.Row="1"/>
+    </Grid>
 </ContentPage>

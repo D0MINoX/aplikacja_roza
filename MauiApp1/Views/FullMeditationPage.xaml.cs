@@ -1,7 +1,7 @@
 namespace MauiApp1;
 
 
-public partial class FullMeditationPage : ContentPage, IQueryAttributable 
+public partial class FullMeditationPage : ContentPage, IQueryAttributable
 {
     private string _meditationText;
 
@@ -14,10 +14,10 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     {
         if (query.ContainsKey("MeditationContent"))
         {
-         
+
             _meditationText = query["MeditationContent"] as string;
 
-     
+
             if (FullMeditation != null)
             {
                 FullMeditation.Text = _meditationText;
@@ -32,18 +32,23 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
 
     private void UpdateUI()
     {
-        
+
         if (FullMeditation != null && !string.IsNullOrEmpty(_meditationText))
         {
+            int date = Preferences.Default.Get("LastDate", 1);
+            DayLabel.Text = "Dzień " + date.ToString();
             FullMeditation.Text = _meditationText;
         }
     }
     private async void CompletedTapped(object sender, TappedEventArgs e)
     {
-        if (Application.Current.Resources.TryGetValue("Primary", out var color))
-        {
-            Complete.Background = (Color)color;
-        }
+        Color? color = Complete.BackgroundColor;
+        float newAlpha = color.Alpha < 1f ? 1f : 0.5f;
+        Complete.BackgroundColor = color.WithAlpha(newAlpha);
+    }
 
+    private async void BackTapped(object sender, TappedEventArgs e)
+    {
+        await Navigation.PopAsync();
     }
 }

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MauiApp1.Models;
 using System.Diagnostics;
 using System.Net.Http.Json;
-using System.Text;
-using MauiApp1.Models;
 
 namespace MauiApp1.Services
 {
     public class AuthService
     {
         private readonly HttpClient _httpClient;
-        private const string TokenKey = "jwt_token"; 
+        private const string TokenKey = "jwt_token";
 
         public string Token { get; private set; }
         public AuthService(HttpClient httpClient)
@@ -22,14 +19,14 @@ namespace MauiApp1.Services
         {
             var loginData = new { username = username, password = password };
             var response = await _httpClient.PostAsJsonAsync("api/Auth/login", loginData);
-           if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
                 Token = result.Token;
                 await SecureStorage.Default.SetAsync(TokenKey, Token);
                 return true;
             }
-        return false;
+            return false;
         }
         public async Task<bool> CheckAndSetTokenAsync()
         {
@@ -45,7 +42,8 @@ namespace MauiApp1.Services
         public async Task<bool> RegisterAsync(string name, string surname, string username, string password)
         {
             var registerData = new { username = username, password = password, name = name, surname = surname };
-            try {
+            try
+            {
                 var response = await _httpClient.PostAsJsonAsync("api/Auth/register", registerData);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -56,12 +54,12 @@ namespace MauiApp1.Services
                 }
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine($"Błąd rejestracji: {ex.Message}");
                 return false;
             }
-            }
+        }
         public async Task<bool> Logout()
         {
             try
@@ -71,7 +69,7 @@ namespace MauiApp1.Services
                 return true;
 
             }
-        catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }

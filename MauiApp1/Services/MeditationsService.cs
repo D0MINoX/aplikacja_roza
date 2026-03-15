@@ -9,8 +9,8 @@
         }
         public async Task<string> GetOnlyDescription(int date, string title)
         {
-            
-         
+
+
             try
             {
                 // Budujemy pełny URL z parametrami

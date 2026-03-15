@@ -1,8 +1,8 @@
 namespace MauiApp1.Resources.Styles;
 
-public partial class BolesneTheme : ResourceDictionary
+public partial class DefaultStyles : ResourceDictionary
 {
-    public BolesneTheme()
+    public DefaultStyles()
     {
         InitializeComponent();
     }

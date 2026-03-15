@@ -4,16 +4,26 @@
              x:Class="MauiApp1.Views.RosaryMenagementPage"
              Title="RosaryMenagementPage">
     <VerticalStackLayout>
-        <Border  Background="{DynamicResource Primary}" Padding="15">
+        <!-- Header -->
+        <Border Style="{StaticResource Header}">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="UserVerification_Tapped"/>
             </Border.GestureRecognizers>
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="10"/>
-            </Border.StrokeShape>
             <Grid ColumnDefinitions="auto,auto">
-                <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
+                <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource HeaderImage}"/>
+                <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
+                    Zażądzaj różami
+                </Label>
+            </Grid>
+        </Border>
+        
+        <Border Style="{StaticResource MenuOption}">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="UserVerification_Tapped"/>
+            </Border.GestureRecognizers>
+            <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
+                <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
+                <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                     weryfikacja użytkowników
                 </Label>
             </Grid>
