@@ -7,8 +7,9 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <styles:RadosneTheme/>
+                <styles:LightTheme/>
                 <styles:DefaultStyles/>
-                <styles:RadosneTheme />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -3,10 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp1.Resources.Styles.SwiatlaTheme">
 
-    <Color x:Key="Primary">#80CF59</Color>
-    <Color x:Key="Secondary">#357A39</Color>
+    <Color x:Key="Secondary">#80CF59</Color>
+    <Color x:Key="Tertiary">#357A39</Color>
     <Color x:Key="Accent">#00520A</Color>
-    <Color x:Key="Text">#1F1F1F</Color>
-    <Color x:Key="FadedText">#AA1F1F1F</Color>
-    
+
 </ResourceDictionary>

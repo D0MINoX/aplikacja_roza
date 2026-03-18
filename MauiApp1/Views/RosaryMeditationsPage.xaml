@@ -2,91 +2,92 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.RosaryMeditationsPage"
-             Title="RosaryMeditationsPage">
+             Title="RosaryMeditationsPage"
+             BackgroundColor="{DynamicResource Primary}">
     <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="50">
-            <!-- Header -->
-            <Border Grid.Row="0" Style="{StaticResource Header}">
-                <Grid ColumnDefinitions="auto,auto" ColumnSpacing="10">
-                    <Image Grid.Column="0" Source="book_icon.png" Style="{StaticResource HeaderImage}"/>
-                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout>
+
+                <!-- Header -->
+                <Grid Style="{StaticResource Head}">
+                    <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
                         Rozważania różańcowe
                     </Label>
+                    <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
+                        Wybór rozważań
+                    </Label>
                 </Grid>
-            </Border>
-            
-            <ScrollView Grid.Row="1">
+
                 <!-- Wybór tajemnic -->
-                <Grid RowDefinitions="auto,auto,auto" RowSpacing="20">
-                    <Border Grid.Row="0" Style="{StaticResource MenuOption}">
-                        <VerticalStackLayout Spacing="10"  >
-                            <Picker x:Name="GroupPicker" Title="Wybierz część różańca"                  
-                                    SelectedIndexChanged="OnDetailChanged"
-                                    TitleColor="{DynamicResource Text}"
-                                    TextColor="{DynamicResource Text}">
-                                <Picker.ItemsSource>
-                                    <x:Array Type="{x:Type x:String}">
-                                        <x:String>Radosne</x:String>
-                                        <x:String>Światła</x:String>
-                                        <x:String>Bolesne</x:String>
-                                        <x:String>Chwalebne</x:String>
-                                    </x:Array>
-                                </Picker.ItemsSource>
-                            </Picker>
-                            <Picker x:Name="DetailPicker" Title="Wybierz tajemnicę"
-                                    TitleColor="{DynamicResource Text}"
-                                    TextColor="{DynamicResource Text}"
-                                    SelectedIndexChanged="OnDetailChanged" />
-                        </VerticalStackLayout>
-                    </Border>
+                <Border Style="{StaticResource MenuOption}">
+                    <VerticalStackLayout Spacing="10">
+                        <Picker x:Name="GroupPicker" Title="Wybierz część różańca"                  
+                                SelectedIndexChanged="OnGroupChanged">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Radosne</x:String>
+                                    <x:String>Światła</x:String>
+                                    <x:String>Bolesne</x:String>
+                                    <x:String>Chwalebne</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                        <Picker x:Name="DetailPicker" Title="Wybierz tajemnicę"
+                                SelectedIndexChanged="OnDetailChanged"/>
+                    </VerticalStackLayout>
+                </Border>
 
-                    <!-- change date & short of meditation -->
-                    <Border Grid.Row="1" Style="{StaticResource MenuOption}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="MeditationTapped"/>
-                        </Border.GestureRecognizers>
-                        <Grid RowDefinitions="auto,auto,auto" RowSpacing="10" Padding="10" >
-                            <!-- data -->
-                            <Label Grid.Row="0" x:Name="DateLabel" InputTransparent="True"/>
-                            <!-- tekst rozważania -->
-                            <Label Grid.Row="1" VerticalOptions="Center" MaxLines="6" LineBreakMode="TailTruncation" x:Name="MeditationLabel" InputTransparent="True"/>
+                <!-- change date & short of meditation -->
+                <Border Grid.Row="1" Style="{StaticResource MenuOption}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="MeditationTapped"/>
+                    </Border.GestureRecognizers>
+                    <Grid RowDefinitions="auto,auto,auto" RowSpacing="10" Padding="10" >
+                        <!-- data -->
+                        <Label Grid.Row="0" x:Name="DateLabel" InputTransparent="True"/>
+                        <!-- tekst rozważania -->
+                        <Label Grid.Row="1" VerticalOptions="Center" MaxLines="6" LineBreakMode="TailTruncation" x:Name="MeditationLabel" InputTransparent="True"/>
 
-                            <!-- przyciski do zmiany daty -->
-                            <Grid ColumnDefinitions="*,*" Grid.Row="2">
-                                <Border Grid.Column="0" HorizontalOptions="Start" Style="{StaticResource NavButton}">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="PreviousTapped"/>
-                                    </Border.GestureRecognizers>
-                                    <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
-                                        Wstecz
-                                    </Label>
-                                </Border>
-                                <Border Grid.Column="1" HorizontalOptions="End" Style="{StaticResource NavButton}">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="NextTapped"/>
-                                    </Border.GestureRecognizers>
-                                    <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
-                                        Dalej
-                                    </Label>
-                                </Border>
-                            </Grid>
+                        <!-- przyciski do zmiany daty -->
+                        <Grid ColumnDefinitions="*,*" Grid.Row="2">
+                            <Border Grid.Column="0" HorizontalOptions="Start" Style="{StaticResource NavButton}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="PreviousTapped"/>
+                                </Border.GestureRecognizers>
+                                <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                    Wstecz
+                                </Label>
+                            </Border>
+                            <Border Grid.Column="1" HorizontalOptions="End" Style="{StaticResource NavButton}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="NextTapped"/>
+                                </Border.GestureRecognizers>
+                                <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                    Dalej
+                                </Label>
+                            </Border>
                         </Grid>
-                    </Border>
-                    <!-- YT button -->
-                    <Border Grid.Row="2" Style="{StaticResource MenuOption}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="PlayTapped"/>
-                        </Border.GestureRecognizers>
-                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="play_icon.png" Style="{StaticResource OptionImage}"/>
-                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
-                                Obejrzyj film
-                            </Label>
-                        </Grid>
-                    </Border>
-                </Grid>
-            </ScrollView>
-        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- YT button -->
+                <Border Grid.Row="2" Style="{StaticResource MenuOption}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="PlayTapped"/>
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="play_icon.png" Style="{StaticResource OptionImage}"/>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                            Obejrzyj film
+                        </Label>
+                    </Grid>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+        
         <mauiapp1:BottomMenu Grid.Row="1"/>
+        
     </Grid>
 </ContentPage>

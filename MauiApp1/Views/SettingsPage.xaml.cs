@@ -57,4 +57,9 @@ public partial class SettingsPage : ContentPage
         await Shell.Current.GoToAsync("Profile");
 
     }
+
+    private void ThemeTapped(object sender, TappedEventArgs e)
+    {
+        ThemeManager.SetMainTheme();
+    }
 }
