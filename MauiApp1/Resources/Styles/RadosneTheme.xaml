@@ -3,10 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp1.Resources.Styles.RadosneTheme">
 
-    <Color x:Key="Primary">#85D5F6</Color>
-    <Color x:Key="Secondary">#4750DD</Color>
+    <Color x:Key="Secondary">#85D5F6</Color>
+    <Color x:Key="Tertiary">#4750DD</Color>
     <Color x:Key="Accent">#212161</Color>
-    <Color x:Key="Text">#1F1F1F</Color>
-    <Color x:Key="FadedText">#AA1F1F1F</Color>
     
 </ResourceDictionary>

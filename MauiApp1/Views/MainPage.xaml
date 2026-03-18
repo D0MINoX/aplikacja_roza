@@ -1,12 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
-             x:Class="MauiApp1.MainPage">
+             x:Class="MauiApp1.MainPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             BackgroundColor="{DynamicResource Primary}">
 
     <Grid RowDefinitions="*,auto">
-        <ScrollView Grid.Row="0" Padding="20">
+        <!-- ten label jest tylko po to zeby zmieniac kolor ikonek dynamicnie -->
+        <Label x:Name="Ref" BackgroundColor="{DynamicResource Tertiary}" IsEnabled="False" IsVisible="False" />
+        
+        <ScrollView Grid.Row="0">
             <VerticalStackLayout Spacing="100">
-                <Border Style="{StaticResource MenuOption}" HeightRequest="-1">
+                <Border Style="{StaticResource MenuOption}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Meditation_Tapped"/>
                     </Border.GestureRecognizers>
@@ -29,7 +34,11 @@
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="MyRosaryGroup_Tapped"/>
                             </Grid.GestureRecognizers>
-                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Image Grid.Column="0" Source="flower.png" Style="{StaticResource OptionImage}">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                                </Image.Behaviors>
+                            </Image>
                             <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                                 Moja róża
                             </Label>
@@ -40,7 +49,11 @@
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="RosaryMeditations_Tapped"/>
                             </Grid.GestureRecognizers>
-                            <Image Grid.Column="0" Source="book_icon.png" Style="{StaticResource OptionImage}"/>
+                            <Image Grid.Column="0" Source="book.png" Style="{StaticResource OptionImage}">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                                </Image.Behaviors>
+                            </Image>
                             <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                                 Rozważania różańcowe
                             </Label>
@@ -49,6 +62,7 @@
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
+        
         <mauiapp1:BottomMenu Grid.Row="1"></mauiapp1:BottomMenu>
     </Grid>
 </ContentPage>

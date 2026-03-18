@@ -1,75 +1,94 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiApp1.SettingsPage"
-             Title="SettingsPage">
+             BackgroundColor="{DynamicResource Primary}">
+    
     <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="50">
-            <!-- Header -->
-            <Border Grid.Row="0" Style="{StaticResource Header}">
-                <Grid ColumnDefinitions="auto,auto">
-                    <Image Grid.Column="0" Source="settings_icon.png" Style="{StaticResource HeaderImage}"/>
-                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
+        <!-- ten label jest tylko po to zeby zmieniac kolor ikonek dynamicnie -->
+        <Label x:Name="Ref" BackgroundColor="{DynamicResource Tertiary}" IsEnabled="False" IsVisible="False" />
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="20">
+                <!-- Header -->
+                <Grid Style="{StaticResource Head}">
+                    <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
                         Ustawienia
                     </Label>
+                    <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
+                        ustawienia
+                    </Label>
                 </Grid>
-            </Border>
 
-            <!-- Options -->
-            <ScrollView Grid.Row="1">
-                <VerticalStackLayout Spacing="20">
-                    
-                    <!-- Zaloguj się -->
-                    <Border Style="{StaticResource MenuOption}" x:Name="LogIn">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="Login_Tapped"/>
-                        </Border.GestureRecognizers>
-                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
-                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
-                                Zaloguj się
-                            </Label>
-                        </Grid>
-                    </Border>
-                    
-                    <!-- Wyloguj -->
-                    <Border Style="{StaticResource MenuOption}" x:Name="LogOut">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="Logout_Tapped"/>
-                        </Border.GestureRecognizers>
-                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
-                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
-                                Wyloguj się
-                            </Label>
-                        </Grid>
-                    </Border>
-                    
-                    <!-- Profil -->
-                    <Border Style="{StaticResource MenuOption}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="Profile_Tapped"/>
-                        </Border.GestureRecognizers>
-                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
-                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
-                                Profil
-                            </Label>
-                        </Grid>
-                    </Border>
-                    
-                    <!-- Motyw -->
-                    <Border Style="{StaticResource MenuOption}">
-                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
-                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
-                                Zmień motyw
-                            </Label>
-                        </Grid>
-                    </Border>
-                </VerticalStackLayout>
-            </ScrollView>
-        </Grid>
+                <!-- Zaloguj się -->
+                <Border Style="{StaticResource MenuOption}" x:Name="LogIn">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Login_Tapped"/>
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                            Zaloguj się
+                        </Label>
+                    </Grid>
+                </Border>
+
+                <!-- Wyloguj -->
+                <Border Style="{StaticResource MenuOption}" x:Name="LogOut">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Logout_Tapped"/>
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="logout.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                            Wyloguj się
+                        </Label>
+                    </Grid>
+                </Border>
+
+                <!-- Profil -->
+                <Border Style="{StaticResource MenuOption}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Profile_Tapped"/>
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="profile.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                            Profil
+                        </Label>
+                    </Grid>
+                </Border>
+
+                <!-- Motyw -->
+                <Border Style="{StaticResource MenuOption}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ThemeTapped"/>
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="theme.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                            Zmień motyw
+                        </Label>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
         <mauiapp1:BottomMenu Grid.Row="1"/>
     </Grid>
 </ContentPage>

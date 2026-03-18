@@ -1,4 +1,5 @@
-﻿using MauiApp1.Services;
+﻿using CommunityToolkit.Maui;
+using MauiApp1.Services;
 using MauiApp1.Views;
 using Microsoft.Extensions.Logging;
 
@@ -11,13 +12,30 @@ namespace MauiApp1
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
             string baseAddress = "https://api.rosaryapi.pl";
-            builder.Services.AddSingleton(new HttpClient() { BaseAddress = new Uri(baseAddress) });
+//#if DEBUG
+//            var handler = new HttpClientHandler();
+//            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
+//            // Wybierz odpowiedni adres lokalny
+//            string baseAddress = DeviceInfo.DeviceType == DeviceType.Virtual
+//                                 ? "https://10.0.2.2:7206/"
+//                                 : "https://localhost:7206/";
+
+//            builder.Services.AddSingleton(new HttpClient(handler) { BaseAddress = new Uri(baseAddress) });
+//#endif
+
+
+            builder.Services.AddSingleton(new HttpClient
+            {
+                BaseAddress = new Uri(baseAddress)
+            });
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
