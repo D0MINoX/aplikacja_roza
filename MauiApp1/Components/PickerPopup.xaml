@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<layouts:Popup  xmlns:layouts="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                x:Class="MauiApp1.Components.PickerPopup"
+                BackgroundColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}">
+    <VerticalStackLayout>
+        <!-- ten label jest tylko po to zeby zmieniac kolor popup dynamicnie -->
+        <Label x:Name="Ref" BackgroundColor="{DynamicResource Primary}" IsEnabled="False" IsVisible="False" />
+        <Label Style="{StaticResource OptionLabel}">
+            Wybierz część różańca
+        </Label>
+        <Border>
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OptionTapped"/>
+            </Border.GestureRecognizers>
+            <HorizontalStackLayout>
+                <RadioButton/>
+                <Label Style="{StaticResource OptionLabel}">
+                    Chwalebne
+                </Label>
+            </HorizontalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</layouts:Popup>

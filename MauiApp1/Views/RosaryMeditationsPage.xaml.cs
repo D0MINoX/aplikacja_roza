@@ -1,3 +1,6 @@
+using CommunityToolkit.Maui.Extensions;
+using MauiApp1.Components;
+
 namespace MauiApp1;
 
 public partial class RosaryMeditationsPage : ContentPage
@@ -178,5 +181,10 @@ public partial class RosaryMeditationsPage : ContentPage
                 },
             _ => new List<string>()
         };
+    }
+
+    public void GroupTapped(object sender, EventArgs e)
+    {
+        this.ShowPopup(new PickerPopup());
     }
 }

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiApp1.RosaryMeditationsPage"
              Title="RosaryMeditationsPage"
              BackgroundColor="{DynamicResource Primary}">
+    
     <Grid RowDefinitions="*,auto">
 
         <ScrollView Grid.Row="0">
             <VerticalStackLayout>
+
+                <!-- ten label jest tylko po to zeby zmieniac kolor ikonek dynamicnie -->
+                <Label x:Name="Ref" BackgroundColor="{DynamicResource Tertiary}" IsEnabled="False" IsVisible="False" />
 
                 <!-- Header -->
                 <Grid Style="{StaticResource Head}">
@@ -22,6 +26,11 @@
                 <!-- Wybór tajemnic -->
                 <Border Style="{StaticResource MenuOption}">
                     <VerticalStackLayout Spacing="10">
+                        <Border Style="{StaticResource EditButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="GroupTapped"/>
+                            </Border.GestureRecognizers>
+                        </Border>
                         <Picker x:Name="GroupPicker" Title="Wybierz część różańca"                  
                                 SelectedIndexChanged="OnGroupChanged">
                             <Picker.ItemsSource>
@@ -39,7 +48,7 @@
                 </Border>
 
                 <!-- change date & short of meditation -->
-                <Border Grid.Row="1" Style="{StaticResource MenuOption}">
+                <Border Style="{StaticResource MenuOption}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="MeditationTapped"/>
                     </Border.GestureRecognizers>
@@ -50,7 +59,7 @@
                         <Label Grid.Row="1" VerticalOptions="Center" MaxLines="6" LineBreakMode="TailTruncation" x:Name="MeditationLabel" InputTransparent="True"/>
 
                         <!-- przyciski do zmiany daty -->
-                        <Grid ColumnDefinitions="*,*" Grid.Row="2">
+                        <Grid Grid.Row="2" ColumnDefinitions="*,*">
                             <Border Grid.Column="0" HorizontalOptions="Start" Style="{StaticResource NavButton}">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="PreviousTapped"/>
@@ -72,12 +81,16 @@
                 </Border>
 
                 <!-- YT button -->
-                <Border Grid.Row="2" Style="{StaticResource MenuOption}">
+                <Border Style="{StaticResource MenuOption}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="PlayTapped"/>
                     </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                        <Image Grid.Column="0" Source="play_icon.png" Style="{StaticResource OptionImage}"/>
+                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="youtube.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
                         <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
                             Obejrzyj film
                         </Label>
