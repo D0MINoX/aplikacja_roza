@@ -67,12 +67,12 @@ public partial class ChangeUserPrivilagiesPage : ContentPage
              bool isSuccess =  await _adminService.UpdateRole(user.UserId, user.UserRole);
             if (isSuccess)
             {
-                DisplayAlertAsync("INFO", "Pomyślnie zmieniono rolę użytkownika", "OK");
+                await DisplayAlertAsync("INFO", "Pomyślnie zmieniono rolę użytkownika", "OK");
 
             }
             else
             {
-                DisplayAlertAsync("Błąd", "Wystąpił błąd przy zmianie roli", "OK");
+                await DisplayAlertAsync("Błąd", "Wystąpił błąd przy zmianie roli", "OK");
             }
             user.IsEditing = false;
             LoadUsers(); // Odśwież listę

@@ -57,6 +57,7 @@ namespace MauiApp1
             builder.Services.AddTransient<RosaryAddPage>();
             builder.Services.AddTransient<MeditationAddPage>();
             builder.Services.AddTransient<ChangeUserPrivilagiesPage>();
+            builder.Services.AddTransient<MessagesPage>();
             return builder.Build();
         }
     }

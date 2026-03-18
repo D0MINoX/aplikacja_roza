@@ -51,7 +51,7 @@
                     <!-- Wyślij wiadomość -->
                     <Border Style="{StaticResource MenuOption}">
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="SendMessage_Tapped"/>
+                            <TapGestureRecognizer Tapped="Messages_Tapped"/>
                         </Border.GestureRecognizers>
                         <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
                             <Image Grid.Column="0" Source="message_icon.png" Style="{StaticResource OptionImage}"/>
