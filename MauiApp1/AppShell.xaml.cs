@@ -25,6 +25,7 @@ namespace MauiApp1
             Routing.RegisterRoute("RosaryAdd", typeof(RosaryAddPage));
             Routing.RegisterRoute("MeditationAdd", typeof(MeditationAddPage));
             Routing.RegisterRoute("ChangeUserPrivilagies", typeof(ChangeUserPrivilagiesPage));
+            Routing.RegisterRoute("Messages", typeof(MessagesPage));
         }
     }
 }

@@ -33,7 +33,7 @@
                                     <Label Text="{Binding UserRoleName}" 
                                        VerticalOptions="Center" 
                                        IsVisible="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}"/>
-
+                                        
                                     <Picker ItemsSource="{Binding AvailableRoles}"
                                        ItemDisplayBinding="{Binding Name}"
                                         SelectedItem="{Binding SelectedRoleObject, Mode=TwoWay}"
