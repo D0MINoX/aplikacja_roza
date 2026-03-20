@@ -2,12 +2,14 @@ name: Build iOS App (.ipa)
 
 on:
   push:
-    branches: [ "master" ] # Zmienione na master, bo tak masz na screenie
+    branches: [ "master" ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: macos-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Rozwiązuje ostrzeżenie z Twojego screena
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -17,8 +19,9 @@ jobs:
         with:
           dotnet-version: 10.0.x 
 
-      - name: Install MAUI Workload
-        run: dotnet workload install maui-ios
+      - name: Install MAUI Workloads
+        # Dodajemy 'android', żeby kompilator przestał zgłaszać błąd ze zdjęcia
+        run: dotnet workload install maui-ios maui-android
 
       - name: Build and Publish (.ipa)
         run: |
