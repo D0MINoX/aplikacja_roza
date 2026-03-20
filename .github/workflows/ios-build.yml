@@ -14,10 +14,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup .NET 10
+      - name: Setup .NET 9
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 10.0.x 
+          dotnet-version: 9.0.x 
 
       - name: Install MAUI Workloads
  
@@ -26,7 +26,7 @@ jobs:
       - name: Build and Publish (.ipa)
         run: |
           cd MauiApp1
-          dotnet publish -f net10.0-ios -c Release /p:ArchiveOnBuild=true /p:RuntimeIdentifier=ios-arm64 /p:CodesignKey="-" /p:CodesignProvision="-"
+          dotnet publish -f net9.0-ios -c Release /p:ArchiveOnBuild=true /p:RuntimeIdentifier=ios-arm64 /p:CodesignKey="-" /p:CodesignProvision="-"
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
