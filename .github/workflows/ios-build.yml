@@ -25,8 +25,8 @@ jobs:
           cd MauiApp1
           dotnet publish -f net9.0-ios -c Release /p:ArchiveOnBuild=true /p:RuntimeIdentifier=ios-arm64 /p:CodesignKey="-" /p:CodesignProvision="-"
           
-      - name: Upload
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ios-app
+          name: ios-app-bundle
           path: MauiApp1/bin/Release/net9.0-ios/ios-arm64/publish/*.ipa
