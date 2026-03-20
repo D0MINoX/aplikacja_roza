@@ -26,6 +26,11 @@
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"### BŁĄD SIECI: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"### INNER: {ex.InnerException.Message}");
+                }
                 return $"Błąd połączenia: {ex.Message}";
             }
         }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MauiApp1.Models
 {
-    internal class RosaryMessage
+    public class RosaryMessage
     {
         public int Id { get; set; }
         public int RosaryId { get; set; }

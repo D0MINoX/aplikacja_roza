@@ -1,46 +1,112 @@
+
 using MauiApp1.Models;
+using MauiApp1.Services;
+using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace MauiApp1.Views;
 
-public partial class MessagesPage : ContentPage
+public partial class MessagesPage : ContentPage, IQueryAttributable
 {
-	public MessagesPage()
+    private int RosaryId { get; set; }
+    public MessagesService _messagesService;
+    public AuthService _authService;
+	public MessagesPage(MessagesService messagesService,AuthService authService)
 	{
+        _messagesService = messagesService;
+        _authService = authService;
 		InitializeComponent();
-        var testMessages = new List<RosaryMessage>
+    }
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (query.ContainsKey("RosaryId"))
         {
-            new RosaryMessage
-            {
-                MessageTitle = "Spotkanie Róży",
-                MessageBody = "Przypominam o jutrzejszym spotkaniu w salce o godzinie 19:00. Obecność obowiązkowa!",
-                AuthorName = "Zelator Jan",
-                CreatedAt = DateTime.Now
-            },
-            new RosaryMessage
-            {
-                MessageTitle = "Zmiana tajemnic",
-                MessageBody = "Od niedzieli przechodzimy na tajemnice radosne. Proszę sprawdzić swoje przypisania w zakładce 'Moja Róża'.",
-                AuthorName = "Admin",
-                CreatedAt = DateTime.Now.AddHours(-5)
-            },
-            new RosaryMessage
-            {
-                MessageTitle = "Intencja na marzec",
-                MessageBody = "W tym miesiącu modlimy się szczególnie za osoby chore i cierpiące w naszej parafii.",
-                AuthorName = "Ks. Proboszcz",
-                CreatedAt = DateTime.Now.AddDays(-2)
-            },
-            new RosaryMessage
-            {
-                MessageTitle = "Dłuższe ogłoszenie organizacyjne",
-                MessageBody = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisque semper justo at risus. Donec venenatis, turpis vel hendrerit interdum, dui ligula ultricies purus, sed posuere libero dui id orci.",
-                AuthorName = "Sekretariat",
-                CreatedAt = DateTime.Now.AddDays(-3)
-            }
-            
-        };
 
-        // Przypisanie do CollectionView
-        MessagesList.ItemsSource = testMessages;
+             string _RosaryId = query["RosaryId"] as string;
+            RosaryId = int.Parse(_RosaryId);
+        }
+    }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        UpdateData();
+        if (string.IsNullOrEmpty(_authService.Token)) return;
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadJwtToken(_authService.Token);
+
+
+        var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
+        int userRole = int.Parse(roleClaim?.Value ?? "5");
+        if (userRole > 2)
+        {
+            FabButton.IsVisible = false;
+        }
+    }
+    private async void OnFabClicked(object sender, EventArgs e)
+    {
+      
+        OverlayBackground.IsVisible = true;
+        AddMessagePanel.IsVisible = true;
+        FabButton.IsVisible = false; 
+
+       
+        await Task.WhenAll(
+            OverlayBackground.FadeToAsync(1, 200),
+            AddMessagePanel.FadeToAsync(1, 200, Easing.SpringOut),
+            AddMessagePanel.ScaleToAsync(1, 200, Easing.SpringOut)
+        );
+
+       
+        NewTitleEntry.Focus();
+    }
+
+    private async void OnCancelClicked(object sender, EventArgs e)
+    {
+       
+        NewTitleEntry.Unfocus();
+        NewBodyEditor.Unfocus();
+
+        await Task.WhenAll(
+            OverlayBackground.FadeToAsync(0, 150),
+            AddMessagePanel.FadeToAsync(0, 150),
+            AddMessagePanel.ScaleToAsync(0.8, 150)
+        );
+
+        OverlayBackground.IsVisible = false;
+        AddMessagePanel.IsVisible = false;
+        FabButton.IsVisible = true; 
+    }
+    private async void OnSendMessageClicked(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(_authService.Token)) return;
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadJwtToken(_authService.Token);
+
+
+        var nameClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "unique_name" || c.Type == ClaimTypes.Name);
+        string userName = nameClaim?.Value ?? "Brak Imienia";
+        RosaryMessage message = new RosaryMessage();
+        message.RosaryId = RosaryId;
+        message.AuthorName = userName;
+        message.MessageTitle = NewTitleEntry.Text;
+        message.MessageBody = NewBodyEditor.Text;
+        message.CreatedAt = DateTime.Now;
+        var success = await _messagesService.NewMessageAsync(message);
+        if (success)
+        {
+            OnCancelClicked(sender, e);
+            UpdateData();
+        }
+    }
+    private async void UpdateData()
+    {
+
+        var message = await _messagesService.GetMessagesAsync(RosaryId);
+        if (message.isSuccess)
+        {
+            MessagesList.ItemsSource = message.Data;
+        }
+      
     }
 }

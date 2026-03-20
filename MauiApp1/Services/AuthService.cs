@@ -47,7 +47,7 @@ namespace MauiApp1.Services
                 var response = await _httpClient.PostAsJsonAsync("api/Auth/register", registerData);
                 if (!response.IsSuccessStatusCode)
                 {
-                    // ODCZYTAJ TREŚĆ BŁĘDU Z API
+              
                     var errorContent = await response.Content.ReadAsStringAsync();
                     Debug.WriteLine($"API ERROR: {response.StatusCode} - {errorContent}");
                     return false;
