@@ -39,7 +39,7 @@
                             </Border>
                         </Grid>
                         <Grid ColumnDefinitions="*,*">
-                            <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start">
+                            <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="ParishLabel">
                                 Parafia????????
                             </Label>
                             <Border Grid.Column="1" Style="{StaticResource EditButton}" HorizontalOptions="End">

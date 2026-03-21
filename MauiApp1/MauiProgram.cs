@@ -40,6 +40,7 @@ namespace MauiApp1
             builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<AuthService>();
+            builder.Services.AddSingleton<ParishService>();
             builder.Services.AddSingleton<MessagesService>();
             builder.Services.AddSingleton<MeditationsService>();
             builder.Services.AddSingleton<RosaryService>();

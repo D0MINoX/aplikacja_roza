@@ -47,6 +47,23 @@ namespace MauiApp1
                 return new List<RosaryInfo>();
             }
         }
+        public async Task<List<RosaryInfo>> GetAvailableRosariesAsync(int userId)
+        {
+            try
+            {
+                // Adres Twojego API
+                string url = $"api/Rosaries/available-rosaries/{userId}";
+
+
+                var response = await _httpClient.GetFromJsonAsync<List<RosaryInfo>>(url);
+
+                return response ?? new List<RosaryInfo>();
+            }
+            catch (Exception ex)
+            {
+                return new List<RosaryInfo>();
+            }
+        }
         public async Task<(bool IsSuccess, string ErrorMessage)> JoinRosaryAsync(int UserId, int RosaryId)
         {
             string url = $"api/Rosaries/JoinRosary";

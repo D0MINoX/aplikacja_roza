@@ -1,3 +1,4 @@
+using MauiApp1.Models;
 using MauiApp1.Services;
 using System.Text.RegularExpressions;
 
@@ -6,12 +7,30 @@ namespace MauiApp1;
 public partial class RegisterPage : ContentPage
 {
     private readonly AuthService _authService;
-    public RegisterPage(AuthService authService)
+    private readonly ParishService _parishService;
+    public RegisterPage(AuthService authService, ParishService parishService)
     {
         _authService = authService;
+        _parishService = parishService;
         InitializeComponent();
 
     }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        LoadParish();
+
+    }
+
+    private async Task LoadParish()
+    {
+        var result = await _parishService.AllParish();
+        if (result.isSuccess)
+        {
+            ParishPicker.ItemsSource = result.Data;
+        }
+    }
+
     private async void Register_Clicked(object sender, EventArgs e)
     {
         string name = NameEntry.Text;
@@ -19,6 +38,8 @@ public partial class RegisterPage : ContentPage
         string email = EmailEntry.Text;
         string password = PasswordEntry.Text;
         string passwordRetype = PasswordRetype.Text;
+        var selectedParish = ParishPicker.SelectedItem as Parish;
+
         if (name=="" || surname=="" || email=="" || password=="" || passwordRetype=="")
         {
             await DisplayAlertAsync("Błąd", "Każede pole musi zostać wypełnione", "OK");
@@ -37,8 +58,8 @@ public partial class RegisterPage : ContentPage
         }
         else
         {
-
-            bool isSuccess = await _authService.RegisterAsync(name, surname, email, password);
+            
+                bool isSuccess = await _authService.RegisterAsync(name, surname, email, password,selectedParish?.Id);
 
 
 

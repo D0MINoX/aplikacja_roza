@@ -10,15 +10,30 @@ public partial class ProfilePage : ContentPage
 {
     private readonly AuthService _authService;
     private readonly RosaryService _rosaryService;
-    public ProfilePage(AuthService authService, RosaryService rosaryService)
+    private readonly ParishService _parishService;
+    private int UserId { get; set; }
+    public ProfilePage(AuthService authService,ParishService parishService, RosaryService rosaryService)
     {
         InitializeComponent();
         _authService = authService;
         _rosaryService = rosaryService;
+        _parishService = parishService;
         DecodeToken(_authService.Token);
         //RosariesShow();
     }
-
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        var response = await _parishService.GetUserParish(UserId);
+        if (response.isSuccess)
+        {
+            ParishLabel.Text = response.Data.Name;
+        }
+        else
+        {
+            ParishLabel.Text = response.ErrorMessage;
+        }
+    }
     private async void Logout_Clicked(object sender, EventArgs e)
     {
         bool IsLoggedout = await _authService.Logout();
@@ -44,8 +59,10 @@ public partial class ProfilePage : ContentPage
         string userName = nameClaim?.Value ?? "Brak Imienia";
 
         var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
-        string userRole = roleClaim?.Value ?? "Nie jesteś człąkiem róży";
-
+        string userRole = roleClaim?.Value ?? "Nie jesteś członkiem róży";
+        var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
+        int.TryParse(IdClaim.Value, out int Id);
+        UserId = Id;
         List<string> roles = ["Rola: admin", "Rola: główny zeletor", "Zelator: ", "Członek rózy: "];
 
         Name.Text = "Witaj " + userName;
@@ -66,12 +83,8 @@ public partial class ProfilePage : ContentPage
 
     private async void RosariesShow()
     {
-        var handler = new JwtSecurityTokenHandler();
-        var jsonToken = handler.ReadJwtToken(_authService.Token);
-        var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
-        if (IdClaim != null && int.TryParse(IdClaim.Value, out int Id))
-        {
-            List<RosaryInfo> rosaryInfos = await _rosaryService.GetUserRosariesAsync(Id);
+        
+            List<RosaryInfo> rosaryInfos = await _rosaryService.GetUserRosariesAsync(UserId);
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 RosariesContainer.Children.Clear(); // Czyścimy listę
@@ -79,14 +92,14 @@ public partial class ProfilePage : ContentPage
                 {
                     Role.Text += "Nie należysz do żadnej róży";
                     RosariesContainer.IsVisible = true;
-                    RosariesContainer.Children.Add(CreateJoinButton(Id));
+                    RosariesContainer.Children.Add(CreateJoinButton(UserId));
                 }
                 else
                 {
                     Role.Text += rosaryInfos[0].Name;
                 }
             });
-        }
+        
     }
     private Border CreateJoinButton(int UserId)
     {
