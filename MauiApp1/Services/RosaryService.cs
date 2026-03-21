@@ -67,6 +67,21 @@ namespace MauiApp1
                 return (false, $"Błąd sieci: {ex.Message}");
             }
         }
+        public async Task<string> GetNameAsync(int RosaryId)
+        {
+            try
+            {
+                string url = $"api/Rosaries/rosary/{RosaryId}/Name";
 
+
+                var response = await _httpClient.GetStringAsync(url);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return "error";
+            }
+        }
     }
 }

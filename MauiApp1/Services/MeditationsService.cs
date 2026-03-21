@@ -1,4 +1,7 @@
-﻿namespace MauiApp1
+﻿using MauiApp1.Models;
+using System.Net.Http.Json;
+using System.Diagnostics;
+namespace MauiApp1
 {
     public class MeditationsService
     {
@@ -7,31 +10,29 @@
         {
             _httpClient = httpClient;
         }
-        public async Task<string> GetOnlyDescription(int date, string title)
+        public async Task<MeditationInfo> GetMeditationData(int date, string title)
         {
 
 
             try
             {
-                // Budujemy pełny URL z parametrami
-                var response = await _httpClient.GetAsync($"api/meditations/search?date={date}&title={title}");
+                // Używamy GetFromJsonAsync, który automatycznie zamieni JSON na obiekt C#
+                var meditation = await _httpClient.GetFromJsonAsync<MeditationInfo>(
+                    $"api/meditations/search?date={date}&title={title}");
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return await response.Content.ReadAsStringAsync();
-                }
-
-                // Jeśli API zwróciło błąd (np. 404), warto wiedzieć dlaczego
-                return $"Błąd serwera: {response.StatusCode}";
+                return meditation;
+            }
+            catch (HttpRequestException ex)
+            {
+                // Obsługa błędów HTTP (np. 404, 500)
+                Debug.WriteLine($"### BŁĄD API: {ex.Message}");
+                return null;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"### BŁĄD SIECI: {ex.Message}");
-                if (ex.InnerException != null)
-                {
-                    System.Diagnostics.Debug.WriteLine($"### INNER: {ex.InnerException.Message}");
-                }
-                return $"Błąd połączenia: {ex.Message}";
+                // Obsługa błędów sieciowych/deserializacji
+                Debug.WriteLine($"### BŁĄD KRYTYCZNY: {ex.Message}");
+                return null;
             }
         }
     }

@@ -72,7 +72,7 @@
                 </Border>
 
                 <!-- YT button -->
-                <Border Grid.Row="2" Style="{StaticResource MenuOption}">
+                <Border Grid.Row="2" x:Name="YTTile" Style="{StaticResource MenuOption}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="PlayTapped"/>
                     </Border.GestureRecognizers>

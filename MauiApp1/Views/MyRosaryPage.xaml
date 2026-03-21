@@ -9,7 +9,7 @@
             <Border Grid.Row="0" Style="{StaticResource Header}">
                 <Grid ColumnDefinitions="auto,auto">
                     <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource HeaderImage}"/>
-                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
+                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}" x:Name="rosaryName">
                         Moja róża
                     </Label>
                 </Grid>
@@ -20,7 +20,7 @@
                 <VerticalStackLayout Spacing="50">
                     <!-- Guest -->
                     <!-- Przycisk logowania -->
-                    <Border Style="{StaticResource MenuOption}">
+                  <!--  <Border Style="{StaticResource MenuOption}">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="Login_Tapped"/>
                         </Border.GestureRecognizers>
@@ -32,7 +32,7 @@
                             </Label>
                         </Grid>
                     </Border>
-                    
+                    -->
                     <!-- Member -->
                     <!-- Wiadomości od Zelatora -->
                     <Border Style="{StaticResource MenuOption}">
@@ -49,7 +49,7 @@
                     
                     <!-- Zelator -->
                     <!-- Wyślij wiadomość -->
-                    <Border Style="{StaticResource MenuOption}">
+                    <!-- <Border Style="{StaticResource MenuOption}">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="Messages_Tapped"/>
                         </Border.GestureRecognizers>
@@ -59,11 +59,11 @@
                                 Wyślij wiadomość do róży
                             </Label>
                         </Grid>
-                    </Border>
+                    </Border>-->
                     
                     <!-- Super Zelator -->
                     <!-- Lista róż -->
-                    <Border Style="{StaticResource MenuOption}">
+                    <!--  <Border Style="{StaticResource MenuOption}">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="ViewGroups_Tapped"/>
                         </Border.GestureRecognizers>
@@ -73,7 +73,7 @@
                                 Lista róż
                             </Label>
                         </Grid>
-                    </Border>
+                    </Border>-->
                 </VerticalStackLayout>
             </ScrollView>
         </Grid>

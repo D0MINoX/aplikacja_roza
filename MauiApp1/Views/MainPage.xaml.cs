@@ -4,6 +4,7 @@ using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
+
 namespace MauiApp1
 {
     public partial class MainPage : ContentPage
@@ -20,7 +21,19 @@ namespace MauiApp1
             UpdateMeditation();
             _rosaryService = rosaryService;
         }
-
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            bool hasToken = await _authService.CheckAndSetTokenAsync();
+            if (hasToken)
+            {
+                RosaryTile.IsVisible = true;
+            }
+            else
+            {
+                RosaryTile.IsVisible = false;
+            }
+        }
         private async void MyRosaryGroup_Tapped(object sender, TappedEventArgs e)
         {
             if (string.IsNullOrEmpty(_authService.Token)) return;
@@ -81,9 +94,9 @@ namespace MauiApp1
             string savedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
             DateLabel.Text = "Dzień " + date;
             MysteryLabel.Text = savedMystery;
-
-            string description = await _meditationService.GetOnlyDescription(this.date, savedMystery);
-            MeditationLabel.Text = description ?? "Brak rozważania";
+            var data = await _meditationService.GetMeditationData(this.date, savedMystery);
+          
+            MeditationLabel.Text = data.Content ?? "Brak rozważania";
         }
     }
 }

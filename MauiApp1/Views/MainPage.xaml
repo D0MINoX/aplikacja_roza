@@ -29,7 +29,7 @@
                     </VerticalStackLayout>
                 </Border>
                 <VerticalStackLayout Spacing="50">
-                    <Border Style="{StaticResource MenuOption}">
+                    <Border Style="{StaticResource MenuOption}" x:Name="RosaryTile">
                         <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="MyRosaryGroup_Tapped"/>

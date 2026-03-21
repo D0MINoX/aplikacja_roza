@@ -40,7 +40,7 @@
                         </Grid>
                         <Grid ColumnDefinitions="*,*">
                             <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start">
-                                siurek
+                                Parafia????????
                             </Label>
                             <Border Grid.Column="1" Style="{StaticResource EditButton}" HorizontalOptions="End">
                                 <Label Style="{StaticResource OptionLabel}">

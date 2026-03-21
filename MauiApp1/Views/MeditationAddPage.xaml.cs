@@ -23,10 +23,15 @@ public partial class MeditationAddPage : ContentPage
             int Date = int.Parse(DayPicker.SelectedItem.ToString());
             string Title = MysteryPicker.SelectedItem.ToString();
             string description = DescriptionEditor.Text;
+            string Link = null;
             var confirm = await DisplayAlertAsync("INFO", "Czy napewno chcesz zmienić rozważanie?", "TAK", "NIE");
             if (confirm)
             {
-                bool isSuccess = await _adminService.ModifyMeditationAsync(Title,description,Date);
+                if (CheckBox.IsChecked)
+                {
+                    Link = linkEntry.Text;
+                }
+                bool isSuccess = await _adminService.ModifyMeditationAsync(Title,description,Date,Link);
                 if (isSuccess)
                 {
                     await DisplayAlertAsync("INFO", "Zmieniono treść rozważania", "OK");
@@ -48,11 +53,36 @@ public partial class MeditationAddPage : ContentPage
     {
         if(MysteryPicker.SelectedItem!=null && DayPicker.SelectedItem != null)
         {
-
+            
             int Date = int.Parse(DayPicker.SelectedItem.ToString());
             string Title = MysteryPicker.SelectedItem.ToString();
-            string description =await _meditationsService.GetOnlyDescription(Date, Title);
-            DescriptionEditor.Text = description;
+            var data = await _meditationsService.GetMeditationData(Date, Title);
+            if (data != null)
+            {
+                DescriptionEditor.Text = data.Content;
+                if (!string.IsNullOrEmpty(data.Link))
+                {
+                    linkEntry.Text = data.Link;
+                    CheckBox.IsChecked = true;
+                }
+                else
+                {
+                    linkEntry.Text = "";
+                    CheckBox.IsChecked = false;
+                }
+            }
+        }
+    }
+
+    private void CheckBoxChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if (CheckBox.IsChecked)
+        {
+            multimedia.IsVisible = true;
+        }
+        else
+        {
+            multimedia.IsVisible = false;
         }
     }
 }
