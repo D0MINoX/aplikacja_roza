@@ -1,6 +1,9 @@
 ﻿using MauiApp1.Models;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Claims;
 
 namespace MauiApp1.Services
 {
@@ -74,6 +77,35 @@ namespace MauiApp1.Services
                 return false;
             }
         }
+        public async Task<bool> CanUserSendSmsAsync()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Token)) return false;
+
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadJwtToken(Token);
+                var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
+
+                if (int.Parse(roleClaim?.Value ?? "5") > 2) return false;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+                var response = await _httpClient.GetAsync("api/Auth/CheckSmsPermission");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<PermissionResponse>();
+                    return result?.canSend ?? false;
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public class PermissionResponse { public bool canSend { get; set; } }
     }
 }
 

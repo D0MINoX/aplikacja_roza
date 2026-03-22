@@ -1,6 +1,7 @@
 ﻿using MauiApp1.Models;
 using System.Diagnostics;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 
 namespace MauiApp1.Services
@@ -52,6 +53,25 @@ namespace MauiApp1.Services
             {
                 Debug.WriteLine($"Błąd rejestracji: {ex.Message}");
                 return false;
+            }
+        }
+        public async Task<List<string>> getExternalNumbers(int rosaryId)
+        {
+            try
+            {
+                var phones = await _httpClient.GetFromJsonAsync<List<string>>($"api/Messages/GetExternalNumbers/{rosaryId}");
+
+                return phones ?? new List<string>();
+            }
+            catch (HttpRequestException ex)
+            {
+                Debug.WriteLine($"Błąd sieciowy: {ex.Message}");
+                return new List<string>();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd deserializacji: {ex.Message}");
+                return new List<string>();
             }
         }
     }

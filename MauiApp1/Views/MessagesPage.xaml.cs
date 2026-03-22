@@ -27,21 +27,12 @@ public partial class MessagesPage : ContentPage, IQueryAttributable
             RosaryId = int.Parse(_RosaryId);
         }
     }
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
         UpdateData();
-        if (string.IsNullOrEmpty(_authService.Token)) return;
-        var handler = new JwtSecurityTokenHandler();
-        var jsonToken = handler.ReadJwtToken(_authService.Token);
+        FabButton.IsVisible = await _authService.CanUserSendSmsAsync();
 
-
-        var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
-        int userRole = int.Parse(roleClaim?.Value ?? "5");
-        if (userRole > 2)
-        {
-            FabButton.IsVisible = false;
-        }
     }
     private async void OnFabClicked(object sender, EventArgs e)
     {
@@ -95,6 +86,31 @@ public partial class MessagesPage : ContentPage, IQueryAttributable
         var success = await _messagesService.NewMessageAsync(message);
         if (success)
         {
+            var externalPhones = await _messagesService.getExternalNumbers(RosaryId);
+            if (externalPhones != null && externalPhones.Any())
+            {
+                
+                    try
+                    {
+                        string[] recipients = externalPhones.ToArray();
+                        var smsMessage = new SmsMessage(
+                            $"{message.MessageTitle}: {message.MessageBody}",
+                            recipients);
+
+                        await Sms.Default.ComposeAsync(smsMessage);
+                       
+                    }
+                    catch (FeatureNotSupportedException)
+                    {
+                        await DisplayAlertAsync("Błąd", "SMS nie jest obsługiwany na tym urządzeniu.", "OK");
+                       
+                    }
+                    catch (Exception ex)
+                    {
+                        await DisplayAlertAsync("Błąd", $"Nie udało się wysłać SMS : {ex.Message}", "OK");
+                    }
+                
+            }
             OnCancelClicked(sender, e);
             UpdateData();
         }
