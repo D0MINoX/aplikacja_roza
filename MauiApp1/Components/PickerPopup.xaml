@@ -10,16 +10,11 @@
         <Label Style="{StaticResource OptionLabel}">
             Wybierz część różańca
         </Label>
-        <Border>
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Tapped="OptionTapped"/>
-            </Border.GestureRecognizers>
-            <HorizontalStackLayout>
-                <RadioButton/>
-                <Label Style="{StaticResource OptionLabel}">
-                    Chwalebne
-                </Label>
-            </HorizontalStackLayout>
-        </Border>
+        <VerticalStackLayout RadioButtonGroup.GroupName="wybierzCzesc">
+            <RadioButton Value="Radosne" Content="Radosne"/>
+            <RadioButton Value="Światła" Content="Światła"/>
+            <RadioButton Value="Bolesne" Content="Bolesne"/>
+            <RadioButton Value="Chwalebne" Content="Chwalebne"/>
+        </VerticalStackLayout>
     </VerticalStackLayout>
 </layouts:Popup>

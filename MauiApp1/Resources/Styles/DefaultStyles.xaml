@@ -70,16 +70,11 @@
         <Setter Property="TextColor" Value="{DynamicResource FadedText}"/>
     </Style>
 
-    <Style TargetType="Picker">
-        <Setter Property="TitleColor" Value="{DynamicResource Text}"/>
-        <Setter Property="TextColor" Value="{DynamicResource Text}"/>
-    </Style>
-
     <Style TargetType="Border" x:Key="NavButton">
         <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
         <Setter Property="StrokeThickness" Value="0"/>
         <Setter Property="Shadow">
-                <Shadow Brush="{DynamicResource Secondary}"
+            <Shadow Brush="{DynamicResource Secondary}"
                 Offset="0,0"
                 Radius="5"
                 Opacity="0.8"/>
@@ -91,6 +86,59 @@
         <Setter Property="Padding" Value="10"/>
         <Setter Property="Margin" Value="10"/>
     </Style>
+
+    <ControlTemplate x:Key="MyRadioTemplate">
+        <Grid ColumnDefinitions="24,*" Padding="4">
+            <Grid WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                <Ellipse
+            Stroke="{DynamicResource Text}"
+            Fill="Transparent"
+            WidthRequest="18"
+            HeightRequest="18"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+
+                <Ellipse
+            x:Name="Dot"
+            Fill="{DynamicResource Text}"
+            WidthRequest="10"
+            HeightRequest="10"
+            Opacity="0"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+            </Grid>
+
+            <ContentPresenter Grid.Column="1" VerticalOptions="Center" />
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CheckedStates">
+                        <VisualState x:Name="Checked">
+                            <VisualState.Setters>
+                                <Setter TargetName="Dot" Property="Opacity" Value="1" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Unchecked">
+                            <VisualState.Setters>
+                                <Setter TargetName="Dot" Property="Opacity" Value="0" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </VisualStateManager.VisualStateGroups>
+        </Grid>
+    </ControlTemplate>
+
+    <Style TargetType="RadioButton">
+        <Setter Property="Background" Value="{DynamicResource Primary}"/>
+        <Setter Property="TextColor" Value="{DynamicResource Text}"/>
+        <Setter Property="ControlTemplate" Value="{StaticResource MyRadioTemplate}" />
+    </Style>
+
+
+
+
+
 
     <Style TargetType="Border" x:Key="EditButton">
         <Setter Property="BackgroundColor" Value="{DynamicResource Secondary}"/>
