@@ -71,8 +71,19 @@
                             MinimumHeightRequest="200"
                             TextColor="{DynamicResource Text}"
                             BackgroundColor="{DynamicResource Primary}"/>
-
-
+                        <HorizontalStackLayout Spacing="10" Padding="10">
+                            <CheckBox x:Name="CheckBox" VerticalOptions="Center" CheckedChanged="CheckBoxChanged"/>
+                            <Label Text="Dodaj multimedia" 
+                                 VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnLabelTapped" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+                        <VerticalStackLayout x:Name="multimedia">
+                            <Label Text="Link do multimediów"/>
+                            <Entry x:Name="linkEntry"/>
+                        </VerticalStackLayout>
                         <Button Text="EDYTUJ ROZWAŻANIE" 
                               Clicked="Edit_Clicked"
                               CornerRadius="10"
@@ -80,6 +91,7 @@
                               Margin="0,10,0,0"
                               BackgroundColor="{DynamicResource Secondary}"
                               TextColor="{DynamicResource Text}"/>
+    
                     </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>

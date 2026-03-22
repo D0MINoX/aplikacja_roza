@@ -1,11 +1,11 @@
-using CommunityToolkit.Maui.Extensions;
-using MauiApp1.Components;
+
 
 namespace MauiApp1;
 
 public partial class RosaryMeditationsPage : ContentPage
 {
     public int date;
+    public string Link;
     public MeditationsService _meditationService;
     private bool _isBusy = false;
     public RosaryMeditationsPage(MeditationsService meditationService)
@@ -64,10 +64,20 @@ public partial class RosaryMeditationsPage : ContentPage
             // Ładowanie z API
             if (DetailPicker.SelectedItem != null)
             {
+               
                 MeditationLabel.Text = "Ładowanie ....";
                 string selectedMystery = DetailPicker.SelectedItem.ToString();
-                string description = await _meditationService.GetOnlyDescription(this.date, selectedMystery);
-                MeditationLabel.Text = description ?? "Brak rozważania";
+                var data = await _meditationService.GetMeditationData(this.date, selectedMystery);
+                MeditationLabel.Text = data.Content ?? "Brak rozważania";
+                if (data.Link == null) {
+                    YTTile.IsVisible = false;
+                }
+                else
+                {
+                    YTTile.IsVisible = true;
+                    Link = data.Link;
+                }
+                
             }
         }
         catch (Exception ex)
@@ -81,7 +91,7 @@ public partial class RosaryMeditationsPage : ContentPage
     {
         //do zrobienia link zalezny od rozwazania
         await Browser.Default.OpenAsync(
-        new Uri("https://www.youtube.com"),
+        new Uri(Link),
         BrowserLaunchMode.SystemPreferred);
     }
 

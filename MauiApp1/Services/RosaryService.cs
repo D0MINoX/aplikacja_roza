@@ -47,6 +47,23 @@ namespace MauiApp1
                 return new List<RosaryInfo>();
             }
         }
+        public async Task<List<RosaryInfo>> GetAvailableRosariesAsync(int userId)
+        {
+            try
+            {
+                // Adres Twojego API
+                string url = $"api/Rosaries/available-rosaries/{userId}";
+
+
+                var response = await _httpClient.GetFromJsonAsync<List<RosaryInfo>>(url);
+
+                return response ?? new List<RosaryInfo>();
+            }
+            catch (Exception ex)
+            {
+                return new List<RosaryInfo>();
+            }
+        }
         public async Task<(bool IsSuccess, string ErrorMessage)> JoinRosaryAsync(int UserId, int RosaryId)
         {
             string url = $"api/Rosaries/JoinRosary";
@@ -67,6 +84,21 @@ namespace MauiApp1
                 return (false, $"Błąd sieci: {ex.Message}");
             }
         }
+        public async Task<string> GetNameAsync(int RosaryId)
+        {
+            try
+            {
+                string url = $"api/Rosaries/rosary/{RosaryId}/Name";
 
+
+                var response = await _httpClient.GetStringAsync(url);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return "error";
+            }
+        }
     }
 }

@@ -29,7 +29,7 @@ public partial class JoinRosaryPage : ContentPage, IQueryAttributable
     private async void RosariesShow()
     {
 
-        List<RosaryInfo> rosaryInfos = await _rosaryService.GetAllRosariesAsync();
+        List<RosaryInfo> rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(_userId);
         MainThread.BeginInvokeOnMainThread(() =>
         {
             RosariesContainer.Children.Clear(); // Czyścimy listę

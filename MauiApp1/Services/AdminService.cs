@@ -135,9 +135,9 @@ namespace MauiApp1.Services
                 return false;
             }
         }
-        public async Task<bool> ModifyMeditationAsync(string Title, string Content, int Date)
+        public async Task<bool> ModifyMeditationAsync(string Title, string Content, int Date,string link)
         {
-            var ModifyData = new { Title = Title,Content = Content,Date = Date };
+            var ModifyData = new { Title = Title,Content = Content,Date = Date,Link = link };
             try
             {
                 var response = await _httpClient.PutAsJsonAsync("api/Admin/ModifyMeditation",ModifyData);

@@ -5,7 +5,7 @@
              xmlns:mauiapp1="clr-namespace:MauiApp1"
              Title="RegisterPage">
     <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="50">
+        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="10">
             <!-- Header -->
             <Border Grid.Row="0" Style="{StaticResource Header}">
                 <Grid ColumnDefinitions="auto,auto">
@@ -17,7 +17,7 @@
             </Border>
 
             <!-- Panel z rejestracją -->
-            <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="5" Grid.Row="1">
                 <Border Padding="25"
                      StrokeShape="RoundRectangle 20"
                      BackgroundColor="{DynamicResource Primary}"
@@ -55,14 +55,23 @@
                             HeightRequest="45"
                             PlaceholderColor="{DynamicResource FadedText}"
                             TextColor="{DynamicResource Text}"/>
-                        
+
                         <Entry x:Name="PasswordRetype" 
                              Placeholder="Powtórz Hasło" 
                              IsPassword="True" 
                              HeightRequest="45"
                              PlaceholderColor="{DynamicResource FadedText}"
                              TextColor="{DynamicResource Text}"/>
+                        <Picker x:Name="ParishPicker"
+                           Title="Wybierz z listy lub zostaw puste"
+                            ItemDisplayBinding="{Binding Name}"
+                           HeightRequest="45"
+                           TitleColor="{DynamicResource FadedText}"
+                           TextColor="{DynamicResource Text}"/>
 
+                        <Label Text="Jeśli nie widzisz swojej parafii, możesz ją pominąć."
+           FontSize="10" TextColor="Gray" HorizontalOptions="Center" />
+                        
                         <Button Text="ZAREJESTRUJ SIĘ" 
                           Clicked="Register_Clicked"
                           CornerRadius="10"
