@@ -1,5 +1,8 @@
 
 
+using CommunityToolkit.Maui.Extensions;
+using MauiApp1.Components;
+
 namespace MauiApp1;
 
 public partial class RosaryMeditationsPage : ContentPage
@@ -97,8 +100,6 @@ public partial class RosaryMeditationsPage : ContentPage
 
     private async void PreviousTapped(object sender, EventArgs e)
     {
-
-
         if (--date < 1) date = 31;
         UpdateDate();
     }
@@ -154,6 +155,7 @@ public partial class RosaryMeditationsPage : ContentPage
 
         ThemeManager.SetTheme(group);
 
+
         DetailPicker.IsEnabled = true;
         DetailPicker.ItemsSource = group switch
         {
@@ -195,6 +197,12 @@ public partial class RosaryMeditationsPage : ContentPage
 
     public void GroupTapped(object sender, EventArgs e)
     {
-        this.ShowPopup(new PickerPopup());
+        this.ShowPopup(new PickerPopup("Group"));
+    }
+
+    public void DetailsTapped(object sender, EventArgs e)
+    {
+        var group = Preferences.Default.Get("LastGroup", "");
+        this.ShowPopup(new PickerPopup(group));
     }
 }

@@ -4,17 +4,108 @@ namespace MauiApp1.Components;
 
 public partial class PickerPopup : Popup
 {
-	public PickerPopup()
+    String name;
+	public PickerPopup(string val)
 	{
 		InitializeComponent();
+        name = val;
+        GenerateRadios(val);
 	}
 
-	public void OptionTapped(object sender, EventArgs e)
-	{
-        if (sender is Border border)
+    public void GenerateRadios(string val)
+    {
+        var items = val switch
         {
-            var radioButton = border.GetVisualTreeDescendants().OfType<RadioButton>().FirstOrDefault();
-            radioButton.IsChecked = !radioButton.IsChecked;
+            "Group" => new List<string> 
+            {
+                "Radosne",
+                "Światła",
+                "Bolesne",
+                "Chwalebne"
+            },
+            "Radosne" => new List<string>
+        {
+            "Zwiastowanie Najświętszej Maryi Pannie",
+            "Nawiedzenie św. Elżbiety",
+            "Narodzenie Pana Jezusa",
+            "Ofiarowanie Pana Jezusa w świątyni",
+            "Odnalezienie Pana Jezusa w świątyni"
+        },
+            "Światła" => new List<string>
+        {
+            "Chrzest Pana Jezusa w Jordanie",
+            "Objawienie się Pana Jezusa w Kanie Galilejskiej",
+            "Głoszenie Królestwa Bożego i wzywanie do nawrócenia",
+            "Przemienienie na górze Tabor",
+            "Ustanowienie Eucharystii"
+        },
+            "Bolesne" => new List<string>
+        {
+            "Modlitwa Pana Jezusa w Ogrójcu",
+            "Biczowanie Pana Jezusa",
+            "Cierniem ukoronowanie Pana Jezusa",
+            "Dźwiganie krzyża na Kalwarię",
+            "Ukrzyżowanie i śmierć Pana Jezusa"
+        },
+            "Chwalebne" => new List<string>
+        {
+            "Zmartwychwstanie Pana Jezusa",
+            "Wniebowstąpienie Pana Jezusa",
+            "Zesłanie Ducha Świętego",
+            "Wniebowzięcie Najświętszej Maryi Panny",
+            "Ukoronowanie Najświętszej Maryi Panny na Królową Nieba i Ziemi"
+        },
+            _ => new List<string>()
+        };
+
+        RadioPicker.Children.Clear();
+
+        foreach (var item in items)
+        {
+            var radio = new RadioButton
+            {
+                Content = item,
+                Value = item,
+            };
+
+            radio.CheckedChanged += Radio_CheckedChanged;
+            RadioPicker.Children.Add(radio);
+        }
+
+        String selected = "";
+        if (val == "Group")
+        {
+            PickerLabel.Text = "Wybierz część różańca";
+            selected = Preferences.Default.Get("LastGroup","");
+        }
+        else
+        {
+            PickerLabel.Text = "Wybierz tajemnicę";
+            selected = Preferences.Default.Get("LastMystery1","");
+        }
+
+        if (!string.IsNullOrEmpty(selected))
+            RadioButtonGroup.SetSelectedValue(RadioPicker, selected);
+        else if (items.Count > 0)
+            RadioButtonGroup.SetSelectedValue(RadioPicker, items[0]);
+    }
+
+    private void Radio_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if (!e.Value)
+            return;
+
+        var radio = (RadioButton)sender;
+        String val = radio.Value?.ToString();
+
+        if (name == "Group")
+        {
+            Preferences.Default.Set("LastGroup", val);
+            Preferences.Default.Set("LastMystery1", "");
+        }
+        else
+        {
+            Preferences.Default.Set("LastMystery1", val);
         }
     }
 }

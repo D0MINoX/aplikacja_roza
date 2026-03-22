@@ -26,11 +26,21 @@
                 <!-- Wybór tajemnic -->
                 <Border Style="{StaticResource MenuOption}">
                     <VerticalStackLayout Spacing="10">
+                        
                         <Border Style="{StaticResource EditButton}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="GroupTapped"/>
                             </Border.GestureRecognizers>
+                            <Label x:Name="GroupLabel" Style="{StaticResource OptionLabel}" Text="Chwalebne"/>
                         </Border>
+                        <Border Style="{StaticResource EditButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="DetailsTapped"/>
+                            </Border.GestureRecognizers>
+                            <Label x:Name="DetailLabel" Style="{StaticResource OptionLabel}"/>
+                        </Border>
+                        
+                        
                         <Picker x:Name="GroupPicker" Title="Wybierz część różańca"                  
                                 SelectedIndexChanged="OnGroupChanged">
                             <Picker.ItemsSource>
