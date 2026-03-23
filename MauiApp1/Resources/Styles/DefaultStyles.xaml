@@ -136,7 +136,7 @@
     </Style>
 
     <Style TargetType="BoxView">
-        <Setter Property="HeightRequest" Value="1"/>
+        <Setter Property="HeightRequest" Value="2"/>
         <Setter Property="HorizontalOptions" Value="Fill"/>
         <Setter Property="BackgroundColor" Value="{DynamicResource Accent}"/>
     </Style>

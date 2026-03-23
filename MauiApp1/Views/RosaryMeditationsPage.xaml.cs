@@ -109,14 +109,20 @@ public partial class RosaryMeditationsPage : ContentPage
         await Shell.Current.GoToAsync("FullMeditation", navigationParameter);
     }
 
-    public void GroupTapped(object sender, EventArgs e)
+    public async void GroupTapped(object sender, EventArgs e)
     {
-        this.ShowPopup(new PickerPopup("Group"));
+        if (_isBusy)
+            return;
+        _isBusy = true;
+        await this.ShowPopupAsync(new PickerPopup("Group"));
     }
 
-    public void DetailsTapped(object sender, EventArgs e)
+    public async void DetailsTapped(object sender, EventArgs e)
     {
+        if (_isBusy)
+            return;
+        _isBusy = true;
         var group = Preferences.Default.Get("LastGroup", "");
-        this.ShowPopup(new PickerPopup(group));
+        await this.ShowPopupAsync(new PickerPopup(group));
     }
 }

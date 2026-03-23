@@ -32,7 +32,7 @@
                                 <TapGestureRecognizer Tapped="GroupTapped"/>
                             </Border.GestureRecognizers>
                             <VerticalStackLayout>
-                                <Label x:Name="GroupLabel"/>
+                                <Label x:Name="GroupLabel" Margin="5,0"/>
                                 <BoxView Margin="0,0,0,10"/>
                             </VerticalStackLayout>
                         </Border>
@@ -42,7 +42,7 @@
                                 <TapGestureRecognizer Tapped="DetailsTapped"/>
                             </Border.GestureRecognizers>
                             <VerticalStackLayout>
-                                <Label x:Name="DetailLabel"/>
+                                <Label x:Name="DetailLabel" Margin="5,0"/>
                                 <BoxView/>
                             </VerticalStackLayout>
                         </Border>
