@@ -25,35 +25,28 @@
 
                 <!-- Wybór tajemnic -->
                 <Border Style="{StaticResource MenuOption}">
-                    <VerticalStackLayout Spacing="10">
+                    <VerticalStackLayout Spacing="20">
                         
-                        <Border Style="{StaticResource EditButton}">
+                        <Border BackgroundColor="{DynamicResource Primary}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="GroupTapped"/>
                             </Border.GestureRecognizers>
-                            <Label x:Name="GroupLabel" Style="{StaticResource OptionLabel}" Text="Chwalebne"/>
+                            <VerticalStackLayout>
+                                <Label x:Name="GroupLabel"/>
+                                <BoxView Margin="0,0,0,10"/>
+                            </VerticalStackLayout>
                         </Border>
-                        <Border Style="{StaticResource EditButton}">
+                        
+                        <Border BackgroundColor="{DynamicResource Primary}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="DetailsTapped"/>
                             </Border.GestureRecognizers>
-                            <Label x:Name="DetailLabel" Style="{StaticResource OptionLabel}"/>
+                            <VerticalStackLayout>
+                                <Label x:Name="DetailLabel"/>
+                                <BoxView/>
+                            </VerticalStackLayout>
                         </Border>
                         
-                        
-                        <Picker x:Name="GroupPicker" Title="Wybierz część różańca"                  
-                                SelectedIndexChanged="OnGroupChanged">
-                            <Picker.ItemsSource>
-                                <x:Array Type="{x:Type x:String}">
-                                    <x:String>Radosne</x:String>
-                                    <x:String>Światła</x:String>
-                                    <x:String>Bolesne</x:String>
-                                    <x:String>Chwalebne</x:String>
-                                </x:Array>
-                            </Picker.ItemsSource>
-                        </Picker>
-                        <Picker x:Name="DetailPicker" Title="Wybierz tajemnicę"
-                                SelectedIndexChanged="OnDetailChanged"/>
                     </VerticalStackLayout>
                 </Border>
 

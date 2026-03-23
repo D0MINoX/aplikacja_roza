@@ -81,7 +81,7 @@ public partial class PickerPopup : Popup
         else
         {
             PickerLabel.Text = "Wybierz tajemnicę";
-            selected = Preferences.Default.Get("LastMystery1","");
+            selected = Preferences.Default.Get("LastMystery","");
         }
 
         if (!string.IsNullOrEmpty(selected))
@@ -101,11 +101,31 @@ public partial class PickerPopup : Popup
         if (name == "Group")
         {
             Preferences.Default.Set("LastGroup", val);
-            Preferences.Default.Set("LastMystery1", "");
+            switch (val)
+            {
+                case "Światła":
+                    Preferences.Default.Set("LastMystery", "Chrzest Pana Jezusa w Jordanie");
+                    break;
+
+                case "Bolesne":
+                    Preferences.Default.Set("LastMystery", "Modlitwa Pana Jezusa w Ogrójcu");
+                    break;
+
+                case "Chwalebne":
+                    Preferences.Default.Set("LastMystery", "Zmartwychwstanie Pana Jezusa");
+                    break;
+                
+                case "Radosne":
+                default: 
+                    Preferences.Default.Set("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
+                    break;
+            }
+
+            ThemeManager.SetTheme(val);
         }
         else
         {
-            Preferences.Default.Set("LastMystery1", val);
+            Preferences.Default.Set("LastMystery", val);
         }
     }
 }
