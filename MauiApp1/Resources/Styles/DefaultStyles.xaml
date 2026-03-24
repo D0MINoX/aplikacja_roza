@@ -146,6 +146,7 @@
         <Setter Property="PlaceholderColor" Value="{DynamicResource FadedText}"/>
         <Setter Property="TextColor" Value="{DynamicResource Text}"/>
         <Setter Property="UnderlineColor" Value="{DynamicResource FadedText}"/>
+        <Setter Property="MinimumHeightRequest" Value="45"/>
     </Style>
     
     
