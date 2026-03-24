@@ -10,7 +10,7 @@
         <Label x:Name="Ref" BackgroundColor="{DynamicResource Tertiary}" IsEnabled="False" IsVisible="False" />
         
         <ScrollView Grid.Row="0">
-            <VerticalStackLayout Spacing="100">
+            <VerticalStackLayout Spacing="20">
                 <Border Style="{StaticResource MenuOption}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Meditation_Tapped"/>
