@@ -26,11 +26,13 @@ public partial class SettingsPage : ContentPage
         {
             LogIn.IsVisible = false;
             LogOut.IsVisible = true;
+            Profile.IsVisible = true;
         }
         else
         {
             LogIn.IsVisible = true;
             LogOut.IsVisible = false;
+            Profile.IsVisible = false;
         }
     }
 

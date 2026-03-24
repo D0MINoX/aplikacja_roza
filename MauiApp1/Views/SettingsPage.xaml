@@ -10,14 +10,17 @@
 
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Spacing="20">
+                
                 <!-- Header -->
                 <Grid Style="{StaticResource Head}">
                     <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
                         Ustawienia
                     </Label>
+                    <!--
                     <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
                         ustawienia
                     </Label>
+                    -->
                 </Grid>
 
                 <!-- Zaloguj się -->
@@ -55,7 +58,7 @@
                 </Border>
 
                 <!-- Profil -->
-                <Border Style="{StaticResource MenuOption}">
+                <Border Style="{StaticResource MenuOption}" x:Name="Profile">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Profile_Tapped"/>
                     </Border.GestureRecognizers>

@@ -8,7 +8,7 @@
     <Grid RowDefinitions="*,auto">
 
         <ScrollView Grid.Row="0">
-            <VerticalStackLayout>
+            <VerticalStackLayout Spacing="20">
 
                 <!-- ten label jest tylko po to zeby zmieniac kolor ikonek dynamicnie -->
                 <Label x:Name="Ref" BackgroundColor="{DynamicResource Tertiary}" IsEnabled="False" IsVisible="False" />

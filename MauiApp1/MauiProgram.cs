@@ -1,7 +1,14 @@
 ﻿using CommunityToolkit.Maui;
+using MauiApp1.Controls;
 using MauiApp1.Services;
 using MauiApp1.Views;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Handlers;
+using Microsoft.Maui.Platform;
+
+#if ANDROID
+using Android.Content.Res;
+#endif
 
 namespace MauiApp1
 {
@@ -19,17 +26,31 @@ namespace MauiApp1
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
             string baseAddress = "https://api.rosaryapi.pl";
-//#if DEBUG
-//            var handler = new HttpClientHandler();
-//            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+            //#if DEBUG
+            //            var handler = new HttpClientHandler();
+            //            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
 
-//            // Wybierz odpowiedni adres lokalny
-//            string baseAddress = DeviceInfo.DeviceType == DeviceType.Virtual
-//                                 ? "https://10.0.2.2:7206/"
-//                                 : "https://localhost:7206/";
+            //            // Wybierz odpowiedni adres lokalny
+            //            string baseAddress = DeviceInfo.DeviceType == DeviceType.Virtual
+            //                                 ? "https://10.0.2.2:7206/"
+            //                                 : "https://localhost:7206/";
 
-//            builder.Services.AddSingleton(new HttpClient(handler) { BaseAddress = new Uri(baseAddress) });
-//#endif
+            //            builder.Services.AddSingleton(new HttpClient(handler) { BaseAddress = new Uri(baseAddress) });
+            //#endif
+
+
+
+            EntryHandler.Mapper.AppendToMapping(nameof(MyEntry.UnderlineColor), (handler, view) =>
+            {
+#if ANDROID
+                if (view is MyEntry myEntry)
+                {
+                    handler.PlatformView.BackgroundTintList =
+                        ColorStateList.ValueOf(myEntry.UnderlineColor.ToPlatform());
+                }
+#endif
+            });
+
 
 
             builder.Services.AddSingleton(new HttpClient
@@ -39,6 +60,9 @@ namespace MauiApp1
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+
+
+
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<ParishService>();
             builder.Services.AddSingleton<MessagesService>();
