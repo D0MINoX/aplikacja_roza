@@ -3,11 +3,11 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace MauiApp1;
 
-
-public partial class JoinRosaryPage : ContentPage, IQueryAttributable
+[QueryProperty(nameof(UserId), "UserId")]
+public partial class JoinRosaryPage : ContentPage
 {
     private readonly RosaryService _rosaryService;
-    private int _userId;
+    public int UserId { get; set; }
     public JoinRosaryPage(RosaryService rosaryService)
     {
         InitializeComponent();
@@ -19,17 +19,11 @@ public partial class JoinRosaryPage : ContentPage, IQueryAttributable
         base.OnAppearing();
         RosariesShow();
     }
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
-    {
-        if (query.TryGetValue("UserId", out var value) && value is int id)
-        {
-            _userId = id;
-        }
-    }
+ 
     private async void RosariesShow()
     {
-
-        List<RosaryInfo> rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(_userId);
+        await DisplayAlertAsync("INFO", UserId.ToString(), "OK");
+        List<RosaryInfo> rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(UserId);
         MainThread.BeginInvokeOnMainThread(() =>
         {
             RosariesContainer.Children.Clear(); // Czyścimy listę
@@ -107,7 +101,7 @@ public partial class JoinRosaryPage : ContentPage, IQueryAttributable
             await DisplayAlertAsync("Błąd", "Najpierw wybierz różę z listy!", "OK");
             return;
         }
-        var result = await _rosaryService.JoinRosaryAsync(_userId, _selectedRosaryId);
+        var result = await _rosaryService.JoinRosaryAsync(UserId, _selectedRosaryId);
 
         if (result.IsSuccess)
         {

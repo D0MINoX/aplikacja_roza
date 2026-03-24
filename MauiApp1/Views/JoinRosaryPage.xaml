@@ -16,21 +16,22 @@
                 </Label>
             </Grid>
         </Border>
-    
-    <VerticalStackLayout x:Name="RosariesContainer" Grid.Row="1">
-        <Border  Background="{DynamicResource Primary}" Padding="15">
-            
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="10"/>
-            </Border.StrokeShape>
-            <Grid ColumnDefinitions="auto,auto">
-                <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                <Label Grid.Column="1" x:Name="Rosary" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout x:Name="RosariesContainer">
+                <Border  Background="{DynamicResource Primary}" Padding="15">
 
-                </Label>
-            </Grid>
-        </Border>
-    </VerticalStackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="auto,auto">
+                        <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
+                        <Label Grid.Column="1" x:Name="Rosary" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
+
+                        </Label>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
         <Border  Background="{DynamicResource Primary}" Grid.Row="2" Padding="15" Margin="0,15">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="JoinButton_Tapped"/>

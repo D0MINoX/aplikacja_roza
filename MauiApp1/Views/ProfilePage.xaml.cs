@@ -19,20 +19,22 @@ public partial class ProfilePage : ContentPage
         _rosaryService = rosaryService;
         _parishService = parishService;
         DecodeToken(_authService.Token);
+
         //RosariesShow();
     }
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        var response = await _parishService.GetUserParish(UserId);
-        if (response.isSuccess)
+        if (UserId == 0) DecodeToken(_authService.Token);
+
+        if (UserId > 0)
         {
-            ParishLabel.Text = response.Data.Name;
+            var response = await _parishService.GetUserParish(UserId);
+            ParishLabel.Text = response.isSuccess ? response.Data.Name : response.ErrorMessage;
+
+            RosariesShow();
         }
-        else
-        {
-            ParishLabel.Text = response.ErrorMessage;
-        }
+
     }
     private async void Logout_Clicked(object sender, EventArgs e)
     {
@@ -47,7 +49,7 @@ public partial class ProfilePage : ContentPage
         }
         await Shell.Current.GoToAsync("//Home");
     }
-    public void DecodeToken(string token)
+    public async Task DecodeToken(string token)
     {
         if (string.IsNullOrEmpty(token)) return;
 
@@ -61,15 +63,14 @@ public partial class ProfilePage : ContentPage
         var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
         string userRole = roleClaim?.Value ?? "Nie jesteś członkiem róży";
         var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
-        int.TryParse(IdClaim.Value, out int Id);
+        if (int.TryParse(IdClaim?.Value, out int id))
+        {
+            this.UserId = id; 
+        }
         List<string> roles = ["Rola: admin", "Rola: główny zeletor", "Zelator: ", "Członek rózy: "];
 
         Name.Text = "Witaj " + userName;
         Role.Text = roles[int.Parse(userRole)];
-        if (userRole == "2" || userRole == "3")
-        {
-            RosariesShow();
-        }
         #if WINDOWS || MACCATALYST
         if (int.Parse(userRole) < 3)
         {
@@ -91,7 +92,8 @@ public partial class ProfilePage : ContentPage
                 {
                     Role.Text += "Nie należysz do żadnej róży";
                     RosariesContainer.IsVisible = true;
-                    RosariesContainer.Children.Add(CreateJoinButton(UserId));
+                    
+                    RosariesContainer.Children.Add(CreateJoinButton());
                 }
                 else
                 {
@@ -100,7 +102,7 @@ public partial class ProfilePage : ContentPage
             });
         
     }
-    private Border CreateJoinButton(int UserId)
+    private Border CreateJoinButton()
     {
         var borderStyle = (Style)Application.Current.Resources["MenuOption"];
         var labelStyle = (Style)Application.Current.Resources["OptionLabel"];

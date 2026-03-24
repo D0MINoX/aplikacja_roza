@@ -14,7 +14,7 @@
             <Label Text="Akcje" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="2"/>
         </Grid>
 
-        <CollectionView Grid.Row="1" x:Name="UsersList">
+        <CollectionView Grid.Row="1" x:Name="UsersList" VerticalScrollBarVisibility="Always">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border StrokeShape="RoundRectangle 0" StrokeThickness="0.5" Stroke="{DynamicResource Accent}">

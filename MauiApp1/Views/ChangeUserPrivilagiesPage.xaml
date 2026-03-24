@@ -7,7 +7,7 @@
     <ContentPage.Resources>
         <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
     </ContentPage.Resources>
-    <VerticalStackLayout>
+    
         <Grid RowDefinitions="Auto, *" Margin="10">
             <Grid Grid.Row="0" ColumnDefinitions="auto,*,*,*,*,*" ColumnSpacing="5" BackgroundColor="{DynamicResource Secondary}" Padding="10">
                 <Label Text="Id" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>
@@ -18,7 +18,7 @@
                 <Label Text="Akcje" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="5"/>
             </Grid>
 
-            <CollectionView Grid.Row="1" x:Name="UsersList">
+            <CollectionView Grid.Row="1" x:Name="UsersList" VerticalScrollBarVisibility="Always">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Border StrokeShape="RoundRectangle 0" StrokeThickness="0.5" Stroke="{DynamicResource Accent}">
@@ -68,5 +68,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </Grid>
-    </VerticalStackLayout>
+    
 </ContentPage>
