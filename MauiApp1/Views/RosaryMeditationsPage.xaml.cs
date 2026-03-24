@@ -1,5 +1,8 @@
 
 
+using CommunityToolkit.Maui.Extensions;
+using MauiApp1.Components;
+
 namespace MauiApp1;
 
 public partial class RosaryMeditationsPage : ContentPage
@@ -23,22 +26,11 @@ public partial class RosaryMeditationsPage : ContentPage
 
         // 1. Odczytujemy dane
         date = Preferences.Default.Get("LastDate", 1);
-        int savedGroupIdx = Preferences.Default.Get("LastGroupIndex", 0);
+        string savedGroup = Preferences.Default.Get("LastGroup", "Radosne");
         string savedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
 
-        // 2. Ustawiamy Grupę i ładujemy listę
-        GroupPicker.SelectedIndex = savedGroupIdx;
-        Mysteries();
-
-        // 3. Ustawiamy konkretną tajemnicę (SelectedItem zamiast Index)
-        if (DetailPicker.ItemsSource is List<string> list && list.Contains(savedMystery))
-        {
-            DetailPicker.SelectedItem = savedMystery;
-        }
-        else
-        {
-            DetailPicker.SelectedIndex = 0;
-        }
+        GroupLabel.Text = savedGroup;
+        DetailLabel.Text = savedMystery;
 
         _isBusy = false; // Puszczamy hamulec
 
@@ -55,18 +47,13 @@ public partial class RosaryMeditationsPage : ContentPage
             // Zapisuj do pamięci tylko jeśli wartości są poprawne
             Preferences.Default.Set("LastDate", date);
 
-            if (GroupPicker.SelectedIndex != -1)
-                Preferences.Default.Set("LastGroupIndex", GroupPicker.SelectedIndex);
-
-            if (DetailPicker.SelectedItem != null)
-                Preferences.Default.Set("LastMystery", DetailPicker.SelectedItem.ToString());
 
             // Ładowanie z API
-            if (DetailPicker.SelectedItem != null)
+            string selectedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
+            if (selectedMystery != "")
             {
-               
                 MeditationLabel.Text = "Ładowanie ....";
-                string selectedMystery = DetailPicker.SelectedItem.ToString();
+                
                 var data = await _meditationService.GetMeditationData(this.date, selectedMystery);
                 MeditationLabel.Text = data.Content ?? "Brak rozważania";
                 if (data.Link == null) {
@@ -97,8 +84,6 @@ public partial class RosaryMeditationsPage : ContentPage
 
     private async void PreviousTapped(object sender, EventArgs e)
     {
-
-
         if (--date < 1) date = 31;
         UpdateDate();
     }
@@ -124,72 +109,20 @@ public partial class RosaryMeditationsPage : ContentPage
         await Shell.Current.GoToAsync("FullMeditation", navigationParameter);
     }
 
-    private void OnGroupChanged(object sender, EventArgs e)
+    public async void GroupTapped(object sender, EventArgs e)
     {
-        if (_isBusy) return;
-
-        Mysteries();
-        // Po zmianie grupy, DetailPicker traci wybór, więc ustawiamy pierwszy
-        if (DetailPicker.ItemsSource?.Count > 0)
-        {
-            DetailPicker.SelectedIndex = 0;
-        }
-        UpdateDate();
-    }
-
-    private void OnDetailChanged(object sender, EventArgs e)
-    {
-        if (_isBusy) return;
-        UpdateDate();
-    }
-    private void Mysteries()
-    {
-        var group = GroupPicker.SelectedItem?.ToString();
-
-        if (string.IsNullOrEmpty(group))
-        {
-            DetailPicker.IsEnabled = false;
+        if (_isBusy)
             return;
-        }
+        _isBusy = true;
+        await this.ShowPopupAsync(new PickerPopup("Group"));
+    }
 
-        ThemeManager.SetTheme(group);
-
-        DetailPicker.IsEnabled = true;
-        DetailPicker.ItemsSource = group switch
-        {
-            "Radosne" => new List<string>
-                {
-                    "Zwiastowanie Najświętszej Maryi Pannie",
-                    "Nawiedzenie św. Elżbiety",
-                    "Narodzenie Pana Jezusa",
-                    "Ofiarowanie Pana Jezusa w świątyni",
-                    "Odnalezienie Pana Jezusa w świątyni"
-                },
-            "Światła" => new List<string>
-                {
-                    "Chrzest Pana Jezusa w Jordanie",
-                    "Objawienie się Pana Jezusa w Kanie Galilejskiej",
-                    "Głoszenie Królestwa Bożego i wzywanie do nawrócenia",
-                    "Przemienienie na górze Tabor",
-                    "Ustanowienie Eucharystii"
-                },
-            "Bolesne" => new List<string>
-                {
-                    "Modlitwa Pana Jezusa w Ogrójcu",
-                    "Biczowanie Pana Jezusa",
-                    "Cierniem ukoronowanie Pana Jezusa",
-                    "Dźwiganie krzyża na Kalwarię",
-                    "Ukrzyżowanie i śmierć Pana Jezusa"
-                },
-            "Chwalebne" => new List<string>
-                {
-                    "Zmartwychwstanie Pana Jezusa",
-                    "Wniebowstąpienie Pana Jezusa",
-                    "Zesłanie Ducha Świętego",
-                    "Wniebowzięcie Najświętszej Maryi Panny",
-                    "Ukoronowanie Najświętszej Maryi Panny na Królową Nieba i Ziemi"
-                },
-            _ => new List<string>()
-        };
+    public async void DetailsTapped(object sender, EventArgs e)
+    {
+        if (_isBusy)
+            return;
+        _isBusy = true;
+        var group = Preferences.Default.Get("LastGroup", "");
+        await this.ShowPopupAsync(new PickerPopup(group));
     }
 }
