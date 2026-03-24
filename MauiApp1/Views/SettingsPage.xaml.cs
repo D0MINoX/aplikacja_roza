@@ -65,12 +65,12 @@ public partial class SettingsPage : ContentPage
     }
     private async void OnDownloadToggled(object sender, ToggledEventArgs e)
     {
-        bool isAllowed = e.Value; // Nowa wartość przełącznika
+        bool isAllowed = e.Value; 
         Preferences.Default.Set("AutoDownloadMeditations", isAllowed);
 
         if (isAllowed)
         {
-            // Opcjonalnie: od razu pobierz dane, żeby użytkownik nie musiał czekać
+            
             await DisplayAlertAsync("Offline", "Aplikacja pobierze teraz rozważania na cały miesiąc.", "OK");
         }
 

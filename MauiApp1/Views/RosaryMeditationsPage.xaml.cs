@@ -51,25 +51,25 @@ public partial class RosaryMeditationsPage : ContentPage
 
             MeditationLabel.Text = "Ładowanie ....";
 
-            // 1. SPRÓBUJ POBRAĆ Z PLIKU LOKALNEGO
+          
             var localData = await GetMeditationFromLocalFile(this.date, selectedMystery);
 
             if (localData != null)
             {
                 ApplyMeditationData(localData);
-                return; // Sukces, kończymy
+                return; 
             }
 
-            // 2. JEŚLI NIE MA W PLIKU, SPRAWDŹ CZY MAMY ZGODĘ NA POBIERANIE CAŁOŚCI
+           
             bool autoDownload = Preferences.Default.Get("AutoDownloadMeditations", false);
 
             if (autoDownload)
             {
-                // Pobieramy całą tajemnicę do pliku
+              
                 bool downloaded = await DownloadAllMeditationsForMystery(selectedMystery);
                 if (downloaded)
                 {
-                    // Po pobraniu spróbuj odczytać ponownie ten konkretny dzień
+          
                     var freshLocalData = await GetMeditationFromLocalFile(this.date, selectedMystery);
                     if (freshLocalData != null)
                     {
@@ -79,7 +79,6 @@ public partial class RosaryMeditationsPage : ContentPage
                 }
             }
 
-            // 3. FALLBACK: POBIERZ TYLKO JEDNO ROZWAŻANIE (Twoja obecna logika)
             var data = await _meditationService.GetMeditationData(this.date, selectedMystery);
             ApplyMeditationData(data);
         }
@@ -92,7 +91,7 @@ public partial class RosaryMeditationsPage : ContentPage
 
     private async void PlayTapped(object sender, EventArgs e)
     {
-        //do zrobienia link zalezny od rozwazania
+        
         await Browser.Default.OpenAsync(
         new Uri(Link),
         BrowserLaunchMode.SystemPreferred);
@@ -164,7 +163,7 @@ public partial class RosaryMeditationsPage : ContentPage
             string json = await File.ReadAllTextAsync(path);
             var allMeditations = JsonSerializer.Deserialize<List<LocalMeditation>>(json);
 
-            // Szukamy konkretnego dnia
+            
             return allMeditations?.FirstOrDefault(m => m.Date == day);
         }
         catch { return null; }
