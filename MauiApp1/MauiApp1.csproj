@@ -51,11 +51,7 @@
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appicon.svg" Color="#512BD4" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen
-			Include="Resources\Splash\splash.svg"
-			Color="#072C72"
-			BaseSize="340,512"
-			TintSuffix="False" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#072C72" BaseSize="340,512" TintSuffix="False" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -132,6 +128,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\MyRosaryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ParishAddPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ProfilePage.xaml">

@@ -62,7 +62,6 @@ public partial class ProfilePage : ContentPage
         string userRole = roleClaim?.Value ?? "Nie jesteś członkiem róży";
         var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
         int.TryParse(IdClaim.Value, out int Id);
-        UserId = Id;
         List<string> roles = ["Rola: admin", "Rola: główny zeletor", "Zelator: ", "Członek rózy: "];
 
         Name.Text = "Witaj " + userName;

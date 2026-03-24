@@ -1,3 +1,4 @@
+using MauiApp1.Models;
 using MauiApp1.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -20,11 +21,28 @@ public partial class AdminPage : ContentPage
     }
     private async void RosaryAdd_Tapped(object sender, TappedEventArgs e)
     {
-        await Shell.Current.GoToAsync("RosaryAdd");
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadJwtToken(_authService.Token);
+        var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
+        string userRole = roleClaim?.Value ?? "4";
+        int Role = int.Parse(userRole);
+        var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
+        int.TryParse(IdClaim.Value, out int Id);
+        await DisplayAlertAsync("Info", Role.ToString(),"OK");
+        var navigationParameter = new Dictionary<string, object>
+        {
+            { "UserRole", Role },
+            {"UserId",Id }
+        };
+        await Shell.Current.GoToAsync("RosaryAdd",navigationParameter);
     }
     private async void MeditationAdd_Tapped(object sender, TappedEventArgs e)
     {
         await Shell.Current.GoToAsync("MeditationAdd");
+    }
+    private async void ParishAdd_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("ParishAdd");
     }
 
     private async void ChangePrivilagies_Tapped(object sender, TappedEventArgs e)
