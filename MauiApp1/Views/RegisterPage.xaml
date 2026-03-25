@@ -2,87 +2,84 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp1.RegisterPage"
-             xmlns:mauiapp1="clr-namespace:MauiApp1"
-             Title="RegisterPage">
+             xmlns:mauiapp1="clr-namespace:MauiApp1" xmlns:controls="clr-namespace:MauiApp1.Controls"
+             Title="RegisterPage"
+             Background="{DynamicResource Primary}">
+
     <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="10">
-            <!-- Header -->
-            <Border Grid.Row="0" Style="{StaticResource Header}">
-                <Grid ColumnDefinitions="auto,auto">
-                    <Image Grid.Column="0" Source="book_icon.png" Style="{StaticResource HeaderImage}"/>
-                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
-                        Rejestracja
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="20">
+
+                <!-- Header -->
+                <Grid Style="{StaticResource Head}">
+                    <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
+                        Panel rejestracji
+                    </Label>
+                    <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
+                        Stwórz swoje konto
                     </Label>
                 </Grid>
-            </Border>
 
-            <!-- Panel z rejestracją -->
-            <VerticalStackLayout Padding="20" Spacing="5" Grid.Row="1">
-                <Border Padding="25"
-                     StrokeShape="RoundRectangle 20"
-                     BackgroundColor="{DynamicResource Primary}"
-                     StrokeThickness="0">
-
-                    <VerticalStackLayout Spacing="15">
-                        <Label Text="Utwórz swoje konto" 
-                            FontSize="24" 
-                            FontAttributes="Bold" 
-                            HorizontalOptions="Center" 
-                            TextColor="{DynamicResource Text}" />
-
-                        <Entry x:Name="NameEntry" 
-                            Placeholder="Imię" 
-                            HeightRequest="45"
-                            PlaceholderColor="{DynamicResource FadedText}"
-                            TextColor="{DynamicResource Text}"/>
-
-                        <Entry x:Name="SurnameEntry" 
-                            Placeholder="Nazwisko" 
-                            HeightRequest="45"
-                            PlaceholderColor="{DynamicResource FadedText}"
-                            TextColor="{DynamicResource Text}"/>
-
-                        <Entry x:Name="EmailEntry" 
-                            Placeholder="Email" 
-                            Keyboard="Email"
-                            HeightRequest="45"
-                            PlaceholderColor="{DynamicResource FadedText}"
-                            TextColor="{DynamicResource Text}"/>
-
-                        <Entry x:Name="PasswordEntry" 
-                            Placeholder="Hasło" 
-                            IsPassword="True" 
-                            HeightRequest="45"
-                            PlaceholderColor="{DynamicResource FadedText}"
-                            TextColor="{DynamicResource Text}"/>
-
-                        <Entry x:Name="PasswordRetype" 
-                             Placeholder="Powtórz Hasło" 
-                             IsPassword="True" 
-                             HeightRequest="45"
-                             PlaceholderColor="{DynamicResource FadedText}"
-                             TextColor="{DynamicResource Text}"/>
-                        <Picker x:Name="ParishPicker"
-                           Title="Wybierz z listy lub zostaw puste"
-                            ItemDisplayBinding="{Binding Name}"
-                           HeightRequest="45"
-                           TitleColor="{DynamicResource FadedText}"
-                           TextColor="{DynamicResource Text}"/>
-
-                        <Label Text="Jeśli nie widzisz swojej parafii, możesz ją pominąć."
-           FontSize="10" TextColor="Gray" HorizontalOptions="Center" />
+                <Border Style="{StaticResource MenuOption}">
+                    <VerticalStackLayout Spacing="5">
                         
-                        <Button Text="ZAREJESTRUJ SIĘ" 
-                          Clicked="Register_Clicked"
-                          CornerRadius="10"
-                          HeightRequest="50"
-                          Margin="0,10,0,0"
-                          BackgroundColor="{DynamicResource Secondary}"
-                          TextColor="{DynamicResource Text}"/>
+                        <Label Text="Zarejestruj się"
+                               Style="{StaticResource HeaderLabel}"
+                               HorizontalOptions="Center"/>
+
+                        <controls:MyEntry x:Name="NameEntry"
+                                          Placeholder="Imię"/>
+
+                        <controls:MyEntry x:Name="SurnameEntry"
+                                          Placeholder="Nazwisko"/>
+
+                        <controls:MyEntry x:Name="EmailEntry"
+                                          Placeholder="Email"
+                                          Keyboard="Email"/>
+
+                        <controls:MyEntry x:Name="PasswordEntry"
+                                          Placeholder="Hasło"
+                                          IsPassword="True"/>
+
+                        <controls:MyEntry x:Name="PasswordRetype"
+                                          Placeholder="Powtórz Hasło"
+                                          IsPassword="True"/>
+
+                        <Picker x:Name="ParishPicker"
+                                    Title="Wybierz z listy lub zostaw puste"
+                                    ItemDisplayBinding="{Binding Name}"
+                                    HeightRequest="45"
+                                    TitleColor="{DynamicResource FadedText}"
+                                    TextColor="{DynamicResource Text}" />
+
+                        <Border BackgroundColor="{DynamicResource Primary}" HeightRequest="45">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="ParishTapped"/>
+                            </Border.GestureRecognizers>
+                            <VerticalStackLayout>
+                                <Label x:Name="ParishLabel" Margin="5,0"/>
+                                <BoxView/>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Label Text="Jeśli nie widzisz swojej parafii, możesz ją pominąć." Style="{StaticResource HeaderLabel2}"/>
+
+                        <Border Style="{StaticResource NavButton}" HeightRequest="50" WidthRequest="250">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Register_Clicked"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                ZAREJESTRUJ SIĘ
+                            </Label>
+                        </Border>
+
                     </VerticalStackLayout>
                 </Border>
+                
             </VerticalStackLayout>
-        </Grid>
-        <mauiapp1:BottomMenu Grid.Row="1"/>
+        </ScrollView>
+
+        <mauiapp1:BottomMenu Grid.Row="1" />
     </Grid>
 </ContentPage>

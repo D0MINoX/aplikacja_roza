@@ -1,3 +1,5 @@
+using CommunityToolkit.Maui.Extensions;
+using MauiApp1.Components;
 using MauiApp1.Models;
 using MauiApp1.Services;
 using System.Text.RegularExpressions;
@@ -8,6 +10,7 @@ public partial class RegisterPage : ContentPage
 {
     private readonly AuthService _authService;
     private readonly ParishService _parishService;
+
     public RegisterPage(AuthService authService, ParishService parishService)
     {
         _authService = authService;
@@ -22,13 +25,14 @@ public partial class RegisterPage : ContentPage
 
     }
 
-    private async Task LoadParish()
+    private async Task<List<Parish>> LoadParish()
     {
         var result = await _parishService.AllParish();
         if (result.isSuccess)
         {
-            ParishPicker.ItemsSource = result.Data;
+            return result.Data;
         }
+        return null;
     }
 
     private async void Register_Clicked(object sender, EventArgs e)
@@ -54,14 +58,10 @@ public partial class RegisterPage : ContentPage
         {
             await DisplayAlertAsync("Błąd", "Hasła są różne", "OK");
             return;
-
         }
         else
         {
-            
-                bool isSuccess = await _authService.RegisterAsync(name, surname, email, password,selectedParish?.Id);
-
-
+            bool isSuccess = await _authService.RegisterAsync(name, surname, email, password,selectedParish?.Id);
 
             if (isSuccess)
             {
@@ -81,5 +81,11 @@ public partial class RegisterPage : ContentPage
         string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
         return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
+    }
+
+    private async void ParishTapped(object sender, EventArgs e)
+    {
+
+        //await this.ShowPopupAsync(new PickerPopup("parish"));
     }
 }

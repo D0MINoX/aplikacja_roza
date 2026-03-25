@@ -90,8 +90,22 @@
                         </Label>
                     </Grid>
                 </Border>
+<<<<<<< Updated upstream
+=======
+                
+                <!--auto pobvieranie-->
+                <Border Style="{StaticResource MenuOption}">
+                    <HorizontalStackLayout Spacing="20" Padding="10">
+                        <Label Text="Pobieraj rozważania offline" VerticalOptions="Center" />
+                        <Switch x:Name="DownloadSwitch" 
+                             Toggled="OnDownloadToggled" />
+                    </HorizontalStackLayout>
+                </Border>
+                
+>>>>>>> Stashed changes
             </VerticalStackLayout>
         </ScrollView>
+        
         <mauiapp1:BottomMenu Grid.Row="1"/>
     </Grid>
 </ContentPage>
