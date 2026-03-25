@@ -148,7 +148,8 @@ public partial class ProfilePage : ContentPage
         border.GestureRecognizers.Add(tapGesture);
         border.Content = new Label
         {
-            Style = labelStyle
+            Style = labelStyle,
+            Text = "Panel Administracyjny"
         };
 
         return border;
