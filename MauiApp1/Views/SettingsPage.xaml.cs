@@ -15,6 +15,7 @@ public partial class SettingsPage : ContentPage
     {
         base.OnAppearing();
         IsLogged();
+        DownloadSwitch.IsToggled = Preferences.Default.Get("AutoDownloadMeditations", false);
     }
 
     private async void IsLogged()
@@ -64,4 +65,17 @@ public partial class SettingsPage : ContentPage
     {
         ThemeManager.SetMainTheme();
     }
+    private async void OnDownloadToggled(object sender, ToggledEventArgs e)
+    {
+        bool isAllowed = e.Value; 
+        Preferences.Default.Set("AutoDownloadMeditations", isAllowed);
+
+        if (isAllowed)
+        {
+            
+            await DisplayAlertAsync("Offline", "Aplikacja pobierze teraz rozważania na cały miesiąc.", "OK");
+        }
+
+    }
+    
 }

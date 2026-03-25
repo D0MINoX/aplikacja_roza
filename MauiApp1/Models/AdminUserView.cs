@@ -13,6 +13,12 @@ namespace MauiApp1.Models
         public string RosaryName { get; set; }
         public bool IsAuthorized { get; set; }
         public int UserRole { get; set; }
+        private bool _userCanSendSMS;
+        public bool UserCanSendSMS
+        {
+            get => _userCanSendSMS;
+            set { _userCanSendSMS = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanSendSmsText)); }
+        }
         private bool _isEditing;
         public bool IsEditing
         {
@@ -25,6 +31,7 @@ namespace MauiApp1.Models
             get => _availableRoles;
             set { _availableRoles = value; OnPropertyChanged(); }
         }
+        public string CanSendSmsText => UserCanSendSMS ? "Tak" : "Nie";
         public event PropertyChangedEventHandler PropertyChanged;
         void OnPropertyChanged([CallerMemberName] string name = "") =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

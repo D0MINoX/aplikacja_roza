@@ -38,10 +38,10 @@
                     PlaceholderColor="{DynamicResource FadedText}"
                     TextColor="{DynamicResource Text}"/>
 
-                        <Entry x:Name="ParishEntry" 
-                    Placeholder="Parafia" 
-                    HeightRequest="45"
-                    PlaceholderColor="{DynamicResource FadedText}"
+                        <Picker x:Name="ParishPicker" 
+                    Title="Parafia" 
+                   
+                    TitleColor="{DynamicResource FadedText}"
                     TextColor="{DynamicResource Text}"/>
 
                         <Picker x:Name="ZelatorPicker" Title="Wybierz zelatora róży"                  

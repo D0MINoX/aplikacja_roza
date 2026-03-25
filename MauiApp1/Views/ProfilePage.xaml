@@ -25,68 +25,54 @@
                     <Border Style="{StaticResource MenuOption}">
                         <VerticalStackLayout>
                             <Grid ColumnDefinitions="*,*">
-                                <Label Grid.Column="0"
-                                       Style="{StaticResource OptionLabel}"
-                                       HorizontalOptions="Start"
-                                       x:Name="Name" />
-                                <Entry Grid.Column="0" IsVisible="False" />
-                                <Border Grid.Column="1"
-                                        x:Name="NameBtn"
-                                        Style="{StaticResource EditButton}"
-                                        HorizontalOptions="End">
+                                <Label Grid.Column="0" Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="Name"/>
+                                <Entry Grid.Column="0" IsVisible="False"/>
+                                <Border Grid.Column="1" x:Name="NameBtn" Style="{StaticResource EditButton}" HorizontalOptions="End">
                                     <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="EditTapped" />
+                                        <TapGestureRecognizer Tapped="EditTapped"/>
                                     </Border.GestureRecognizers>
                                     <Label Style="{StaticResource OptionLabel}">
                                         Edytuj
                                     </Label>
                                 </Border>
                             </Grid>
-
                             <Grid ColumnDefinitions="*,*">
-                                <Label Style="{StaticResource OptionLabel}"
-                                       HorizontalOptions="Start"
-                                       x:Name="Role" />
-                                <Border Grid.Column="1"
-                                        Style="{StaticResource EditButton}"
-                                        HorizontalOptions="End">
+                                <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="Role"/>
+                                <Border Grid.Column="1" Style="{StaticResource EditButton}" HorizontalOptions="End">
                                     <Label Style="{StaticResource OptionLabel}">
                                         Edytuj
                                     </Label>
                                 </Border>
                             </Grid>
-
                             <Grid ColumnDefinitions="*,*">
-                                <Label Style="{StaticResource OptionLabel}"
-                                       HorizontalOptions="Start"
-                                       x:Name="ParishLabel">
+                                <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="ParishLabel">
                                     Parafia????????
                                 </Label>
-                                <Border Grid.Column="1"
-                                        Style="{StaticResource EditButton}"
-                                        HorizontalOptions="End">
+                                <Border Grid.Column="1" Style="{StaticResource EditButton}" HorizontalOptions="End">
                                     <Label Style="{StaticResource OptionLabel}">
                                         Edytuj
                                     </Label>
                                 </Border>
                             </Grid>
                         </VerticalStackLayout>
-                    </Border>
+            
+            
+                </Border>
+                
+                <VerticalStackLayout x:Name="adminBtn" IsVisible="False"/>
+                <VerticalStackLayout x:Name="RosariesContainer" IsVisible="False"/>
+                
+                <Border Style="{StaticResource MenuOption}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Logout_Clicked"/>
+                    </Border.GestureRecognizers>
+                    <Label Style="{StaticResource OptionLabel}">
+                        Wyloguj się
+                    </Label>
+                </Border>
 
-                    <VerticalStackLayout x:Name="adminBtn" IsVisible="False" />
-                    <VerticalStackLayout x:Name="RosariesContainer" IsVisible="False" />
-
-                    <Border Style="{StaticResource MenuOption}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="Logout_Clicked" />
-                        </Border.GestureRecognizers>
-                        <Label Style="{StaticResource OptionLabel}">
-                            Wyloguj się
-                        </Label>
-                    </Border>
-                </VerticalStackLayout>
+            </VerticalStackLayout>
             </ScrollView>
-
         </Grid>
 
         <mauiapp1:BottomMenu Grid.Row="1" />

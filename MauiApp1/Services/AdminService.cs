@@ -114,7 +114,7 @@ namespace MauiApp1.Services
                 return (false, null, $"Błąd połączenia: {ex.Message}");
             }
         }
-        public async Task<bool> RegisterAsync(string name, string parish, int zelatorId)
+        public async Task<bool> RegisterAsync(string name, int parish, int zelatorId)
         {
             var registerData = new { name = name, parish = parish,zelatorsId = zelatorId };
             try
@@ -182,12 +182,60 @@ namespace MauiApp1.Services
             }
         }
 
-        public async Task<bool> UpdateRole(int userId, int userRole)
+       
+
+        public async Task<(bool isSuccess, List<AdminUserView> Data, string ErrorMessage)> AdminMainZelators()
         {
-            var ModifyData = new { Id = userId,Role = userRole  };
+            string url = $"api/Admin/MainZelatorsShow";
             try
             {
-                var response = await _httpClient.PutAsJsonAsync("api/Admin/UpdateRole", ModifyData);
+                var response = await _httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadFromJsonAsync<List<AdminUserView>>();
+                    return (true, data, null);
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return (false, null, errorContent ?? $"Błąd serwera: {response.StatusCode}");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return (false, null, $"Błąd połączenia: {ex.Message}");
+            }
+        }
+        public async Task<bool> AddParish(string name, int zelatorId)
+        {
+            var registerData = new { name = name, zelatorsId = zelatorId };
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/Admin/AddParish", registerData);
+                if (!response.IsSuccessStatusCode)
+                {
+                    // ODCZYTAJ TREŚĆ BŁĘDU Z API
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"API ERROR: {response.StatusCode} - {errorContent}");
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd rejestracji: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateUserPermissions(int userId, int userRole, bool userCanSendSMS)
+        {
+            var ModifyData = new { Id = userId, Role = userRole,CanSendSMS=userCanSendSMS };
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync("api/Admin/UpdatePermissions", ModifyData);
                 if (!response.IsSuccessStatusCode)
                 {
 
@@ -199,7 +247,7 @@ namespace MauiApp1.Services
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Błąd Zmiany rozważania: {ex.Message}");
+                Debug.WriteLine($"Błąd Zmiany uprawnień: {ex.Message}");
                 return false;
             }
         }

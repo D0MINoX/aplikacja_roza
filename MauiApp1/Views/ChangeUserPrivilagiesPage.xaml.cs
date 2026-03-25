@@ -60,11 +60,14 @@ public partial class ChangeUserPrivilagiesPage : ContentPage
         var user = (sender as Button).CommandParameter as AdminUserView;
 
         bool confirm = await DisplayAlertAsync("Potwierdzenie",
-            $"Czy napewno zmienić rolę użytkownika {user.UserName} na?", "Tak", "Anuluj");
+            $"Czy na pewno zapisać zmiany dla użytkownika {user.UserName}?", "Tak", "Anuluj");
 
         if (confirm)
         {
-             bool isSuccess =  await _adminService.UpdateRole(user.UserId, user.UserRole);
+            bool isSuccess = await _adminService.UpdateUserPermissions(
+           user.UserId,
+           user.UserRole,
+           user.UserCanSendSMS); ;
             if (isSuccess)
             {
                 await DisplayAlertAsync("INFO", "Pomyślnie zmieniono rolę użytkownika", "OK");
@@ -75,11 +78,11 @@ public partial class ChangeUserPrivilagiesPage : ContentPage
                 await DisplayAlertAsync("Błąd", "Wystąpił błąd przy zmianie roli", "OK");
             }
             user.IsEditing = false;
-            LoadUsers(); // Odśwież listę
+            LoadUsers(); 
         }
         else
         {
-            user.IsEditing = false; // Anuluj edycję
+            user.IsEditing = false; 
         }
     }
 }

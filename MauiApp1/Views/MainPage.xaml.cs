@@ -96,7 +96,7 @@ namespace MauiApp1
             MysteryLabel.Text = savedMystery;
             var data = await _meditationService.GetMeditationData(this.date, savedMystery);
           
-            MeditationLabel.Text = data.Content ?? "Brak rozważania";
+            MeditationLabel.Text = data?.Content ?? "Brak rozważania";
         }
     }
 }

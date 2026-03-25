@@ -1,6 +1,7 @@
 ﻿using MauiApp1.Models;
-using System.Net.Http.Json;
 using System.Diagnostics;
+using System.Net.Http.Json;
+
 namespace MauiApp1
 {
     public class MeditationsService
@@ -10,21 +11,41 @@ namespace MauiApp1
         {
             _httpClient = httpClient;
         }
-        public async Task<MeditationInfo> GetMeditationData(int date, string title)
+        public async Task<LocalMeditation> GetMeditationData(int date, string title)
         {
 
 
             try
-            {
-                // Używamy GetFromJsonAsync, który automatycznie zamieni JSON na obiekt C#
-                var meditation = await _httpClient.GetFromJsonAsync<MeditationInfo>(
+            {  
+                var meditation = await _httpClient.GetFromJsonAsync<List<LocalMeditation>>(
                     $"api/meditations/search?date={date}&title={title}");
 
-                return meditation;
+                return meditation?.FirstOrDefault();
             }
             catch (HttpRequestException ex)
             {
-                // Obsługa błędów HTTP (np. 404, 500)
+                Debug.WriteLine($"### BŁĄD API: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Obsługa błędów sieciowych/deserializacji
+                Debug.WriteLine($"### BŁĄD KRYTYCZNY: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<List<LocalMeditation>> GetAllMeditationsForMystery(string title)
+        {
+            try
+            {
+                string url = $"api/meditations/search?title={Uri.EscapeDataString(title)}";
+
+                var meditations = await _httpClient.GetFromJsonAsync<List<LocalMeditation>>(url);
+                return meditations ?? new List<LocalMeditation>();
+            }
+            catch (HttpRequestException ex)
+            {
                 Debug.WriteLine($"### BŁĄD API: {ex.Message}");
                 return null;
             }
@@ -37,3 +58,4 @@ namespace MauiApp1
         }
     }
 }
+

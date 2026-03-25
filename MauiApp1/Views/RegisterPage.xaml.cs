@@ -44,12 +44,11 @@ public partial class RegisterPage : ContentPage
         string passwordRetype = PasswordRetype.Text;
         var selectedParish = ParishPicker.SelectedItem as Parish;
 
-        if (name=="" || surname=="" || email=="" || password=="" || passwordRetype=="")
+        if (name==null || surname==null || email==null || password==null || passwordRetype==null || email==null)
         {
             await DisplayAlertAsync("Błąd", "Każede pole musi zostać wypełnione", "OK");
             return;
-        }
-        if (!ValidateEmail(email.Trim()))
+        } else if (!ValidateEmail(email.Trim()))
         {
             await DisplayAlertAsync("Błąd", "Podaj poprawny adres e-mail", "OK");
             return;
