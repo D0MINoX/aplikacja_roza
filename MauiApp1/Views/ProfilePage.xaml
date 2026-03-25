@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.ProfilePage"
              Title="ProfilePage">
+
     <Grid RowDefinitions="*,auto" RowSpacing="50">
         <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="50" Padding="20">
+
             <!-- Header -->
             <Border Grid.Row="0" Style="{StaticResource Header}">
                 <Grid ColumnDefinitions="auto,auto" ColumnSpacing="10">
-                    <Image Grid.Column="0" Source="book_icon.png" Style="{StaticResource HeaderImage}"/>
+                    <Image Grid.Column="0"
+                           Source="book_icon.png"
+                           Style="{StaticResource HeaderImage}" />
                     <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
                         Profil
                     </Label>
                 </Grid>
             </Border>
-            <ScrollView  Grid.Row="1">
+
+            <ScrollView Grid.Row="1">
                 <VerticalStackLayout Spacing="20">
                     <Border Style="{StaticResource MenuOption}">
                         <VerticalStackLayout>
@@ -68,6 +74,7 @@
             </VerticalStackLayout>
             </ScrollView>
         </Grid>
-        <mauiapp1:BottomMenu Grid.Row="1"/>
+
+        <mauiapp1:BottomMenu Grid.Row="1" />
     </Grid>
 </ContentPage>

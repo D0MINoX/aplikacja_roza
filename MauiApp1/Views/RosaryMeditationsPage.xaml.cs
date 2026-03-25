@@ -12,6 +12,48 @@ public partial class RosaryMeditationsPage : ContentPage
     public string Link;
     public MeditationsService _meditationService;
     private bool _isBusy = false;
+    private static readonly Dictionary<string, List<string>> _itemsMap = new()
+    {
+        ["Group"] = new()
+        {
+            "Radosne",
+            "Światła",
+            "Bolesne",
+            "Chwalebne"
+        },
+        ["Radosne"] = new()
+        {
+            "Zwiastowanie Najświętszej Maryi Pannie",
+            "Nawiedzenie św. Elżbiety",
+            "Narodzenie Pana Jezusa",
+            "Ofiarowanie Pana Jezusa w świątyni",
+            "Odnalezienie Pana Jezusa w świątyni"
+        },
+        ["Światła"] = new()
+        {
+            "Chrzest Pana Jezusa w Jordanie",
+            "Objawienie się Pana Jezusa w Kanie Galilejskiej",
+            "Głoszenie Królestwa Bożego i wzywanie do nawrócenia",
+            "Przemienienie na górze Tabor",
+            "Ustanowienie Eucharystii"
+        },
+        ["Bolesne"] = new()
+        {
+            "Modlitwa Pana Jezusa w Ogrójcu",
+            "Biczowanie Pana Jezusa",
+            "Cierniem ukoronowanie Pana Jezusa",
+            "Dźwiganie krzyża na Kalwarię",
+            "Ukrzyżowanie i śmierć Pana Jezusa"
+        },
+        ["Chwalebne"] = new()
+        {
+            "Zmartwychwstanie Pana Jezusa",
+            "Wniebowstąpienie Pana Jezusa",
+            "Zesłanie Ducha Świętego",
+            "Wniebowzięcie Najświętszej Maryi Panny",
+            "Ukoronowanie Najświętszej Maryi Panny na Królową Nieba i Ziemi"
+        }
+    };
     public RosaryMeditationsPage(MeditationsService meditationService)
     {
         InitializeComponent();
@@ -35,8 +77,8 @@ public partial class RosaryMeditationsPage : ContentPage
 
         _isBusy = false; 
 
-        UpdateDate(); 
-    }
+        UpdateDate();
+ }
 
     private async void UpdateDate()
     {
@@ -129,7 +171,7 @@ public partial class RosaryMeditationsPage : ContentPage
         if (_isBusy)
             return;
         _isBusy = true;
-        await this.ShowPopupAsync(new PickerPopup("Group"));
+        await this.ShowPopupAsync(new PickerPopup(_itemsMap["Group"], "Group"));
     }
 
     public async void DetailsTapped(object sender, EventArgs e)
@@ -138,7 +180,7 @@ public partial class RosaryMeditationsPage : ContentPage
             return;
         _isBusy = true;
         var group = Preferences.Default.Get("LastGroup", "");
-        await this.ShowPopupAsync(new PickerPopup(group));
+        await this.ShowPopupAsync(new PickerPopup(_itemsMap[group], "Mystery"));
     }
     private void ApplyMeditationData(LocalMeditation data)
     {

@@ -24,10 +24,8 @@
             <Border Grid.Row="1" Style="{StaticResource MenuOption}" VerticalOptions="Center">
                 <VerticalStackLayout Spacing="15">
                     <Label Text="Zaloguj się" 
-                           FontSize="24" 
-                           FontAttributes="Bold" 
-                           HorizontalOptions="Center" 
-                           TextColor="{DynamicResource Text}" />
+                           Style="{StaticResource HeaderLabel}" 
+                           HorizontalOptions="Center"/>
 
                     <controls:MyEntry x:Name="EmailEntry" 
                                       Placeholder="Email" 
