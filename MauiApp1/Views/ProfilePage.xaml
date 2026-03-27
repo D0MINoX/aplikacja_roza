@@ -1,79 +1,119 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:mauiapp1="clr-namespace:MauiApp1"
+             xmlns:mauiapp1="clr-namespace:MauiApp1" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiApp1.ProfilePage"
-             Title="ProfilePage">
+             Title="ProfilePage"
+             BackgroundColor="{DynamicResource Primary}">
 
-    <Grid RowDefinitions="*,auto" RowSpacing="50">
-        <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="50" Padding="20">
-
-            <!-- Header -->
-            <Border Grid.Row="0" Style="{StaticResource Header}">
-                <Grid ColumnDefinitions="auto,auto" ColumnSpacing="10">
-                    <Image Grid.Column="0"
-                           Source="book_icon.png"
-                           Style="{StaticResource HeaderImage}" />
-                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
+    <Grid RowDefinitions="*,auto">
+        <!-- ten label jest tylko po to zeby zmieniac kolor ikonek dynamicnie -->
+        <Label x:Name="Ref" BackgroundColor="{DynamicResource Tertiary}" IsEnabled="False" IsVisible="False" />
+        
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="20">
+                
+                <!-- Header -->
+                <Grid Style="{StaticResource Head}">
+                    <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
                         Profil
                     </Label>
+                    <!--
+                    <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
+                        ustawienia
+                    </Label>
+                    -->
                 </Grid>
-            </Border>
 
-            <ScrollView Grid.Row="1">
-                <VerticalStackLayout Spacing="20">
-                    <Border Style="{StaticResource MenuOption}">
-                        <VerticalStackLayout>
-                            <Grid ColumnDefinitions="*,*">
-                                <Label Grid.Column="0" Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="Name"/>
-                                <Entry Grid.Column="0" IsVisible="False"/>
-                                <Border Grid.Column="1" x:Name="NameBtn" Style="{StaticResource EditButton}" HorizontalOptions="End">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="EditTapped"/>
-                                    </Border.GestureRecognizers>
-                                    <Label Style="{StaticResource OptionLabel}">
-                                        Edytuj
-                                    </Label>
-                                </Border>
-                            </Grid>
-                            <Grid ColumnDefinitions="*,*">
-                                <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="Role"/>
-                                <Border Grid.Column="1" Style="{StaticResource EditButton}" HorizontalOptions="End">
-                                    <Label Style="{StaticResource OptionLabel}">
-                                        Edytuj
-                                    </Label>
-                                </Border>
-                            </Grid>
-                            <Grid ColumnDefinitions="*,*">
-                                <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="ParishLabel">
-                                    Parafia????????
+                <!-- dane profilu -->
+                <Border Style="{StaticResource MenuOption}">
+                    <VerticalStackLayout>
+                        <Grid ColumnDefinitions="*,*">
+                            <Label Grid.Column="0" Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="Name"/>
+                            <Entry Grid.Column="0" IsVisible="False"/>
+                            <Border Grid.Column="1" x:Name="NameBtn" Style="{StaticResource EditButton}" HorizontalOptions="End">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="EditTapped"/>
+                                </Border.GestureRecognizers>
+                                <Label Style="{StaticResource OptionLabel}">
+                                    Edytuj
                                 </Label>
-                                <Border Grid.Column="1" Style="{StaticResource EditButton}" HorizontalOptions="End">
-                                    <Label Style="{StaticResource OptionLabel}">
-                                        Edytuj
-                                    </Label>
-                                </Border>
-                            </Grid>
-                        </VerticalStackLayout>
-            
-            
+                            </Border>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,*">
+                            <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="Role"/>
+                            <Border Grid.Column="1" Style="{StaticResource EditButton}" HorizontalOptions="End">
+                                <Label Style="{StaticResource OptionLabel}">
+                                    Edytuj
+                                </Label>
+                            </Border>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,*">
+                            <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="ParishLabel">
+                                Parafia????????
+                            </Label>
+                            <Border Grid.Column="1" Style="{StaticResource EditButton}" HorizontalOptions="End">
+                                <Label Style="{StaticResource OptionLabel}">
+                                    Edytuj
+                                </Label>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
                 </Border>
-                
-                <VerticalStackLayout x:Name="adminBtn" IsVisible="False"/>
-                <VerticalStackLayout x:Name="RosariesContainer" IsVisible="False"/>
-                
+
+                <!-- panel admina -->
+                <Border Style="{StaticResource MenuOption}" x:Name="adminBtn" IsVisible="False">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="AdminBtn_Clicked"/>
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="settings.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                            Panel administracyjny
+                        </Label>
+                    </Grid>
+                </Border>
+
+                <!-- dolacz do grupy -->
+                <Border Style="{StaticResource MenuOption}" x:Name="RosariesContainer" IsVisible="False">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="JoinBtn_Clicked"/>
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="flower.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                            Dołącz do róży
+                        </Label>
+                    </Grid>
+                </Border>
+
+                <!-- wyloguj -->
                 <Border Style="{StaticResource MenuOption}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Logout_Clicked"/>
                     </Border.GestureRecognizers>
-                    <Label Style="{StaticResource OptionLabel}">
-                        Wyloguj się
-                    </Label>
+                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="logout.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                            Wyloguj się
+                        </Label>
+                    </Grid>
                 </Border>
 
             </VerticalStackLayout>
-            </ScrollView>
-        </Grid>
+        </ScrollView>
 
         <mauiapp1:BottomMenu Grid.Row="1" />
     </Grid>
