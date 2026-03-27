@@ -34,7 +34,6 @@ public partial class ProfilePage : ContentPage
 
             RosariesShow();
         }
-
     }
     private async void Logout_Clicked(object sender, EventArgs e)
     {
@@ -75,97 +74,46 @@ public partial class ProfilePage : ContentPage
         if (int.Parse(userRole) < 3)
         {
             adminBtn.IsVisible = true;
-            var adminBTN = CreateAdminButton();
-            adminBtn.Children.Add(adminBTN);
         }
         #endif
     }
 
     private async void RosariesShow()
     {
-        
-            List<RosaryInfo> rosaryInfos = await _rosaryService.GetUserRosariesAsync(UserId);
-            MainThread.BeginInvokeOnMainThread(() =>
+        List<RosaryInfo> rosaryInfos = await _rosaryService.GetUserRosariesAsync(UserId);
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            if (rosaryInfos == null || rosaryInfos.Count == 0)
             {
-                RosariesContainer.Children.Clear(); // Czyścimy listę
-                if (rosaryInfos == null || rosaryInfos.Count == 0)
-                {
-                    Role.Text += "Nie należysz do żadnej róży";
-                    RosariesContainer.IsVisible = true;
-                    
-                    RosariesContainer.Children.Add(CreateJoinButton());
-                }
-                else
-                {
-                    Role.Text += rosaryInfos[0].Name;
-                }
-            });
-        
+                Role.Text += "Nie należysz do żadnej róży";
+                RosariesContainer.IsVisible = true;
+            }
+            else
+            {
+                Role.Text += rosaryInfos[0].Name;
+            }
+        });
     }
-    private Border CreateJoinButton()
+
+    private void JoinBtn_Clicked(object sender, EventArgs e)
     {
-        var borderStyle = (Style)Application.Current.Resources["MenuOption"];
-        var labelStyle = (Style)Application.Current.Resources["OptionLabel"];
-
-        var border = new Border
-        {
-            Style = borderStyle
-        };
-
         var navigationParameter = new Dictionary<string, object> { { "UserId", UserId } };
-        var tapGesture = new TapGestureRecognizer();
-        tapGesture.Tapped += async (s, e) =>
-        {
-            await Shell.Current.GoToAsync("JoinRosary", navigationParameter);
-        };
-
-        border.GestureRecognizers.Add(tapGesture);
-        border.Content = new Label
-        {
-            Text = "Dołącz do róży",
-            Style = labelStyle
-        };
-
-        return border;
+        Shell.Current.GoToAsync("JoinRosary", navigationParameter);
     }
-    private Border CreateAdminButton()
+
+    private void AdminBtn_Clicked(object sender, EventArgs e)
     {
-        var borderStyle = (Style)Application.Current.Resources["MenuOption"];
-        var labelStyle = (Style)Application.Current.Resources["OptionLabel"];
-
-        var border = new Border
-        {
-            Style = borderStyle
-        };
-
-        var tapGesture = new TapGestureRecognizer();
-        tapGesture.Tapped += async (s, e) =>
-        {
-
-            await Shell.Current.GoToAsync("AdminPage");
-        };
-
-        border.GestureRecognizers.Add(tapGesture);
-        border.Content = new Label
-        {
-            Style = labelStyle,
-            Text = "Panel Administracyjny"
-        };
-
-        return border;
-
+        Shell.Current.GoToAsync("AdminPage");
     }
 
     private void EditTapped(object sender, EventArgs e)
     {
-        
         if (sender==NameBtn)
         {
             var label = (Label)NameBtn.Content;
             if (label.Text=="Edytuj")
             {
                 label.Text = "Zatwierdź";
-
             }
         }
     }

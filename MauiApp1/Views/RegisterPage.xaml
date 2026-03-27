@@ -46,20 +46,13 @@
                                           Placeholder="Powtórz Hasło"
                                           IsPassword="True"/>
 
-                        <Picker x:Name="ParishPicker"
-                                    Title="Wybierz z listy lub zostaw puste"
-                                    ItemDisplayBinding="{Binding Name}"
-                                    HeightRequest="45"
-                                    TitleColor="{DynamicResource FadedText}"
-                                    TextColor="{DynamicResource Text}" />
-
-                        <Border BackgroundColor="{DynamicResource Primary}" HeightRequest="45">
+                        <Border BackgroundColor="{DynamicResource Primary}" HeightRequest="45" Padding="3">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="ParishTapped"/>
                             </Border.GestureRecognizers>
                             <VerticalStackLayout>
-                                <Label x:Name="ParishLabel" Margin="5,0"/>
-                                <BoxView/>
+                                <Label x:Name="ParishLabel" Text="Wybierz Swoją parafie" Margin="0,7"/>
+                                <BoxView BackgroundColor="{StaticResource FadedText}" />
                             </VerticalStackLayout>
                         </Border>
 

@@ -13,6 +13,13 @@ public partial class LoginPage : ContentPage
         InitializeComponent();
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        Preferences.Remove("ParishId");
+        Preferences.Remove("ParishName");
+    }
+
     private async void OnLoginClicked(object sender, EventArgs e)
     {
         if (_isBusy)
