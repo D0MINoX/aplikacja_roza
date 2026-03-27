@@ -10,6 +10,8 @@ public partial class RegisterPage : ContentPage
 {
     private readonly AuthService _authService;
     private readonly ParishService _parishService;
+    private List<Parish> parishes;
+    private bool _isBusy;
 
     public RegisterPage(AuthService authService, ParishService parishService)
     {
@@ -22,17 +24,35 @@ public partial class RegisterPage : ContentPage
     {
         base.OnAppearing();
         LoadParish();
-
+        _isBusy = false;
+        string selectedParish = Preferences.Get("ParishName", "Nie wybieraj żadnej parafi");
+        if(selectedParish == "Nie wybieraj żadnej parafi")
+        {
+            ParishLabel.Text = "Wybierz Swoją parafie";
+            if (Application.Current.Resources.TryGetValue("FadedText", out var value))
+            {
+                var color = (Color)value;
+                ParishLabel.TextColor = color;
+            }
+        }
+        else
+        {
+            ParishLabel.Text = selectedParish;
+            if (Application.Current.Resources.TryGetValue("Text", out var value))
+            {
+                var color = (Color)value;
+                ParishLabel.TextColor = color;
+            }
+        }
     }
 
-    private async Task<List<Parish>> LoadParish()
+    private async Task LoadParish()
     {
         var result = await _parishService.AllParish();
         if (result.isSuccess)
         {
-            return result.Data;
+            parishes = result.Data;
         }
-        return null;
     }
 
     private async void Register_Clicked(object sender, EventArgs e)
@@ -42,9 +62,11 @@ public partial class RegisterPage : ContentPage
         string email = EmailEntry.Text;
         string password = PasswordEntry.Text;
         string passwordRetype = PasswordRetype.Text;
-        var selectedParish = ParishPicker.SelectedItem as Parish;
+        int selectedParish = Preferences.Get("ParishId", 0);
+        Preferences.Remove("ParishId");
+        Preferences.Remove("ParishName");
 
-        if (name==null || surname==null || email==null || password==null || passwordRetype==null || email==null)
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(surname) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(passwordRetype))
         {
             await DisplayAlertAsync("Błąd", "Każede pole musi zostać wypełnione", "OK");
             return;
@@ -60,7 +82,11 @@ public partial class RegisterPage : ContentPage
         }
         else
         {
-            bool isSuccess = await _authService.RegisterAsync(name, surname, email, password,selectedParish?.Id);
+            bool isSuccess;
+            if (selectedParish==0)
+                isSuccess = await _authService.RegisterAsync(name, surname, email, password, null);
+            else
+                isSuccess = await _authService.RegisterAsync(name, surname, email, password, selectedParish);
 
             if (isSuccess)
             {
@@ -84,7 +110,11 @@ public partial class RegisterPage : ContentPage
 
     private async void ParishTapped(object sender, EventArgs e)
     {
+        if(_isBusy) 
+            return;
 
-        //await this.ShowPopupAsync(new PickerPopup("parish"));
+        _isBusy = true;
+
+        await this.ShowPopupAsync(new ParishPickerPopup(parishes));
     }
 }
