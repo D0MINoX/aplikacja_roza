@@ -10,12 +10,14 @@ public partial class PickerPopup : Popup
     public PickerPopup(List<string> val, string name)
 	{
         this.name = name;
-        GenerateForMeditions(val);
 		InitializeComponent();
+        GenerateForMeditions(val);
 	}
 
     public void GenerateForMeditions(List<string> lista)
     {
+        _isInitializing = true;
+
         RadioPicker.BatchBegin();
         RadioPicker.Children.Clear();
         foreach (var item in lista)
@@ -47,6 +49,8 @@ public partial class PickerPopup : Popup
             RadioButtonGroup.SetSelectedValue(RadioPicker, selected);
         else if (lista.Count > 0)
             RadioButtonGroup.SetSelectedValue(RadioPicker, lista[0]);
+
+        _isInitializing = false;
     }
 
     private void Radio_CheckedChanged(object sender, CheckedChangedEventArgs e)
