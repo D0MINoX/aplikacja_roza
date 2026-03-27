@@ -78,3 +78,4 @@
         <mauiapp1:BottomMenu Grid.Row="1" />
     </Grid>
 </ContentPage>
+ 
