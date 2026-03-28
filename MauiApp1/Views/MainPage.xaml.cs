@@ -3,6 +3,7 @@ using MauiApp1.Services;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.Json;
 
 
 namespace MauiApp1
@@ -18,7 +19,7 @@ namespace MauiApp1
             InitializeComponent();
             _meditationService = meditationService;
             _authService = authService;
-            UpdateMeditation();
+            
             _rosaryService = rosaryService;
         }
         protected override async void OnAppearing()
@@ -33,6 +34,7 @@ namespace MauiApp1
             {
                 RosaryTile.IsVisible = false;
             }
+            await UpdateMeditation();
         }
         private async void MyRosaryGroup_Tapped(object sender, TappedEventArgs e)
         {
@@ -89,14 +91,60 @@ namespace MauiApp1
 
         private async Task UpdateMeditation()
         {
-            MeditationLabel.Text = "Ładowanie ....";
-            date = Preferences.Default.Get("LastDate", 1);
-            string savedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
-            DateLabel.Text = "Dzień " + date;
-            MysteryLabel.Text = savedMystery;
-            var data = await _meditationService.GetMeditationData(this.date, savedMystery);
-          
-            MeditationLabel.Text = data?.Content ?? "Brak rozważania";
+            
+            try
+            {
+               
+                date=Preferences.Default.Get("LastDate", 1);
+                
+                string selectedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
+                if (string.IsNullOrEmpty(selectedMystery)) return;
+
+                MeditationLabel.Text = "Ładowanie ....";
+
+
+                var localData = await GetMeditationFromLocalFile(this.date, selectedMystery);
+
+                if (localData != null)
+                {
+                    DateLabel.Text = "Dzień " + this.date;
+                    MysteryLabel.Text = selectedMystery;
+                    MeditationLabel.Text = localData?.Content ?? "Brak rozważania";
+                  
+                    return;
+                }
+
+                var data = await _meditationService.GetMeditationData(this.date, selectedMystery);
+                DateLabel.Text = "Dzień " + this.date;
+                MysteryLabel.Text = selectedMystery;
+                MeditationLabel.Text = data?.Content ?? "Brak rozważania";
+            }
+            catch (Exception ex)
+            {
+                MeditationLabel.Text = "Błąd połączenia";
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+        }
+        private async Task<LocalMeditation> GetMeditationFromLocalFile(int day, string mystery)
+        {
+            try
+            {
+
+                string path = GetFileName(mystery);
+                if (!File.Exists(path)) return null;
+
+                string json = await File.ReadAllTextAsync(path);
+                var allMeditations = JsonSerializer.Deserialize<List<LocalMeditation>>(json);
+
+
+                return allMeditations?.FirstOrDefault(m => m.Date == day);
+            }
+            catch { return null; }
+        }
+        private string GetFileName(string mystery)
+        {
+            string safeName = mystery.Replace(" ", "_").Substring(0, Math.Min(mystery.Length, 20));
+            return Path.Combine(FileSystem.AppDataDirectory, $"meditations_{safeName}.json");
         }
     }
 }

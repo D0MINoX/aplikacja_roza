@@ -1,13 +1,16 @@
+using MauiApp1.Services;
+
 namespace MauiApp1;
 
 
 public partial class FullMeditationPage : ContentPage, IQueryAttributable
 {
     private string _meditationText;
-
-    public FullMeditationPage()
+    private readonly NotificationsService _notificationService;
+    public FullMeditationPage(NotificationsService notificationsService)
     {
         InitializeComponent();
+        _notificationService = notificationsService;
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -45,6 +48,11 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         Color? color = Complete.BackgroundColor;
         float newAlpha = color.Alpha < 1f ? 1f : 0.5f;
         Complete.BackgroundColor = color.WithAlpha(newAlpha);
+        string todayKey = DateTime.Today.ToString("yyyy-MM-dd");
+        Preferences.Default.Set($"Done_{todayKey}", true);
+
+        
+        await _notificationService.ScheduleWeeklyReminders();
     }
 
     private async void BackTapped(object sender, TappedEventArgs e)

@@ -1,13 +1,19 @@
+using System;
 using MauiApp1.Services;
+using Plugin.LocalNotification;
+using Plugin.LocalNotification.Core.Models;
+using Plugin.LocalNotification.Core.Models.AndroidOption;
 
 namespace MauiApp1;
 
 public partial class SettingsPage : ContentPage
 {
     private readonly AuthService _authService;
-    public SettingsPage(AuthService authService)
+    private readonly NotificationsService _notificationsService;
+    public SettingsPage(AuthService authService,NotificationsService notificationsService)
     {
         _authService = authService;
+        _notificationsService = notificationsService;
         InitializeComponent();
 
     }
@@ -67,15 +73,19 @@ public partial class SettingsPage : ContentPage
     }
     private async void OnDownloadToggled(object sender, ToggledEventArgs e)
     {
-        bool isAllowed = e.Value; 
+        bool isAllowed = e.Value;
         Preferences.Default.Set("AutoDownloadMeditations", isAllowed);
 
         if (isAllowed)
         {
-            
+
             await DisplayAlertAsync("Offline", "Aplikacja pobierze teraz rozważania na cały miesiąc.", "OK");
         }
 
     }
-    
+    private async void OnTimeChanged(object sender, TimeChangedEventArgs e)
+    {
+        Preferences.Default.Set("ReminderTime", e.NewTime.ToString());
+        await  _notificationsService.ScheduleWeeklyReminders();
+    }
 }

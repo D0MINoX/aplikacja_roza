@@ -168,6 +168,7 @@ public partial class RosaryMeditationsPage : ContentPage
 
     public async void GroupTapped(object sender, EventArgs e)
     {
+        
         if (_isBusy)
             return;
         _isBusy = true;
@@ -199,7 +200,7 @@ public partial class RosaryMeditationsPage : ContentPage
     {
         try
         {
-            string path = Path.Combine(FileSystem.AppDataDirectory, $"meditations_{mystery.GetHashCode()}.json");
+            string path = GetFileName(mystery);
             if (!File.Exists(path)) return null;
 
             string json = await File.ReadAllTextAsync(path);
@@ -220,7 +221,7 @@ public partial class RosaryMeditationsPage : ContentPage
 
             if (list != null && list.Any())
             {
-                string path = Path.Combine(FileSystem.AppDataDirectory, $"meditations_{mystery.GetHashCode()}.json");
+                string path = GetFileName(mystery);
                 string json = JsonSerializer.Serialize(list);
                 await File.WriteAllTextAsync(path, json);
                 return true;
@@ -228,5 +229,11 @@ public partial class RosaryMeditationsPage : ContentPage
         }
         catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Błąd pobierania całości: {ex.Message}"); }
         return false;
+    }
+    private string GetFileName(string mystery)
+    {
+        
+        string safeName = mystery.Replace(" ", "_").Substring(0, Math.Min(mystery.Length, 20));
+        return Path.Combine(FileSystem.AppDataDirectory, $"meditations_{safeName}.json");
     }
 }

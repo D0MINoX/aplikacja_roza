@@ -16,11 +16,6 @@
                     <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
                         Ustawienia
                     </Label>
-                    <!--
-                    <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
-                        ustawienia
-                    </Label>
-                    -->
                 </Grid>
 
                 <!-- Zaloguj się -->
@@ -98,6 +93,13 @@
                         <Switch x:Name="DownloadSwitch" 
                              Toggled="OnDownloadToggled" />
                     </HorizontalStackLayout>
+                </Border>
+                <Border Style="{StaticResource MenuOption}">
+                <VerticalStackLayout Spacing="10" Padding="20">
+                    <Label Text="Ustaw godzinę przypomnienia:" />
+                    <TimePicker x:Name="MyTimePicker" 
+                TimeSelected="OnTimeChanged" />
+                </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>
         </ScrollView>

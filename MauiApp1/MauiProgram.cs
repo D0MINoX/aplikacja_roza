@@ -5,6 +5,8 @@ using MauiApp1.Views;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Platform;
+using Plugin.LocalNotification;
+
 
 #if ANDROID
 using Android.Content.Res;
@@ -20,6 +22,7 @@ namespace MauiApp1
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -68,7 +71,10 @@ namespace MauiApp1
             builder.Services.AddSingleton<MessagesService>();
             builder.Services.AddSingleton<MeditationsService>();
             builder.Services.AddSingleton<RosaryService>();
-            builder.Services.AddSingleton<AdminService>();
+            builder.Services.AddSingleton<AdminService>(); 
+            builder.Services.AddSingleton<NotificationsService>();
+
+
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<MyRosaryPage>();
             builder.Services.AddTransient<RosaryMeditationsPage>();
@@ -86,6 +92,7 @@ namespace MauiApp1
             builder.Services.AddTransient<MessagesPage>();
             builder.Services.AddTransient<MyRosariesListPage>();
             builder.Services.AddTransient<ParishAddPage>();
+          
             return builder.Build();
         }
     }
