@@ -1,5 +1,8 @@
 namespace MauiApp1;
 
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Extensions;
+using MauiApp1.Components;
 using MauiApp1.Models;
 using MauiApp1.Services;
 using Microsoft.Maui.Controls.Shapes;
@@ -106,15 +109,23 @@ public partial class ProfilePage : ContentPage
         Shell.Current.GoToAsync("AdminPage");
     }
 
-    private void EditTapped(object sender, EventArgs e)
+    private async void UserEditTapped(object sender, EventArgs e)
     {
-        if (sender==NameBtn)
+        var popup = new EditUserPopup("", "", "");
+        var wynik = await this.ShowPopupAsync(popup, new PopupOptions
         {
-            var label = (Label)NameBtn.Content;
-            if (label.Text=="Edytuj")
+            Shape = new RoundRectangle
             {
-                label.Text = "Zatwierdź";
-            }
+                CornerRadius = new CornerRadius(10),
+                StrokeThickness = 0
+            },
+            Shadow = null
+        });
+
+        if (wynik is EditUserResult dane)
+        {
+            await DisplayAlertAsync("Sukces", $"Imię: {dane.Imie}, Nazwisko: {dane.Nazwisko}", "OK");
+            // Tutaj możesz dodać logikę do aktualizacji danych użytkownika
         }
     }
 }
