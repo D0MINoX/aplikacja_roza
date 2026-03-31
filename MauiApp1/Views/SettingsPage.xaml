@@ -98,8 +98,8 @@
                 <VerticalStackLayout Spacing="10" Padding="20">
                     <Label Text="Ustaw godzinę przypomnienia:" />
                     <TimePicker x:Name="MyTimePicker" 
-                TimeSelected="OnTimeChanged" />
-                </VerticalStackLayout>
+                        TimeSelected="OnTimeChanged" />
+                    </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>
         </ScrollView>

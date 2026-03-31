@@ -23,7 +23,7 @@
 
                 <Border Style="{StaticResource MenuOption}">
                     <VerticalStackLayout Spacing="5">
-                        
+
                         <Label Text="Zarejestruj się"
                                Style="{StaticResource HeaderLabel}"
                                HorizontalOptions="Center"/>
@@ -57,7 +57,38 @@
                         </Border>
 
                         <Label Text="Jeśli nie widzisz swojej parafii, możesz ją pominąć." Style="{StaticResource HeaderLabel2}"/>
+                        <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                            <CheckBox x:Name="AcceptTermsCheckBox" />
 
+                            <Label VerticalOptions="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Akceptuję " />
+
+                                        <Span Text="Regulamin" 
+                      TextColor="{DynamicResource Tertiary}"
+                      TextDecorations="Underline">
+                                            <Span.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OpenRegulamin_Tapped" />
+                                            </Span.GestureRecognizers>
+                                        </Span>
+
+                                        <Span Text=" oraz " />
+
+                                        <Span Text="Politykę Prywatności" 
+                      TextColor="{DynamicResource Tertiary}" 
+                      TextDecorations="Underline">
+                                            <Span.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OpenPrywatnosc_Tapped" />
+                                            </Span.GestureRecognizers>
+                                        </Span>
+                                        <Span Text="*" TextColor="red"/>
+
+
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </HorizontalStackLayout>
                         <Border Style="{StaticResource NavButton}" HeightRequest="50" WidthRequest="250">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="Register_Clicked"/>
@@ -69,7 +100,7 @@
 
                     </VerticalStackLayout>
                 </Border>
-                
+
             </VerticalStackLayout>
         </ScrollView>
 
