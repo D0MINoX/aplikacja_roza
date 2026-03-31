@@ -26,7 +26,7 @@ public partial class RegisterPage : ContentPage
         LoadParish();
         _isBusy = false;
         string selectedParish = Preferences.Get("ParishName", "Nie wybieraj żadnej parafi");
-        if(selectedParish == "Nie wybieraj żadnej parafi")
+        if (selectedParish == "Nie wybieraj żadnej parafi")
         {
             ParishLabel.Text = "Wybierz Swoją parafie";
             if (Application.Current.Resources.TryGetValue("FadedText", out var value))
@@ -70,7 +70,13 @@ public partial class RegisterPage : ContentPage
         {
             await DisplayAlertAsync("Błąd", "Każede pole musi zostać wypełnione", "OK");
             return;
-        } else if (!ValidateEmail(email.Trim()))
+        }
+        else if (!AcceptTermsCheckBox.IsChecked)
+        {
+            await DisplayAlertAsync("Błąd", "Tworzenie konta wymaga akceptacji regulaminu", "OK");
+            return;
+        }
+        else if (!ValidateEmail(email.Trim()))
         {
             await DisplayAlertAsync("Błąd", "Podaj poprawny adres e-mail", "OK");
             return;
@@ -82,16 +88,28 @@ public partial class RegisterPage : ContentPage
         }
         else
         {
+            string publicIp;
+            try
+            {
+                using var client = new HttpClient();
+                publicIp = await client.GetStringAsync("https://api.ipify.org");
+                publicIp=publicIp.Trim();
+            }
+            catch
+            {
+                await DisplayAlertAsync("Błąd", "Błąd podczas pobierania IP", "OK");
+                    return;
+            }
             bool isSuccess;
-            if (selectedParish==0)
-                isSuccess = await _authService.RegisterAsync(name, surname, email, password, null);
+            if (selectedParish == 0)
+                isSuccess = await _authService.RegisterAsync(name, surname, email, password, null,publicIp);
             else
-                isSuccess = await _authService.RegisterAsync(name, surname, email, password, selectedParish);
+                isSuccess = await _authService.RegisterAsync(name, surname, email, password, selectedParish,publicIp);
 
             if (isSuccess)
             {
-               await DisplayAlertAsync("Sukces", "Konto zostało utworzone!", "OK");
-               await Shell.Current.GoToAsync("..");
+                await DisplayAlertAsync("Sukces", "Konto zostało utworzone!", "OK");
+                await Shell.Current.GoToAsync("..");
             }
             else
             {
@@ -110,11 +128,21 @@ public partial class RegisterPage : ContentPage
 
     private async void ParishTapped(object sender, EventArgs e)
     {
-        if(_isBusy) 
+        if (_isBusy)
             return;
 
         _isBusy = true;
 
         await this.ShowPopupAsync(new ParishPickerPopup(parishes));
+    }
+    private async void OpenRegulamin_Tapped(object sender, EventArgs e)
+    {
+
+        await Launcher.Default.OpenAsync("https://info.rosaryapi.pl/#regulamin");
+    }
+
+    private async void OpenPrywatnosc_Tapped(object sender, EventArgs e)
+    {
+        await Launcher.Default.OpenAsync("https://info.rosaryapi.pl/#prywatnosc");
     }
 }

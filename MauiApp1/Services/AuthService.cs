@@ -42,9 +42,9 @@ namespace MauiApp1.Services
             return false;
         }
 
-        public async Task<bool> RegisterAsync(string name, string surname, string username, string password,int? parish)
+        public async Task<bool> RegisterAsync(string name, string surname, string username, string password,int? parish,string publicIp)
         {
-            var registerData = new { username = username, password = password, name = name, surname = surname,parish=parish };
+            var registerData = new { username = username, password = password, name = name, surname = surname,parish=parish,userIp=publicIp };
             try
             {
                 var response = await _httpClient.PostAsJsonAsync("api/Auth/register", registerData);

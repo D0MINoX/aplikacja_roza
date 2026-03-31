@@ -21,7 +21,9 @@ public partial class SettingsPage : ContentPage
     {
         base.OnAppearing();
         IsLogged();
+        DownloadSwitch.Toggled -= OnDownloadToggled;
         DownloadSwitch.IsToggled = Preferences.Default.Get("AutoDownloadMeditations", false);
+        DownloadSwitch.Toggled += OnDownloadToggled;
     }
 
     private async void IsLogged()
