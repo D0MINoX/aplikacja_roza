@@ -27,14 +27,13 @@
 
                 <!-- dane profilu -->
                 <Border Style="{StaticResource MenuOption}">
-                    <VerticalStackLayout>
+                    <VerticalStackLayout Spacing="10">
                         
                         <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="Name"/>
                         <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="Role"/>
-                        <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="ParishLabel">
-                            Parafia????????
-                        </Label>
-                        
+                        <Label Style="{StaticResource OptionLabel}" HorizontalOptions="Start" x:Name="ParishLabel"/>
+
+                        <!-- Edycja danych -->
                         <Border Style="{StaticResource NavButton}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="UserEditTapped"/>
@@ -43,7 +42,24 @@
                                 <Label Grid.Column="0" Style="{StaticResource OptionLabel}" HorizontalOptions="Start">
                                     Edytuj profil
                                 </Label>
-                                <Image Grid.Column="1" Source="right_arrow.png" Style="{StaticResource OptionImage}" HorizontalOptions="End">
+                                <Image Grid.Column="1" Source="right_arrow.png" HorizontalOptions="End" DesiredSize="30,30">
+                                    <Image.Behaviors>
+                                        <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                                    </Image.Behaviors>
+                                </Image>
+                            </Grid>
+                        </Border>
+
+                        <!-- Edycja hasła -->
+                        <Border Style="{StaticResource NavButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="PasswordEditTapped"/>
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="*,auto" ColumnSpacing="20">
+                                <Label Grid.Column="0" Style="{StaticResource OptionLabel}" HorizontalOptions="Start">
+                                    Zmień hasło
+                                </Label>
+                                <Image Grid.Column="1" Source="right_arrow.png" HorizontalOptions="End" DesiredSize="30,30">
                                     <Image.Behaviors>
                                         <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
                                     </Image.Behaviors>
@@ -108,7 +124,7 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <mauiapp1:BottomMenu Grid.Row="1" />
+        <mauiapp1:BottomMenu Grid.Row="1"/>
     </Grid>
 </ContentPage>
  

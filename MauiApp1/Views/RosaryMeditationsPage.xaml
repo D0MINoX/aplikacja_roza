@@ -25,24 +25,24 @@
 
                 <!-- Wybór tajemnic -->
                 <Border Style="{StaticResource MenuOption}">
-                    <VerticalStackLayout Spacing="20">
+                    <VerticalStackLayout Spacing="5">
                         
-                        <Border BackgroundColor="{DynamicResource Primary}">
+                        <Border BackgroundColor="{DynamicResource Primary}" Padding="3" HeightRequest="45">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="GroupTapped"/>
                             </Border.GestureRecognizers>
                             <VerticalStackLayout>
-                                <Label x:Name="GroupLabel" Margin="5,0"/>
+                                <Label x:Name="GroupLabel" Margin="0,7"/>
                                 <BoxView/>
                             </VerticalStackLayout>
                         </Border>
-                        
-                        <Border BackgroundColor="{DynamicResource Primary}">
+
+                        <Border BackgroundColor="{DynamicResource Primary}" Padding="3" HeightRequest="45">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="DetailsTapped"/>
                             </Border.GestureRecognizers>
                             <VerticalStackLayout>
-                                <Label x:Name="DetailLabel" Margin="5,0"/>
+                                <Label x:Name="DetailLabel" Margin="0,7"/>
                                 <BoxView/>
                             </VerticalStackLayout>
                         </Border>
