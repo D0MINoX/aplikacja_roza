@@ -11,6 +11,7 @@
         
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Spacing="20">
+                
                 <Border Style="{StaticResource MenuOption}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Meditation_Tapped"/>
@@ -28,7 +29,9 @@
                         <ProgressBar HeightRequest="5" Progress="0.25" ProgressColor="{DynamicResource Text}"></ProgressBar>
                     </VerticalStackLayout>
                 </Border>
+                
                 <VerticalStackLayout Spacing="50">
+                    
                     <Border Style="{StaticResource MenuOption}" x:Name="RosaryTile">
                         <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
                             <Grid.GestureRecognizers>
@@ -44,6 +47,7 @@
                             </Label>
                         </Grid>
                     </Border>
+                    
                     <Border Style="{StaticResource MenuOption}">
                         <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
                             <Grid.GestureRecognizers>
@@ -59,6 +63,7 @@
                             </Label>
                         </Grid>
                     </Border>
+                    
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>

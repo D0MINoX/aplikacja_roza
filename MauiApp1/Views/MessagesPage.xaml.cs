@@ -34,6 +34,7 @@ public partial class MessagesPage : ContentPage, IQueryAttributable
         FabButton.IsVisible = await _authService.CanUserSendSmsAsync();
 
     }
+
     private async void OnFabClicked(object sender, EventArgs e)
     {
       
@@ -122,7 +123,14 @@ public partial class MessagesPage : ContentPage, IQueryAttributable
         if (message.isSuccess)
         {
             MessagesList.ItemsSource = message.Data;
+            if (message.Data?.Count > 0)
+            {
+                MessagesList.ScrollTo(
+                    message.Data.Count - 1,
+                    position: ScrollToPosition.End,
+                    animate: false);
+            }
         }
-      
+        
     }
 }

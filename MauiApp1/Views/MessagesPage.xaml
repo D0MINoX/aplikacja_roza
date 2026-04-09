@@ -5,51 +5,55 @@
              x:Class="MauiApp1.Views.MessagesPage"
              Title="MessagesPage">
     <Grid RowDefinitions="*, auto">
-        <CollectionView Grid.Row="0" x:Name="MessagesList" Margin="15">
+        
+        <!-- Wiadomości -->
+        <CollectionView Grid.Row="0"
+                        x:Name="MessagesList"
+                        ItemsUpdatingScrollMode="KeepLastItemInView">
             <CollectionView.EmptyView>
                 <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                    <Label Text="Brak nowych ogłoszeń" HorizontalTextAlignment="Center" TextColor="Gray"/>
+                    <Label Text="Brak nowych ogłoszeń" HorizontalTextAlignment="Center" TextColor="{DynamicResource FadedText}"/>
                 </VerticalStackLayout>
             </CollectionView.EmptyView>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <VerticalStackLayout Padding="0,0,0,15">
-                        <Border StrokeShape="RoundRectangle 15" 
-                                BackgroundColor="{DynamicResource Primary}"
-                                StrokeThickness="1"
-                                Stroke="{DynamicResource Accent}">
+                    <VerticalStackLayout Padding="0,0,0,25">
+                        
+                        <Border Style="{StaticResource ListElement}">
                             <VerticalStackLayout Padding="15" Spacing="5">
+
+                                <Label Text="{Binding MessageTitle}"
+                                       FontAttributes="Bold"/>
+
+                                <Label Text="{Binding MessageBody}" LineBreakMode="WordWrap"/>
+
+                                <BoxView HeightRequest="1"
+                                         Margin="0,5"
+                                         Color="{DynamicResource Accent}"/>
+
                                 <Grid ColumnDefinitions="*, Auto">
-                                    <Label Grid.Column="0" 
-                                           Text="{Binding MessageTitle}" 
-                                           FontAttributes="Bold" 
-                                           FontSize="16"
-                                           TextColor="{DynamicResource Text}"/>
-                                    <Label Grid.Column="1" 
+                                    <Label Grid.Column="0"
+                                           Text="{Binding AuthorName, StringFormat='Od: {0}'}"
+                                           TextColor="{DynamicResource Tertiary}"
+                                           FontAttributes="Italic"/>
+
+                                    <Label Grid.Column="1"
                                            Text="{Binding CreatedAt, StringFormat='{0:dd.MM HH:mm}'}" 
-                                           FontSize="11" 
-                                           TextColor="Gray" 
+                                           TextColor="{DynamicResource FadedText}" 
                                            VerticalOptions="Center"/>
                                 </Grid>
+                                
 
-                                <Label Text="{Binding MessageBody}" 
-                                       TextColor="{DynamicResource Text}" 
-                                       LineBreakMode="WordWrap"
-                                       FontSize="14"/>
-
-                                <BoxView HeightRequest="1" Color="{DynamicResource Secondary}" Margin="0,5"/>
-
-                                <Label Text="{Binding AuthorName, StringFormat='Od: {0}'}" 
-                                       FontSize="12" 
-                                       FontAttributes="Italic"
-                                       TextColor="{DynamicResource Accent}"/>
                             </VerticalStackLayout>
                         </Border>
+                        
                     </VerticalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        
+        
         <BoxView x:Name="OverlayBackground"
          BackgroundColor="#AA000000"
          Opacity="0"

@@ -63,6 +63,7 @@
     <Style TargetType="Label" x:Key="HeaderLabel">
         <Setter Property="VerticalOptions" Value="Start"/>
         <Setter Property="FontSize" Value="Large"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
     </Style>
 
     <Style TargetType="Label" x:Key="HeaderLabel2">
