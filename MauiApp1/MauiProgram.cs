@@ -42,7 +42,7 @@ namespace MauiApp1
             //#endif
 
 
-
+            // Zmiana underline color dla MyEntry
             EntryHandler.Mapper.AppendToMapping(nameof(MyEntry.UnderlineColor), (handler, view) =>
             {
 #if ANDROID
@@ -54,6 +54,17 @@ namespace MauiApp1
 #endif
             });
 
+            // Zmiana underline color dla MyEditor
+            EditorHandler.Mapper.AppendToMapping(nameof(MyEditor.UnderlineColor), (handler, view) =>
+            {
+#if ANDROID
+                if (view is MyEditor myEditor)
+                {
+                    handler.PlatformView.BackgroundTintList =
+                        ColorStateList.ValueOf(myEditor.UnderlineColor.ToPlatform());
+                }
+#endif
+            });
 
 
             builder.Services.AddSingleton(new HttpClient

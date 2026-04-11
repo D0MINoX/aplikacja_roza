@@ -19,7 +19,6 @@ namespace MauiApp1
             InitializeComponent();
             _meditationService = meditationService;
             _authService = authService;
-            
             _rosaryService = rosaryService;
         }
         protected override async void OnAppearing()
@@ -56,20 +55,20 @@ namespace MauiApp1
                 {
                     int rosaryId;
                     List<RosaryInfo> rosaryInfos = await _rosaryService.GetUserRosariesAsync(Id);
-                        if (rosaryInfos != null && rosaryInfos.Count > 0)
-                        {
-                            rosaryId = rosaryInfos[0].Id;
-                            var navigationParameter = new Dictionary<string, object>
-                                {
-                                    { "RosaryId", rosaryId.ToString() }
-                                };
+                    if (rosaryInfos != null && rosaryInfos.Count > 0)
+                    {
+                        rosaryId = rosaryInfos[0].Id;
+                        var navigationParameter = new Dictionary<string, object>{{ "RosaryId", rosaryId.ToString() }, { "UserRole", userRole }};
                         await Shell.Current.GoToAsync("MyRosaryGroup", navigationParameter);
-                        } 
-                }                 
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync("SelectParish", new Dictionary<string, object> { { "UserId", Id} });
+                    }
+                }
             }
-           
-            
         }
+
         private async void RosaryMeditations_Tapped(object sender, TappedEventArgs e)
         {
             await Shell.Current.GoToAsync("RosaryMeditations");
@@ -83,15 +82,14 @@ namespace MauiApp1
                 return;
 
             var navigationParameter = new Dictionary<string, object>
-    {
-        { "MeditationContent", textToSend }
-    };
+            {
+                { "MeditationContent", textToSend }
+            };
             await Shell.Current.GoToAsync("FullMeditation", navigationParameter);
         }
 
         private async Task UpdateMeditation()
         {
-            
             try
             {
                
@@ -135,7 +133,6 @@ namespace MauiApp1
 
                 string json = await File.ReadAllTextAsync(path);
                 var allMeditations = JsonSerializer.Deserialize<List<LocalMeditation>>(json);
-
 
                 return allMeditations?.FirstOrDefault(m => m.Date == day);
             }

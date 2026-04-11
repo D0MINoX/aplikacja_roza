@@ -4,5 +4,10 @@ using System.Text;
 
 namespace MauiApp1.Models
 {
-    public record EditUserResult(string Imie, string Nazwisko, string Telefon);
+    public class EditUserResult()
+    {
+        public string Name {  get; set; }
+        public string Surname {  get; set; }
+        public string Email {  get; set; }
+    }
 }

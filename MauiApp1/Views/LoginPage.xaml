@@ -9,53 +9,55 @@
              BackgroundColor="{DynamicResource Primary}">
 
     <Grid RowDefinitions="*,auto">
-        <Grid Grid.Row="0" RowDefinitions="auto,*" RowSpacing="20">
-            <!-- Header -->
-            <Grid Grid.Row="0" Style="{StaticResource Head}">
-                <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
-                    Panel logowania
-                </Label>
-                <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
-                    Zaloguj się do swojego konta
-                </Label>
-            </Grid>
+        <ScrollView Grid.Row="0">
+            <Grid RowDefinitions="auto,*" RowSpacing="20">
+                <!-- Header -->
+                <Grid Grid.Row="0" Style="{StaticResource Head}">
+                    <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
+                        Panel logowania
+                    </Label>
+                    <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
+                        Zaloguj się do swojego konta
+                    </Label>
+                </Grid>
 
-            <!-- Panel z logowaniem -->
-            <Border Grid.Row="1" Style="{StaticResource MenuOption}" VerticalOptions="Center">
-                <VerticalStackLayout Spacing="15">
-                    <Label Text="Zaloguj się" 
+                <!-- Panel z logowaniem -->
+                <Border Grid.Row="1" Style="{StaticResource MenuOption}" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Zaloguj się" 
                            Style="{StaticResource HeaderLabel}" 
                            HorizontalOptions="Center"/>
 
-                    <controls:MyEntry x:Name="EmailEntry" 
+                        <controls:MyEntry x:Name="EmailEntry" 
                                       Placeholder="Email" 
                                       Keyboard="Email"/>
-                    
-                    <controls:MyEntry x:Name="PasswordEntry" 
+
+                        <controls:MyEntry x:Name="PasswordEntry" 
                                       Placeholder="Hasło" 
                                       IsPassword="True"/>
 
-                    <Border Style="{StaticResource NavButton}" HeightRequest="50" WidthRequest="250">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnLoginClicked"/>
-                        </Border.GestureRecognizers>
-                        <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
-                            ZALOGUJ SIĘ
-                        </Label>
-                    </Border>
+                        <Border Style="{StaticResource NavButton}" HeightRequest="50" WidthRequest="250">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnLoginClicked"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                ZALOGUJ SIĘ
+                            </Label>
+                        </Border>
 
-                    <Border Style="{StaticResource NavButton}" HeightRequest="50" WidthRequest="250">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnRegisterClicked"/>
-                        </Border.GestureRecognizers>
-                        <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
-                            ZAREJESTRUJ SIĘ
-                        </Label>
-                    </Border>
-                    
-                </VerticalStackLayout>
-            </Border>
-        </Grid>
+                        <Border Style="{StaticResource NavButton}" HeightRequest="50" WidthRequest="250">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnRegisterClicked"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                ZAREJESTRUJ SIĘ
+                            </Label>
+                        </Border>
+
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+        </ScrollView>
         <mauiapp1:BottomMenu Grid.Row="1"/>
     </Grid>
 

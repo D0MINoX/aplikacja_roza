@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:models="clr-namespace:MauiApp1.Models"
+               xmlns:controls="clr-namespace:MauiApp1.Controls"
+               x:Class="MauiApp1.Components.NewMessagePopup"
+               x:TypeArguments="models:RosaryMessage"
+               BackgroundColor="{DynamicResource Primary}"
+               Padding="0">
+
+    <Border BackgroundColor="{DynamicResource Primary}" Padding="15">
+        <VerticalStackLayout Spacing="10">
+            
+            <Label Text="Nowe ogłoszenie" Style="{StaticResource HeaderLabel}"/>
+
+            <Border StrokeShape="RoundRectangle 5" StrokeThickness="1" Stroke="{DynamicResource Accent}">
+                <controls:MyEntry x:Name="TitleEntry"
+                                  Placeholder="Tytuł wiadomości..."
+                                  UnderlineColor="Transparent"/>
+            </Border>
+
+            <Border StrokeShape="RoundRectangle 5" StrokeThickness="1" Stroke="{DynamicResource Accent}">
+                <controls:MyEditor x:Name="BodyEditor"
+                                   Placeholder="Treść wiadomości..."/>
+            </Border>
+
+            <Grid ColumnDefinitions="*, *">
+                
+                <Border Grid.Column="0" Style="{StaticResource NavButton}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Cancel_Tapped"/>
+                    </Border.GestureRecognizers>
+                    <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                        Anuluj
+                    </Label>
+                </Border>
+                
+                <Border Grid.Column="1" Style="{StaticResource NavButton}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Send_Tapped"/>
+                    </Border.GestureRecognizers>
+                    <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                        Wyślij
+                    </Label>
+                </Border>
+                
+            </Grid>
+            
+        </VerticalStackLayout>
+    </Border>
+    
+</toolkit:Popup>

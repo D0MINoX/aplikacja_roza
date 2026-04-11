@@ -13,15 +13,17 @@ public partial class EditUserPopup : Popup<EditUserResult>
         EmailEntry.Text = email;
     }
 
-    private void CloseTapped(object sender, EventArgs e)
-        => CloseAsync();
+    private async void CloseTapped(object sender, EventArgs e)
+        => await CloseAsync(null);
 
-    private void SaveTapped(object sender, EventArgs e)
+    private async void SaveTapped(object sender, EventArgs e)
     {
-        CloseAsync(new EditUserResult(
-            NameEntry.Text?.Trim() ?? "",
-            SurnameEntry.Text?.Trim() ?? "",
-            EmailEntry.Text?.Trim() ?? ""
-        ));
+        EditUserResult result = new EditUserResult
+        {
+            Name = NameEntry.Text?.Trim() ?? "",
+            Surname = SurnameEntry.Text?.Trim() ?? "",
+            Email = EmailEntry.Text?.Trim() ?? ""
+        };
+        await CloseAsync(result);
     }
 }

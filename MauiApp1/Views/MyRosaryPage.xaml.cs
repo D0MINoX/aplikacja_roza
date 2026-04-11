@@ -7,11 +7,12 @@ using Newtonsoft.Json.Linq;
 
 namespace MauiApp1;
 
-[QueryProperty(nameof(RosaryId), "RosaryId")]
+[QueryProperty(nameof(RosaryId), "RosaryId"), QueryProperty(nameof(UserRole), "UserRole")]
 public partial class MyRosaryPage : ContentPage
 {
     public readonly RosaryService _rosaryService;
     private string _rosaryId;
+    public int UserRole { get; set; }
     public string RosaryId
     {
         get => _rosaryId;
@@ -32,25 +33,20 @@ public partial class MyRosaryPage : ContentPage
         var data = JObject.Parse(response);
         string name = data["name"].ToString();
         rosaryName.Text = name;
-    }
 
+        if (UserRole < 3)
+        {
+            MessagesLabel.Text = "Wyślij wiadomość do róży";
+        }
+        else
+        {
+            MessagesLabel.Text = "Zobacz wiadomości";
+        }
+    }
 
     private async void Messages_Tapped(object sender, TappedEventArgs e)
     {
-        var navigationParameter = new Dictionary<string, object>
-                                {
-                                    { "RosaryId", RosaryId }
-                                };
+        var navigationParameter = new Dictionary<string, object>{{ "RosaryId", RosaryId }};
         await Shell.Current.GoToAsync("Messages", navigationParameter);
-    }
-
-    private async void ViewGroups_Tapped(object sender, TappedEventArgs e)
-    {
-        // await Shell.Current.GoToAsync("ViewGroups");
-    }
-
-    private async void Login_Tapped(object sender, TappedEventArgs e)
-    {
-        await Shell.Current.GoToAsync("Login");
     }
 }

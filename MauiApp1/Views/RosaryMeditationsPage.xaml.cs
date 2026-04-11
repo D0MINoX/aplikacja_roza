@@ -133,7 +133,9 @@ public partial class RosaryMeditationsPage : ContentPage
 
     private async void PlayTapped(object sender, EventArgs e)
     {
-        
+        if(_isBusy) return;
+        _isBusy = true;
+
         await Browser.Default.OpenAsync(
         new Uri(Link),
         BrowserLaunchMode.SystemPreferred);
@@ -154,6 +156,9 @@ public partial class RosaryMeditationsPage : ContentPage
 
     private async void MeditationTapped(object sender, EventArgs e)
     {
+        if (_isBusy) return;
+        _isBusy = true;
+
         string textToSend = MeditationLabel.Text;
 
         if (string.IsNullOrWhiteSpace(textToSend) || textToSend == "Brak rozważania")
@@ -168,7 +173,6 @@ public partial class RosaryMeditationsPage : ContentPage
 
     public async void GroupTapped(object sender, EventArgs e)
     {
-        
         if (_isBusy)
             return;
         _isBusy = true;
@@ -180,7 +184,7 @@ public partial class RosaryMeditationsPage : ContentPage
         if (_isBusy)
             return;
         _isBusy = true;
-        var group = Preferences.Default.Get("LastGroup", "");
+        var group = Preferences.Default.Get("LastGroup", "Radosne");
         await this.ShowPopupAsync(new PickerPopup(_itemsMap[group], "Mystery"));
     }
     private void ApplyMeditationData(LocalMeditation data)

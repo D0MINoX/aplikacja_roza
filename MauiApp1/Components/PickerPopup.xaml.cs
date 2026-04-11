@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui.Views;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MauiApp1.Components;
 
@@ -89,7 +90,7 @@ public partial class PickerPopup : Popup
         {
             Preferences.Default.Set("LastMystery", val);
         }
-
+        Preferences.Default.Set("LastDate", 1);
         CloseAsync();
     }
 
