@@ -151,7 +151,7 @@
 
     <Style TargetType="Border" x:Key="ListElement">
         <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
-        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Padding" Value="5"/>
         <Setter Property="StrokeThickness" Value="0"/>
         <Setter Property="StrokeShape">
             <RoundRectangle CornerRadius="10"/>
@@ -162,11 +162,19 @@
                 <Shadow Brush="{DynamicResource Secondary}"
                 Offset="0,0"
                 Radius="5"
-                Opacity="0.5"/>
+                Opacity="0.7"/>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <Style TargetType="controls:MyEditor">
+        <Setter Property="PlaceholderColor" Value="{DynamicResource FadedText}"/>
+        <Setter Property="TextColor" Value="{DynamicResource Text}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="MinimumHeightRequest" Value="150"/>
+        <Setter Property="AutoSize" Value="Disabled"/>
+        <Setter Property="UnderlineColor" Value="Transparent"/>
+    </Style>
     
     
     

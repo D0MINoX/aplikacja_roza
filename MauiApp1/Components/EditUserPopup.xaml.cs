@@ -5,10 +5,6 @@ namespace MauiApp1.Components;
 
 public partial class EditUserPopup : Popup<EditUserResult>
 {
-    private string _name;
-    private string _surname;
-    private string _email;
-
     public EditUserPopup(string name, string surname, string email)
     {
         InitializeComponent();

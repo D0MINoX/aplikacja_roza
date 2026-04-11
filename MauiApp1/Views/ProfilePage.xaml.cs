@@ -148,12 +148,15 @@ public partial class ProfilePage : ContentPage
             Shadow = null
         });
 
-        EditUserResult data = result.Result;
 
-        if (data != null)
+        if (!result.WasDismissedByTappingOutsideOfPopup)
         {
-            await DisplayAlertAsync("Sukces", $"Imię: {data.Name}, Nazwisko: {data.Surname}", "OK");
-            // Tutaj możesz dodać logikę do aktualizacji danych użytkownika
+            EditUserResult data = result.Result;
+            if (data != null)
+            {
+                await DisplayAlertAsync("Sukces", $"Imię: {data.Name}, Nazwisko: {data.Surname}", "OK");
+                // Tutaj możesz dodać logikę do aktualizacji danych użytkownika
+            }
         }
     }
 

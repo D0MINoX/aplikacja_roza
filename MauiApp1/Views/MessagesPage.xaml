@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.Views.MessagesPage"
-             Title="MessagesPage">
+             Title="MessagesPage"
+             BackgroundColor="{DynamicResource Primary}">
     <Grid RowDefinitions="*, auto">
         
         <!-- Wiadomości -->
@@ -18,10 +19,10 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <VerticalStackLayout Padding="0,0,0,25">
+                    <VerticalStackLayout Padding="15">
                         
                         <Border Style="{StaticResource ListElement}">
-                            <VerticalStackLayout Padding="15" Spacing="5">
+                            <VerticalStackLayout Padding="10" Spacing="5">
 
                                 <Label Text="{Binding MessageTitle}"
                                        FontAttributes="Bold"/>
@@ -52,49 +53,7 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        
-        
-        <BoxView x:Name="OverlayBackground"
-         BackgroundColor="#AA000000"
-         Opacity="0"
-         IsVisible="False"
-         Grid.Row="0">
-            <BoxView.GestureRecognizers>
-                <TapGestureRecognizer Tapped="OnCancelClicked"/>
-            </BoxView.GestureRecognizers>
-        </BoxView>
 
-        <Border x:Name="AddMessagePanel"
-        Grid.Row="0"
-        Padding="20"
-        Margin="20"
-        BackgroundColor="{DynamicResource Secondary}"
-        StrokeShape="RoundRectangle 15"
-        StrokeThickness="2"
-        Stroke="{DynamicResource Accent}"
-        VerticalOptions="Center" 
-        HorizontalOptions="Center"
-        WidthRequest="320"
-        IsVisible="False"
-        Opacity="0"
-        Scale="0.8">
-            <VerticalStackLayout Spacing="10">
-                <Label Text="Nowe ogłoszenie" FontAttributes="Bold" FontSize="18" TextColor="{DynamicResource Text}"/>
-
-                <Border StrokeShape="RoundRectangle 5" StrokeThickness="1" Stroke="{DynamicResource Accent}">
-                    <Entry x:Name="NewTitleEntry" Placeholder="Tytuł wiadomości..." BackgroundColor="{DynamicResource Primary}" TextColor="{DynamicResource Text}"/>
-                </Border>
-
-                <Border StrokeShape="RoundRectangle 5" StrokeThickness="1" Stroke="{DynamicResource Accent}">
-                    <Editor x:Name="NewBodyEditor" Placeholder="Treść wiadomości..." HeightRequest="150" AutoSize="Disabled" BackgroundColor="{DynamicResource Primary}" TextColor="{DynamicResource Text}"/>
-                </Border>
-
-                <Grid ColumnDefinitions="*, *">
-                    <Button Grid.Column="0" Text="Anuluj" Clicked="OnCancelClicked" BackgroundColor="Gray" TextColor="White" Margin="0,0,5,0"/>
-                    <Button Grid.Column="1" Text="Wyślij" Clicked="OnSendMessageClicked" BackgroundColor="{DynamicResource Accent}" TextColor="White" Margin="5,0,0,0"/>
-                </Grid>
-            </VerticalStackLayout>
-        </Border>
 
         <Button x:Name="FabButton"
         Text="+"
