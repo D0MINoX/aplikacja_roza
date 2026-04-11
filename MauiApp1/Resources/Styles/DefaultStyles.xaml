@@ -151,7 +151,7 @@
 
     <Style TargetType="Border" x:Key="ListElement">
         <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
-        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Padding" Value="10"/>
         <Setter Property="StrokeThickness" Value="0"/>
         <Setter Property="StrokeShape">
             <RoundRectangle CornerRadius="10"/>

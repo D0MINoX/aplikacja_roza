@@ -1,3 +1,5 @@
+using CommunityToolkit.Maui.Extensions;
+using MauiApp1.Components;
 using MauiApp1.Models;
 using MauiApp1.Services;
 using Microsoft.Maui.Controls.Shapes;
@@ -10,13 +12,22 @@ public partial class MyRosariesListPage : ContentPage
 {
     private readonly AuthService _authService;
     private readonly RosaryService _rosaryService;
-    public MyRosariesListPage(AuthService authService, RosaryService rosaryService)
+    private readonly MessagesService _messagesService;
+    private HashSet<int> _selectedRosaries;
+    private HashSet<int> _allRosaries;
+    private bool _isSend = false;
+    private bool _isLoading = false;
+    public MyRosariesListPage(AuthService authService, RosaryService rosaryService, MessagesService messagesService)
 	{
         InitializeComponent();
         _authService = authService;
         _rosaryService = rosaryService;
+        _messagesService = messagesService;
+        _selectedRosaries = new HashSet<int>();
+        _allRosaries = new HashSet<int>();
         RosariesShow();
     }
+
     private async void RosariesShow()
     {
         var handler = new JwtSecurityTokenHandler();
@@ -27,63 +38,149 @@ public partial class MyRosariesListPage : ContentPage
             List<RosaryInfo> rosaryInfos = await _rosaryService.GetUserRosariesAsync(Id);
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                RosariesContainer.Children.Clear();
-
-                foreach (var rosary in rosaryInfos)
+                RosariesContainer.BatchBegin();
+                try
                 {
-                    try
+                    RosariesContainer.Children.Clear();
+                    foreach (var rosary in rosaryInfos)
                     {
-                        var border = CreateRosaryCard(rosary.Name, rosary.Id);
-                        RosariesContainer.Children.Add(border);
-                    }
-                    catch (Exception ex)
-                    {
-
-                        System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
+                        try
+                        {
+                            var border = CreateRosaryCard(rosary.Name, rosary.Id);
+                            RosariesContainer.Children.Add(border);
+                            _allRosaries.Add(rosary.Id);
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
+                        }
                     }
                 }
-
+                finally
+                {
+                    RosariesContainer.BatchCommit();
+                }
             });
-
         }
-
     }
+
     private Border CreateRosaryCard(string rosary, int rosaryId)
     {
         var colorPrimary = (Color)Application.Current.Resources["Primary"];
-        var colorMenu = (Color)Application.Current.Resources["Secondary"];
+        var colorSecondary = (Color)Application.Current.Resources["Secondary"];
         var colorOutline = (Color)Application.Current.Resources["Accent"];
-        var colorText = (Color)Application.Current.Resources["Text"];
 
         var border = new Border
         {
-            Padding = new Thickness(15),
-            BackgroundColor = colorPrimary,
-            Stroke = colorOutline,
-            StrokeThickness = 2,
-            StrokeShape = new RoundRectangle { CornerRadius = 10 },
-            Margin = new Thickness(0, 5)
+            Style = (Style)Application.Current.Resources["ListElement"],
         };
-        border.BackgroundColor = colorMenu;
         var tapGesture = new TapGestureRecognizer();
         tapGesture.Tapped += async (s, e) =>
         {
-
-            var navigationParameter = new Dictionary<string, object>
-        {
-            { "RosaryId", rosaryId.ToString() }
-        };
-            await Shell.Current.GoToAsync("MyRosaryGroup", navigationParameter);
+            if (_isSend)
+            {
+                Border tappedBorder = s as Border;
+                if (_selectedRosaries.Contains(rosaryId))
+                {
+                    _selectedRosaries.Remove(rosaryId);
+                    tappedBorder.BackgroundColor = colorPrimary;
+                }
+                else
+                {
+                    _selectedRosaries.Add(rosaryId);
+                    tappedBorder.BackgroundColor = colorSecondary;
+                }
+            }
+            else
+            {
+                var navigationParameter = new Dictionary<string, object>{{ "RosaryId", rosaryId.ToString() }};
+                await Shell.Current.GoToAsync("MyRosaryGroup", navigationParameter);
+            }
         };
         border.GestureRecognizers.Add(tapGesture);
         var label = new Label
         {
             Text = rosary,
-            TextColor = colorText,
-            FontAttributes = FontAttributes.Bold,
-            FontSize = 18
         };
         border.Content = label;
         return border;
+    }
+
+    private void Send_Tapped(object sender, EventArgs e)
+    {
+        Color color;
+        if (_isSend)
+        {
+            color = (Color)Application.Current.Resources["Primary"];
+            ClearSelected();
+        }
+        else
+            color = (Color)Application.Current.Resources["Secondary"];
+
+        _isSend = !_isSend;
+        SendOptionsGrid.IsVisible = !SendOptionsGrid.IsVisible;
+        SendMessage.BackgroundColor = color;
+    }
+
+    private async void ConfirmSend_Tapped(object sender, EventArgs e)
+    {
+        if (_isLoading) return;
+        _isLoading = true;
+
+        SendMessages(_selectedRosaries);
+        ClearSelected();
+
+        _isLoading = false;
+    }
+
+    private async void SendToAll_Tapped(object sender, EventArgs e)
+    {
+        if (_isLoading) return;
+        _isLoading = true;
+
+        SendMessages(_allRosaries);
+        ClearSelected();
+
+        _isLoading = false;
+    }
+
+    private async void SendMessages(HashSet<int> rosaryIds)
+    {
+        var popup = new NewMessagePopup(new RosaryMessage());
+        var result = await this.ShowPopupAsync<RosaryMessage>(popup);
+
+        if (!result.WasDismissedByTappingOutsideOfPopup)
+        {
+            RosaryMessage message = result.Result;
+            if (message != null && rosaryIds.Count > 0)
+            {
+                if (string.IsNullOrEmpty(_authService.Token)) return;
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadJwtToken(_authService.Token);
+
+                var nameClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "unique_name" || c.Type == ClaimTypes.Name);
+                string userName = nameClaim?.Value ?? "Brak Imienia";
+                message.AuthorName = userName;
+                message.CreatedAt = DateTime.Now;
+
+                foreach (var rosaryId in rosaryIds)
+                {
+                    message.RosaryId = rosaryId;
+                    await _messagesService.NewMessageAsync(message);
+                }
+                await DisplayAlertAsync("info", "wiadomości zostały wysłane", "OK");
+            }
+        }
+    }
+
+    private void ClearSelected()
+    {
+        foreach (var child in RosariesContainer.Children)
+        {
+            if (child is Border border)
+            {
+                border.BackgroundColor = (Color)Application.Current.Resources["Primary"];
+            }
+        }
     }
 }

@@ -3,12 +3,12 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace MauiApp1;
 
-[QueryProperty(nameof(UserId), "UserId"), QueryProperty(nameof(Parish), "Praish")]
+[QueryProperty(nameof(UserId), "UserId"), QueryProperty(nameof(Parish), "Parish")]
 public partial class JoinRosaryPage : ContentPage
 {
     private readonly RosaryService _rosaryService;
     public int UserId { get; set; }
-    public string Parish { get; set; }
+    public int Parish { get; set; }
     private int _selectedRosaryId = -1;
 
     public JoinRosaryPage(RosaryService rosaryService)
@@ -27,26 +27,30 @@ public partial class JoinRosaryPage : ContentPage
     private async void RosariesShow()
     {
         await DisplayAlertAsync("INFO", UserId.ToString(), "OK");
-        // TODO: Pobieranie po id parafi, bo inaczej bez sensu jest wcześniejszy wybur parafii
-        // Jeśli użytkownik nie wybrał parafi to pokaże mu wszystkie nawet jeśli panel wcześniej zaznaczył z której parafi chce zobaczyć
-        // I pasowało by jeszcze przy zapisaniu grupy zapisać parafię
-        List<RosaryInfo> rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(UserId);
+        List<RosaryInfo> rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(Parish);
         MainThread.BeginInvokeOnMainThread(() =>
-        {
-            RosariesContainer.Children.Clear(); // Czyścimy listę
-
-            foreach (var rosary in rosaryInfos)
+        {   
+            RosariesContainer.BatchBegin();
+            try
             {
-                try
+                RosariesContainer.Children.Clear(); // Czyścimy listę
+                foreach (var rosary in rosaryInfos)
                 {
-                    var border = CreateRosaryCard(rosary);
-                    RosariesContainer.Children.Add(border);
+                    try
+                    {
+                        var border = CreateRosaryCard(rosary);
+                        RosariesContainer.Children.Add(border);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Debugowanie, jeśli zasób "Primary" nadal robi problem
+                        System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    // Debugowanie, jeśli zasób "Primary" nadal robi problem
-                    System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
-                }
+            }
+            finally
+            {
+                RosariesContainer.BatchCommit();
             }
         });
     }
@@ -87,6 +91,7 @@ public partial class JoinRosaryPage : ContentPage
 
     private async void JoinButton_Tapped(object sender, TappedEventArgs e)
     {
+        // I pasowało by jeszcze przy zapisaniu grupy zapisać parafię
         if (_selectedRosaryId == -1)
         {
             await DisplayAlertAsync("Błąd", "Najpierw wybierz różę z listy!", "OK");
