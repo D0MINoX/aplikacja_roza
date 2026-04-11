@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.ExternalNumbersMenagementPage"
+            xmlns:conv="clr-namespace:MauiApp1.Converters"
+             Title="ExternalNumbersMenagementPage">
+    <ContentPage.Resources>
+        <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </ContentPage.Resources>
+    <Grid RowDefinitions="Auto, *" Margin="10">
+        <Grid Grid.Row="0" ColumnDefinitions="*, *,*,*, 150" BackgroundColor="{DynamicResource Secondary}" Padding="10">
+            <Label Text="Użytkownik" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>
+            <Label Text="Numer telefonu" FontAttributes="Bold" TextColor="White" Grid.Column="1"/>
+            <Label Text="Róża" FontAttributes="Bold" TextColor="White" Grid.Column="2"/>
+
+            <Label Text="Akcje" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="4"/>
+        </Grid>
+
+            <CollectionView Grid.Row="1" x:Name="UsersList" VerticalScrollBarVisibility="Always">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border StrokeShape="RoundRectangle 0" StrokeThickness="0.5" Stroke="{DynamicResource Accent}">
+                        <Grid ColumnDefinitions="*, *, 150" Padding="10" BackgroundColor="{DynamicResource Primary}">
+
+                            <HorizontalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="5">
+                                <Label Text="{Binding UserName}" />
+
+                                <Label Text="{Binding UserSurname}" />
+                            </HorizontalStackLayout>
+
+                            <Label Text="{Binding RosaryName}" 
+                       VerticalOptions="Center" 
+                       Grid.Column="1" 
+                       FontSize="12"/>
+
+                            <HorizontalStackLayout Grid.Column="2" Spacing="5" HorizontalOptions="Center">
+                                <Button Text="✓" 
+                            FontSize="12"
+                            BackgroundColor="Green" 
+                            TextColor="White"
+                            HeightRequest="35" WidthRequest="35" Padding="0"
+                            Clicked="OnVerifyClicked" 
+                            CommandParameter="{Binding .}"
+                            IsVisible="{Binding IsAuthorized, Converter={StaticResource InvertedBoolConverter}}"/>
+
+                                <Button Text="🗑"
+                            FontSize="12"
+                            BackgroundColor="Red" 
+                            TextColor="White"
+                            HeightRequest="35" WidthRequest="35" Padding="0"
+                            Clicked="OnDeleteClicked" 
+                            CommandParameter="{Binding .}"/>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

@@ -3,12 +3,12 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace MauiApp1;
 
-[QueryProperty(nameof(UserId), "UserId"), QueryProperty(nameof(Parish), "Praish")]
+[QueryProperty(nameof(UserId), "UserId"), QueryProperty(nameof(Parish), "Parish")]
 public partial class JoinRosaryPage : ContentPage
 {
     private readonly RosaryService _rosaryService;
     public int UserId { get; set; }
-    public string Parish { get; set; }
+    public int Parish { get; set; }
     private int _selectedRosaryId = -1;
 
     public JoinRosaryPage(RosaryService rosaryService)
@@ -26,11 +26,11 @@ public partial class JoinRosaryPage : ContentPage
  
     private async void RosariesShow()
     {
-        await DisplayAlertAsync("INFO", UserId.ToString(), "OK");
+        await DisplayAlertAsync("INFO", Parish.ToString(), "OK");
         // TODO: Pobieranie po id parafi, bo inaczej bez sensu jest wcześniejszy wybur parafii
         // Jeśli użytkownik nie wybrał parafi to pokaże mu wszystkie nawet jeśli panel wcześniej zaznaczył z której parafi chce zobaczyć
         // I pasowało by jeszcze przy zapisaniu grupy zapisać parafię
-        List<RosaryInfo> rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(UserId);
+        List<RosaryInfo> rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(Parish);
         MainThread.BeginInvokeOnMainThread(() =>
         {
             RosariesContainer.Children.Clear(); // Czyścimy listę

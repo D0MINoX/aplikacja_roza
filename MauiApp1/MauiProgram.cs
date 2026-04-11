@@ -103,6 +103,8 @@ namespace MauiApp1
             builder.Services.AddTransient<MessagesPage>();
             builder.Services.AddTransient<MyRosariesListPage>();
             builder.Services.AddTransient<ParishAddPage>();
+            builder.Services.AddTransient<ExternalNumbersMenagementPage>();
+            builder.Services.AddTransient<AgreementsMenagementPage>();
           
             return builder.Build();
         }
