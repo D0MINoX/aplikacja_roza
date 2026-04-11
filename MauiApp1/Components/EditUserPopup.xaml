@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:MauiApp1.Models" xmlns:controls="clr-namespace:MauiApp1.Controls"
+    x:Class="MauiApp1.Components.EditUserPopup"
+    x:TypeArguments="models:EditUserResult"
+    Padding="0"
+    Margin="0"
+    HorizontalOptions="FillAndExpand"
+    VerticalOptions="End"
+    CanBeDismissedByTappingOutsideOfPopup="True">
+
+    <Border BackgroundColor="{DynamicResource Primary}" HorizontalOptions="FillAndExpand">
+
+        <VerticalStackLayout Padding="10" Spacing="10">
+
+            <!-- header -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Grid.Column="0" Text="Zmień dane" VerticalOptions="Center" FontSize="Large"/>
+                <Border Grid.Column="1" BackgroundColor="{DynamicResource Primary}" WidthRequest="30" HeightRequest="30">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="CloseTapped"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="✕" VerticalOptions="Center" FontSize="Large"/>
+                </Border>
+            </Grid>
+
+            <VerticalStackLayout Spacing="5">
+
+                <controls:MyEntry x:Name="NameEntry"
+                  Placeholder="Imię"/>
+
+                <controls:MyEntry x:Name="SurnameEntry"
+                  Placeholder="Nazwisko"/>
+
+                <controls:MyEntry x:Name="EmailEntry"
+                  Placeholder="Email"
+                  Keyboard="Email"/>
+
+            </VerticalStackLayout>
+
+            <!-- zapisz -->
+            <Border Style="{StaticResource NavButton}" HeightRequest="50">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="SaveTapped"/>
+                </Border.GestureRecognizers>
+                <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                    Zapisz
+                </Label>
+            </Border>
+
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>

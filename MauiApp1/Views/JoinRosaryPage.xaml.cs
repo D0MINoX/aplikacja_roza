@@ -3,17 +3,21 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace MauiApp1;
 
-[QueryProperty(nameof(UserId), "UserId")]
+[QueryProperty(nameof(UserId), "UserId"), QueryProperty(nameof(Parish), "Praish")]
 public partial class JoinRosaryPage : ContentPage
 {
     private readonly RosaryService _rosaryService;
     public int UserId { get; set; }
+    public string Parish { get; set; }
+    private int _selectedRosaryId = -1;
+
     public JoinRosaryPage(RosaryService rosaryService)
     {
         InitializeComponent();
         _rosaryService = rosaryService;
 
     }
+
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -23,6 +27,9 @@ public partial class JoinRosaryPage : ContentPage
     private async void RosariesShow()
     {
         await DisplayAlertAsync("INFO", UserId.ToString(), "OK");
+        // TODO: Pobieranie po id parafi, bo inaczej bez sensu jest wcześniejszy wybur parafii
+        // Jeśli użytkownik nie wybrał parafi to pokaże mu wszystkie nawet jeśli panel wcześniej zaznaczył z której parafi chce zobaczyć
+        // I pasowało by jeszcze przy zapisaniu grupy zapisać parafię
         List<RosaryInfo> rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(UserId);
         MainThread.BeginInvokeOnMainThread(() =>
         {
@@ -41,57 +48,41 @@ public partial class JoinRosaryPage : ContentPage
                     System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
                 }
             }
-
         });
-
     }
-    private int _selectedRosaryId = -1;
+
     private Border CreateRosaryCard(RosaryInfo rosary)
     {
-
         var colorPrimary = (Color)Application.Current.Resources["Primary"];
         var colorMenu = (Color)Application.Current.Resources["Secondary"];
-        var colorOutline = (Color)Application.Current.Resources["Accent"];
-        var colorText = (Color)Application.Current.Resources["Text"];
+        var borderStyle = (Style)Application.Current.Resources["ListElement"];
+
         var border = new Border
         {
-            Padding = new Thickness(15),
-            BackgroundColor = colorPrimary,
-            Stroke = colorOutline,
-            StrokeThickness = 2,
-            StrokeShape = new RoundRectangle { CornerRadius = 10 },
-            Margin = new Thickness(0, 5)
+            Style = borderStyle
         };
-        var tapGesture = new TapGestureRecognizer { CommandParameter = rosary.Id };
 
+        var tapGesture = new TapGestureRecognizer { CommandParameter = rosary.Id };
         tapGesture.Tapped += (s, e) =>
         {
-
             foreach (var child in RosariesContainer.Children)
             {
                 if (child is Border b) b.BackgroundColor = colorPrimary;
             }
 
-
             border.BackgroundColor = colorMenu;
 
-
             _selectedRosaryId = rosary.Id;
-
         };
         border.GestureRecognizers.Add(tapGesture);
+
         var label = new Label
         {
-            Text = rosary.Name,
-            TextColor = colorText,
-            FontAttributes = FontAttributes.Bold,
-            FontSize = 18
+            Text = rosary.Name
         };
         border.Content = label;
 
-
         return border;
-
     }
 
     private async void JoinButton_Tapped(object sender, TappedEventArgs e)
@@ -116,7 +107,11 @@ public partial class JoinRosaryPage : ContentPage
             // Wyświetlamy konkretny błąd otrzymany z API
             await DisplayAlertAsync("BŁĄD API", result.ErrorMessage, "OK");
         }
+    }
 
-
+    private async void SelectParish_Tapped(object sender, TappedEventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object> { { "UserId", UserId } };
+        await Shell.Current.GoToAsync("SelectParish", navigationParameter);
     }
 }

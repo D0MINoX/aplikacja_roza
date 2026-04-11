@@ -11,7 +11,6 @@
 
     <Style TargetType="Border" x:Key="BottomMenu">
         <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
-        <Setter Property="Margin" Value="0,20,0,0"/>
         <Setter Property="Padding" Value="15"/>
         <Setter Property="StrokeThickness" Value="0"/>
         <Setter Property="Shadow">
@@ -64,6 +63,7 @@
     <Style TargetType="Label" x:Key="HeaderLabel">
         <Setter Property="VerticalOptions" Value="Start"/>
         <Setter Property="FontSize" Value="Large"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
     </Style>
 
     <Style TargetType="Label" x:Key="HeaderLabel2">
@@ -148,21 +148,38 @@
         <Setter Property="UnderlineColor" Value="{DynamicResource FadedText}"/>
         <Setter Property="MinimumHeightRequest" Value="45"/>
     </Style>
-    
-    
 
-
-
-    <Style TargetType="Border" x:Key="EditButton">
-        <Setter Property="BackgroundColor" Value="{DynamicResource Secondary}"/>
-        <Setter Property="Stroke" Value="{DynamicResource Accent}"/>
-        <Setter Property="StrokeThickness" Value="3"/>
+    <Style TargetType="Border" x:Key="ListElement">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="StrokeThickness" Value="0"/>
         <Setter Property="StrokeShape">
             <RoundRectangle CornerRadius="10"/>
         </Setter>
-        <Setter Property="WidthRequest" Value="70"/>
-        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Brush="{DynamicResource Secondary}"
+                Offset="0,0"
+                Radius="5"
+                Opacity="0.7"/>
+            </Setter.Value>
+        </Setter>
     </Style>
+
+    <Style TargetType="controls:MyEditor">
+        <Setter Property="PlaceholderColor" Value="{DynamicResource FadedText}"/>
+        <Setter Property="TextColor" Value="{DynamicResource Text}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="MinimumHeightRequest" Value="150"/>
+        <Setter Property="AutoSize" Value="Disabled"/>
+        <Setter Property="UnderlineColor" Value="Transparent"/>
+    </Style>
+    
+    
+    
+    
+    
 
     <Style TargetType="Border" x:Key="Header">
         <Setter Property="Background" Value="{DynamicResource Primary}"/>

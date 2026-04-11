@@ -1,82 +1,52 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mauiapp1="clr-namespace:MauiApp1"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiApp1.MyRosaryPage"
-             Title="MyRosaryPage">
+             Title="MyRosaryPage"
+             BackgroundColor="{DynamicResource Primary}">
+    
     <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Padding="20" Grid.Row="0" RowSpacing="100">
-            <!-- Header -->
-            <Border Grid.Row="0" Style="{StaticResource Header}">
-                <Grid ColumnDefinitions="auto,auto">
-                    <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource HeaderImage}"/>
-                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}" x:Name="rosaryName">
+
+        <!-- ten label jest tylko po to zeby zmieniac kolor ikonek dynamicznie -->
+        <Label x:Name="Ref" BackgroundColor="{DynamicResource Tertiary}" IsEnabled="False" IsVisible="False" />
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="20">
+
+                <!-- Header -->
+                <Grid Style="{StaticResource Head}">
+                    <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
                         Moja róża
                     </Label>
+                    <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}" x:Name="rosaryName">
+                        *nazwa róży*
+                    </Label>
                 </Grid>
-            </Border>
-            <!-- Menu wyboru -->
-            <!-- Wyświetlane zależnie od rodzaju użytkownika -->
-            <ScrollView Grid.Row="1">
-                <VerticalStackLayout Spacing="50">
-                    <!-- Guest -->
-                    <!-- Przycisk logowania -->
-                  <!--  <Border Style="{StaticResource MenuOption}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="Login_Tapped"/>
-                        </Border.GestureRecognizers>
-                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}"/>
-                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}" LineBreakMode="WordWrap" MaxLines="2" HorizontalTextAlignment="Center">
-                                Jesteś zelatorem lub członkiem róży?
-                                Zaloguj się!
-                            </Label>
-                        </Grid>
-                    </Border>
-                    -->
-                    <!-- Member -->
-                    <!-- Wiadomości od Zelatora -->
-                    <Border Style="{StaticResource MenuOption}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="Messages_Tapped"/>
-                        </Border.GestureRecognizers>
-                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="message_icon.png" Style="{StaticResource OptionImage}"/>
-                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
-                                Wiadomości od Zelatora
-                            </Label>
-                        </Grid>
-                    </Border>
-                    
-                    <!-- Zelator -->
-                    <!-- Wyślij wiadomość -->
-                    <!-- <Border Style="{StaticResource MenuOption}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="Messages_Tapped"/>
-                        </Border.GestureRecognizers>
-                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="message_icon.png" Style="{StaticResource OptionImage}"/>
-                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
-                                Wyślij wiadomość do róży
-                            </Label>
-                        </Grid>
-                    </Border>-->
-                    
-                    <!-- Super Zelator -->
-                    <!-- Lista róż -->
-                    <!--  <Border Style="{StaticResource MenuOption}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="ViewGroups_Tapped"/>
-                        </Border.GestureRecognizers>
-                        <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
-                            <Image Grid.Column="0" Source="message_icon.png" Style="{StaticResource OptionImage}"/>
-                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
-                                Lista róż
-                            </Label>
-                        </Grid>
-                    </Border>-->
-                </VerticalStackLayout>
-            </ScrollView>
-        </Grid>
+                
+                <!-- Można tu zrobić wyświetlanie najnowszej wiadomości -->
+
+                <!-- Wiadomości -->
+                <Border Style="{StaticResource MenuOption}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Messages_Tapped"/>
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="message_icon.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}" x:Name="MessagesLabel">
+                            Wyświetl wiadomości
+                        </Label>
+                    </Grid>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
         <mauiapp1:BottomMenu Grid.Row="1"/>
     </Grid>
 </ContentPage>

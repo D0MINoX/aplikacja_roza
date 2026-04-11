@@ -1,5 +1,9 @@
 namespace MauiApp1;
 
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Extensions;
+using MauiApp1.Components;
 using MauiApp1.Models;
 using MauiApp1.Services;
 using Microsoft.Maui.Controls.Shapes;
@@ -11,7 +15,9 @@ public partial class ProfilePage : ContentPage
     private readonly AuthService _authService;
     private readonly RosaryService _rosaryService;
     private readonly ParishService _parishService;
+    private bool isParish = false;
     private int UserId { get; set; }
+    private int Parish {  get; set; }
     public ProfilePage(AuthService authService,ParishService parishService, RosaryService rosaryService)
     {
         InitializeComponent();
@@ -30,7 +36,21 @@ public partial class ProfilePage : ContentPage
         if (UserId > 0)
         {
             var response = await _parishService.GetUserParish(UserId);
-            ParishLabel.Text = response.isSuccess ? response.Data.Name : response.ErrorMessage;
+            if (response.isSuccess)
+            {
+                //await DisplayAlertAsync("INFO", response.Data.Id.ToString(), "OK");
+                ParishLabel.Text = response.Data.Name;
+                Parish = response.Data.Id;
+                if (Parish == -1)
+                    isParish = false;
+                else
+                    isParish = true;
+
+            }
+            else
+            {
+                ParishLabel.Text = response.ErrorMessage;
+            }
 
             RosariesShow();
         }
@@ -85,7 +105,8 @@ public partial class ProfilePage : ContentPage
         {
             if (rosaryInfos == null || rosaryInfos.Count == 0)
             {
-                Role.Text += "Nie należysz do żadnej róży";
+                Role.Text = "Nie należysz do żadnej róży";
+
                 RosariesContainer.IsVisible = true;
             }
             else
@@ -95,10 +116,18 @@ public partial class ProfilePage : ContentPage
         });
     }
 
-    private void JoinBtn_Clicked(object sender, EventArgs e)
+    private async void JoinBtn_Clicked(object sender, EventArgs e)
     {
-        var navigationParameter = new Dictionary<string, object> { { "UserId", UserId } };
-        Shell.Current.GoToAsync("JoinRosary", navigationParameter);
+        if (isParish)
+        {
+            var navigationParameter = new Dictionary<string, object> { { "UserId", UserId }, { "Parish", Parish } };
+            await Shell.Current.GoToAsync("JoinRosary", navigationParameter);
+        }
+        else
+        {
+            var navigationParameter = new Dictionary<string, object> { { "UserId", UserId } };
+            await Shell.Current.GoToAsync("SelectParish", navigationParameter);
+        }
     }
 
     private void AdminBtn_Clicked(object sender, EventArgs e)
@@ -106,15 +135,41 @@ public partial class ProfilePage : ContentPage
         Shell.Current.GoToAsync("AdminPage");
     }
 
-    private void EditTapped(object sender, EventArgs e)
+    private async void UserEditTapped(object sender, EventArgs e)
     {
-        if (sender==NameBtn)
+        var popup = new EditUserPopup("", "", "");
+        var result = await this.ShowPopupAsync<EditUserResult>(popup, new PopupOptions
         {
-            var label = (Label)NameBtn.Content;
-            if (label.Text=="Edytuj")
+            Shape = new RoundRectangle
             {
-                label.Text = "Zatwierdź";
+                CornerRadius = new CornerRadius(10),
+                StrokeThickness = 0
+            },
+            Shadow = null
+        });
+
+
+        if (!result.WasDismissedByTappingOutsideOfPopup)
+        {
+            EditUserResult data = result.Result;
+            if (data != null)
+            {
+                await DisplayAlertAsync("Sukces", $"Imię: {data.Name}, Nazwisko: {data.Surname}", "OK");
+                // Tutaj możesz dodać logikę do aktualizacji danych użytkownika
             }
         }
+    }
+
+    private async void PasswordEditTapped(object sender, EventArgs e)
+    {
+        await this.ShowPopupAsync(new EditPasswordPopup(), new PopupOptions
+        {
+            Shape = new RoundRectangle
+            {
+                CornerRadius = new CornerRadius(10),
+                StrokeThickness = 0
+            },
+            Shadow = null
+        });
     }
 }

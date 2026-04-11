@@ -3,48 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp1.JoinRosaryPage"
               xmlns:mauiapp1="clr-namespace:MauiApp1"
-             Title="JoinRosaryPage">
-    <Grid RowDefinitions="auto,*,auto,auto">
-        <Border  Background="{DynamicResource Primary}" Padding="15">
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="10"/>
-            </Border.StrokeShape>
-            <Grid ColumnDefinitions="auto,auto">
-                <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="18">
-                    Wybierz różę do której chcesz dołączyć
-                </Label>
-            </Grid>
-        </Border>
+             Title="JoinRosaryPage"
+             BackgroundColor="{DynamicResource Primary}">
+    
+    <Grid RowDefinitions="auto,*,auto,auto,auto" RowSpacing="10">
+        
+        <!-- Header -->
+        <Grid Grid.Row="0" Style="{StaticResource Head}">
+            <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
+                Dołącz do róży
+            </Label>
+            <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
+                Wybierz róże, do której chcesz dołączyć
+            </Label>
+        </Grid>
+
         <ScrollView Grid.Row="1">
-            <VerticalStackLayout x:Name="RosariesContainer">
-                <Border  Background="{DynamicResource Primary}" Padding="15">
-
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="10"/>
-                    </Border.StrokeShape>
-                    <Grid ColumnDefinitions="auto,auto">
-                        <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
-                        <Label Grid.Column="1" x:Name="Rosary" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
-
-                        </Label>
-                    </Grid>
-                </Border>
-            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="RosariesContainer"/>
         </ScrollView>
-        <Border  Background="{DynamicResource Primary}" Grid.Row="2" Padding="15" Margin="0,15">
+        
+        <Border Grid.Row="2" Style="{StaticResource NavButton}">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="JoinButton_Tapped"/>
             </Border.GestureRecognizers>
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="10"/>
-            </Border.StrokeShape>
-            <Grid>
-                <Label Grid.Column="1" TextColor="{DynamicResource Text}" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="18">
-                  Dołącz
-                </Label>
-            </Grid>
+            <Label Style="{StaticResource OptionLabel}">
+                Dołącz
+            </Label>
         </Border>
-        <mauiapp1:BottomMenu Grid.Row="3"/>
+        
+        <Border Grid.Row="3" Style="{StaticResource NavButton}">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="SelectParish_Tapped"/>
+            </Border.GestureRecognizers>
+            <Label Style="{StaticResource OptionLabel}">
+                Wybierz inną parafię
+            </Label>
+        </Border>
+        
+        <mauiapp1:BottomMenu Grid.Row="4"/>
     </Grid>
 </ContentPage>
