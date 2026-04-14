@@ -1,7 +1,8 @@
 ﻿using MauiApp1.Models;
+using System.Buffers.Text;
+using System.Diagnostics;
 using System.Diagnostics;
 using System.Net.Http.Json;
-using System.Diagnostics;
 
 namespace MauiApp1.Services
 {
@@ -273,6 +274,69 @@ namespace MauiApp1.Services
             catch (Exception ex)
             {
                 return (false, null, $"Błąd połączenia: {ex.Message}");
+            }
+        }
+
+        public async Task<(bool isSuccess, string ErrorMessage)> DeleteExternalNumber(int userId, int rosaryId)
+        {
+            string url = $"api/Admin/deleteExternalNumber/{userId}/{rosaryId}";
+            try
+            {
+                var response = await _httpClient.DeleteAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    return (true, content);
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return (false, errorContent ?? $"Błąd serwera: {response.StatusCode}");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Błąd połączenia: {ex.Message}");
+            }
+        }
+
+        public async Task<bool> RegisterExternalMemberAsync(string? name, string? surname, string phone, int rosaryId,string publicIp)
+        {
+            var request = new
+            {
+                FirstName = name,
+                LastName = surname,
+                PhoneNumber = phone,
+                RosaryId = rosaryId,
+                UserIp=publicIp
+            };
+
+            var response = await _httpClient.PostAsJsonAsync($"api/Admin/AddExternalMember", request);
+            return response.IsSuccessStatusCode;
+        }
+
+        internal async Task<bool> UpdateExternalMember(int userId,string? name, string? surname, string phoneNumber)
+        {
+            var ModifyData = new {Id = userId, Name = name, Surname = surname, PhoneNumber=phoneNumber };
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync("api/Admin/UpdateExternalMember", ModifyData);
+                if (!response.IsSuccessStatusCode)
+                {
+
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"API ERROR: {response.StatusCode} - {errorContent}");
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd Zmiany uprawnień: {ex.Message}");
+                return false;
             }
         }
     }

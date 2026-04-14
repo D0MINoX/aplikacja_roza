@@ -59,7 +59,7 @@ public partial class AdminPage : ContentPage
         await Shell.Current.GoToAsync("ChangeUserPrivilagies",navigationParameter);
     }
     private async void ExternalNumbers_Tapped(object sender, TappedEventArgs e) {
-        await Shell.Current.GoToAsync("ExternalNumbersMenagement");
+        await Shell.Current.GoToAsync("ExternalNumbers");
     }
     private async void Agrements_Tapped(object sender, TappedEventArgs e)
     {

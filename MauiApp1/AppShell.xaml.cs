@@ -31,6 +31,7 @@ namespace MauiApp1
             Routing.RegisterRoute("ParishAdd", typeof(ParishAddPage));
             Routing.RegisterRoute("AgreementsMenagement", typeof(AgreementsMenagementPage));
             Routing.RegisterRoute("ExternalNumbersMenagement", typeof(ExternalNumbersMenagementPage));
+            Routing.RegisterRoute("ExternalNumbers", typeof(ExternalNumbersPage));
         }
     }
 }

@@ -8,13 +8,14 @@
         <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
     </ContentPage.Resources>
     <Grid RowDefinitions="Auto, *" Margin="10">
-        <Grid Grid.Row="0" ColumnDefinitions="*, *,*,*,*,*" BackgroundColor="{DynamicResource Secondary}" Padding="10">
+        <Grid Grid.Row="0" ColumnDefinitions="*,*, *,*,*,*,*" BackgroundColor="{DynamicResource Secondary}" Padding="10">
             <Label Text="Użytkownik" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>
-            <Label Text="zgoda" FontAttributes="Bold" TextColor="White" Grid.Column="1"/>
-            <Label Text="wersja" FontAttributes="Bold" TextColor="White" Grid.Column="2"/>
-            <Label Text="status" FontAttributes="Bold" TextColor="White" Grid.Column="3"/>
-            <Label Text="data utworzenia" FontAttributes="Bold" TextColor="White" Grid.Column="4"/>
-            <Label Text="adres IP" FontAttributes="Bold" TextColor="White" Grid.Column="5"/>
+            <Label Text="Użytkownik zewnętrzny" FontAttributes="Bold" TextColor="White" Grid.Column="1"/>
+            <Label Text="zgoda" FontAttributes="Bold" TextColor="White" Grid.Column="2"/>
+            <Label Text="wersja" FontAttributes="Bold" TextColor="White" Grid.Column="3"/>
+            <Label Text="status" FontAttributes="Bold" TextColor="White" Grid.Column="4"/>
+            <Label Text="data utworzenia" FontAttributes="Bold" TextColor="White" Grid.Column="5"/>
+            <Label Text="adres IP" FontAttributes="Bold" TextColor="White" Grid.Column="6"/>
            
         </Grid>
 
@@ -22,30 +23,34 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border StrokeShape="RoundRectangle 0" HeightRequest="55" StrokeThickness="0.5" Stroke="{DynamicResource Accent}">
-                        <Grid ColumnDefinitions="*, *,*,*,*,*" Padding="10" BackgroundColor="{DynamicResource Primary}">
+                        <Grid ColumnDefinitions="*,*, *,*,*,*,*" Padding="10" BackgroundColor="{DynamicResource Primary}">
                             <Label Text="{Binding UserId}" 
                                VerticalOptions="Center" 
                                Grid.Column="0" 
                                FontSize="12"/>
-                            <Label Text="{Binding ConsentType}" 
+                            <Label Text="{Binding ExternalMemberId}" 
                                VerticalOptions="Center" 
                                Grid.Column="1" 
                                FontSize="12"/>
+                            <Label Text="{Binding ConsentType}" 
+                               VerticalOptions="Center" 
+                               Grid.Column="2" 
+                               FontSize="12"/>
                             <Label Text="{Binding DocumentVersion}" 
-                                VerticalOptions="Center" 
-                                Grid.Column="2" 
-                                FontSize="12"/>
-                            <Label Text="{Binding Status}" 
                                 VerticalOptions="Center" 
                                 Grid.Column="3" 
                                 FontSize="12"/>
-                            <Label Text="{Binding CreatedAt}" 
+                            <Label Text="{Binding Status}" 
                                 VerticalOptions="Center" 
                                 Grid.Column="4" 
                                 FontSize="12"/>
-                            <Label Text="{Binding IpAddress}" 
+                            <Label Text="{Binding CreatedAt}" 
                                 VerticalOptions="Center" 
                                 Grid.Column="5" 
+                                FontSize="12"/>
+                            <Label Text="{Binding IpAddress}" 
+                                VerticalOptions="Center" 
+                                Grid.Column="6" 
                                 FontSize="12"/>
 
                             

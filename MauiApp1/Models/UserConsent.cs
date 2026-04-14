@@ -3,8 +3,8 @@
     public class UserConsent
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-
+        public int ?UserId { get; set; }
+        public int? ExternalMemberId { get; set; }
         public string ConsentType { get; set; }
 
         public string DocumentVersion { get; set; }
