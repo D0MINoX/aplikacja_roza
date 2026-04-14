@@ -74,5 +74,24 @@ namespace MauiApp1.Services
                 return new List<string>();
             }
         }
+        public async Task<List<ExternalNumber>> getAdminExternalNumbers(int rosaryId)
+        {
+            try
+            {
+                var phones = await _httpClient.GetFromJsonAsync<List<ExternalNumber>>($"api/Messages/GetAdminExternalNumbers/{rosaryId}");
+
+                return phones ?? new List<ExternalNumber>();
+            }
+            catch (HttpRequestException ex)
+            {
+                Debug.WriteLine($"Błąd sieciowy: {ex.Message}");
+                return new List<ExternalNumber>();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd deserializacji: {ex.Message}");
+                return new List<ExternalNumber>();
+            }
+        }
     }
 }

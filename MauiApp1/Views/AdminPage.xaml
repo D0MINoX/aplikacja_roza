@@ -74,5 +74,33 @@
                 </Label>
             </Grid>
         </Border>
+        <Border  Background="{DynamicResource Primary}" Padding="15">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="ExternalNumbers_Tapped"/>
+            </Border.GestureRecognizers>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10"/>
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="auto,auto">
+                <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
+                <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
+                    Zewnętrze numery telefonów
+                </Label>
+            </Grid>
+        </Border>
+        <Border  Background="{DynamicResource Primary}" Padding="15">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Agrements_Tapped"/>
+            </Border.GestureRecognizers>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10"/>
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="auto,auto">
+                <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
+                <Label Grid.Column="1" TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
+                    Zgody
+                </Label>
+            </Grid>
+        </Border>
     </VerticalStackLayout>
 </ContentPage>
