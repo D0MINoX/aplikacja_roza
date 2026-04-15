@@ -28,7 +28,6 @@ public partial class AdminPage : ContentPage
         int Role = int.Parse(userRole);
         var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
         int.TryParse(IdClaim.Value, out int Id);
-        await DisplayAlertAsync("Info", Role.ToString(),"OK");
         var navigationParameter = new Dictionary<string, object>
         {
             { "UserRole", Role },

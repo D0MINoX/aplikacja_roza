@@ -53,7 +53,6 @@ public partial class RosaryAddPage : ContentPage
     }
     private async void LoadParishes()
     {
-        await DisplayAlertAsync("INFO", UserRole.ToString()+" "+UserId.ToString(), "OK");
         if (UserRole == 0)
         {
             var result= await _parishService.AllParish();
