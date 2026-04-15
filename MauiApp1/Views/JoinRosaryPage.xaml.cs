@@ -29,21 +29,28 @@ public partial class JoinRosaryPage : ContentPage
         
         List<RosaryInfo> rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(Parish);
         MainThread.BeginInvokeOnMainThread(() =>
-        {
-            RosariesContainer.Children.Clear(); // Czyścimy listę
-
-            foreach (var rosary in rosaryInfos)
+        {   
+            RosariesContainer.BatchBegin();
+            try
             {
-                try
+                RosariesContainer.Children.Clear(); // Czyścimy listę
+                foreach (var rosary in rosaryInfos)
                 {
-                    var border = CreateRosaryCard(rosary);
-                    RosariesContainer.Children.Add(border);
+                    try
+                    {
+                        var border = CreateRosaryCard(rosary);
+                        RosariesContainer.Children.Add(border);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Debugowanie, jeśli zasób "Primary" nadal robi problem
+                        System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    // Debugowanie, jeśli zasób "Primary" nadal robi problem
-                    System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
-                }
+            }
+            finally
+            {
+                RosariesContainer.BatchCommit();
             }
         });
     }
@@ -84,6 +91,7 @@ public partial class JoinRosaryPage : ContentPage
 
     private async void JoinButton_Tapped(object sender, TappedEventArgs e)
     {
+        // I pasowało by jeszcze przy zapisaniu grupy zapisać parafię
         if (_selectedRosaryId == -1)
         {
             await DisplayAlertAsync("Błąd", "Najpierw wybierz różę z listy!", "OK");

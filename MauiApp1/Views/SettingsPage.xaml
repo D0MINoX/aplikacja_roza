@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mauiapp1="clr-namespace:MauiApp1"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiApp1.SettingsPage"
              BackgroundColor="{DynamicResource Primary}">
     
@@ -88,19 +90,32 @@
                 
                 <!--auto pobvieranie-->
                 <Border Style="{StaticResource MenuOption}">
-                    <HorizontalStackLayout Spacing="20" Padding="10">
+                    <HorizontalStackLayout Spacing="20">
                         <Label Text="Pobieraj rozważania offline" VerticalOptions="Center" />
                         <Switch x:Name="DownloadSwitch" 
                              Toggled="OnDownloadToggled" />
                     </HorizontalStackLayout>
                 </Border>
+
+                <!-- Przypomnienia -->
                 <Border Style="{StaticResource MenuOption}">
-                <VerticalStackLayout Spacing="10" Padding="20">
-                    <Label Text="Ustaw godzinę przypomnienia:" />
-                    <TimePicker x:Name="MyTimePicker" 
-                        TimeSelected="OnTimeChanged" />
+                    <VerticalStackLayout Spacing="10" Padding="20">
+                        
+                        <HorizontalStackLayout Spacing="20">
+                            <Label Text="Włącz przypomnienia" VerticalOptions="Center" />
+                            <Switch x:Name="ReminderSwitch" 
+                                    Toggled="OnRemindersToggled" />
+                        </HorizontalStackLayout>
+                        
+                        <VerticalStackLayout Spacing="5" x:Name="ReminderTimeLayout" IsVisible="False">
+                            <Label Text="Ustaw godzinę przypomnienia:" />
+                            <TimePicker TimeSelected="OnTimeChanged"
+                                        TextColor="{DynamicResource Text}"/>
+                        </VerticalStackLayout>
+                        
                     </VerticalStackLayout>
                 </Border>
+                
             </VerticalStackLayout>
         </ScrollView>
         
