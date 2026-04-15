@@ -26,10 +26,7 @@ public partial class JoinRosaryPage : ContentPage
  
     private async void RosariesShow()
     {
-        await DisplayAlertAsync("INFO", Parish.ToString(), "OK");
-        // TODO: Pobieranie po id parafi, bo inaczej bez sensu jest wcześniejszy wybur parafii
-        // Jeśli użytkownik nie wybrał parafi to pokaże mu wszystkie nawet jeśli panel wcześniej zaznaczył z której parafi chce zobaczyć
-        // I pasowało by jeszcze przy zapisaniu grupy zapisać parafię
+        
         List<RosaryInfo> rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(Parish);
         MainThread.BeginInvokeOnMainThread(() =>
         {
