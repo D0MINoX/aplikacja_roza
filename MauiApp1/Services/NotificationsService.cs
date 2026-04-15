@@ -1,16 +1,23 @@
 ﻿using Plugin.LocalNotification;
 using Plugin.LocalNotification.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MauiApp1.Services
 {
     public class NotificationsService
     {
+        public async Task CancelAllReminders()
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                LocalNotificationCenter.Current.Cancel(1000 + i);
+            }
+            await Task.CompletedTask;
+        }
 
         public async Task ScheduleWeeklyReminders()
         {
+            if (!Preferences.Default.Get("RemindersEnabled", false))
+                return;
 
             if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
             {
