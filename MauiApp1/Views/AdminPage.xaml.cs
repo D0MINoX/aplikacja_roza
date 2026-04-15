@@ -28,7 +28,6 @@ public partial class AdminPage : ContentPage
         int Role = int.Parse(userRole);
         var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
         int.TryParse(IdClaim.Value, out int Id);
-        await DisplayAlertAsync("Info", Role.ToString(),"OK");
         var navigationParameter = new Dictionary<string, object>
         {
             { "UserRole", Role },
@@ -57,5 +56,12 @@ public partial class AdminPage : ContentPage
             { "UserRole", Role }
         };
         await Shell.Current.GoToAsync("ChangeUserPrivilagies",navigationParameter);
+    }
+    private async void ExternalNumbers_Tapped(object sender, TappedEventArgs e) {
+        await Shell.Current.GoToAsync("ExternalNumbers");
+    }
+    private async void Agrements_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("AgreementsMenagement");
     }
 }

@@ -26,7 +26,7 @@ public partial class JoinRosaryPage : ContentPage
  
     private async void RosariesShow()
     {
-        await DisplayAlertAsync("INFO", UserId.ToString(), "OK");
+        
         List<RosaryInfo> rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(Parish);
         MainThread.BeginInvokeOnMainThread(() =>
         {   
