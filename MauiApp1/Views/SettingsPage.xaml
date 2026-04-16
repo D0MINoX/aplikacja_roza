@@ -97,8 +97,7 @@
                 <Border Style="{StaticResource MenuOption}">
                 <VerticalStackLayout Spacing="10" Padding="20">
                     <Label Text="Ustaw godzinę przypomnienia:" />
-                    <TimePicker x:Name="MyTimePicker" 
-                        TimeSelected="OnTimeChanged" />
+                    <TimePicker x:Name="MyTimePicker" TimeSelected="OnTimeChanged" BackgroundColor="{DynamicResource Primary}" TextColor="{DynamicResource Text}" />
                     </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>
