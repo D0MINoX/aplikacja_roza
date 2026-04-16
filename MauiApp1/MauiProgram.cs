@@ -66,6 +66,17 @@ namespace MauiApp1
 #endif
             });
 
+            // Zmiana underline color dla MyTimePicker
+            TimePickerHandler.Mapper.AppendToMapping(nameof(MyTimePicker.UnderlineColor), (handler, view) =>
+            {
+#if ANDROID
+                if (view is MyTimePicker myTimePicker)
+                {
+                    handler.PlatformView.BackgroundTintList =
+                        ColorStateList.ValueOf(myTimePicker.UnderlineColor.ToPlatform());
+                }
+#endif
+            });
 
             builder.Services.AddSingleton(new HttpClient
             {

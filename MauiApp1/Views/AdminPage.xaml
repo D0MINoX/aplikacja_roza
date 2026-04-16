@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp1.Views.AdminPage"
              Title="AdminPage">
+    <Grid RowDefinitions="*,auto">
+        <ScrollView Grid.Row="0">
+            
     <VerticalStackLayout>
         <Border  Background="{DynamicResource Primary}" Padding="15">
             <Border.GestureRecognizers>
@@ -103,4 +106,7 @@
             </Grid>
         </Border>
     </VerticalStackLayout>
+        </ScrollView>
+        <VerticalStackLayout Grid.Row="1"/>
+    </Grid>
 </ContentPage>

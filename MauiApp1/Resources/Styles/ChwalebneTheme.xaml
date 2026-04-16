@@ -5,6 +5,7 @@
 
     <Color x:Key="Secondary">#FBD028</Color>
     <Color x:Key="Tertiary">#D4B52F</Color>
+    <Color x:Key="TertiaryFaded">#AAD4B52F</Color>
     <Color x:Key="Accent">#C1A428</Color>
 
 </ResourceDictionary>

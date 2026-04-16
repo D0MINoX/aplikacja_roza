@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mauiapp1="clr-namespace:MauiApp1"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:controls="clr-namespace:MauiApp1.Controls"
              x:Class="MauiApp1.SettingsPage"
              BackgroundColor="{DynamicResource Primary}">
     
@@ -93,7 +94,10 @@
                     <HorizontalStackLayout Spacing="20">
                         <Label Text="Pobieraj rozważania offline" VerticalOptions="Center" />
                         <Switch x:Name="DownloadSwitch" 
-                             Toggled="OnDownloadToggled" />
+                                Toggled="OnDownloadToggled"
+                                ThumbColor="{DynamicResource Tertiary}"
+                                OnColor="{DynamicResource TertiaryFaded}"
+                                OffColor="{DynamicResource FadedText}"/>
                     </HorizontalStackLayout>
                 </Border>
 
@@ -104,18 +108,37 @@
                         <HorizontalStackLayout Spacing="20">
                             <Label Text="Włącz przypomnienia" VerticalOptions="Center" />
                             <Switch x:Name="ReminderSwitch" 
-                                    Toggled="OnRemindersToggled" />
+                                    Toggled="OnRemindersToggled"
+                                    ThumbColor="{DynamicResource Tertiary}"
+                                    OnColor="{DynamicResource TertiaryFaded}"
+                                    OffColor="{DynamicResource FadedText}"/>
                         </HorizontalStackLayout>
                         
                         <VerticalStackLayout Spacing="5" x:Name="ReminderTimeLayout" IsVisible="False">
                             <Label Text="Ustaw godzinę przypomnienia:" />
-                            <TimePicker TimeSelected="OnTimeChanged"
-                                        TextColor="{DynamicResource Text}"/>
+                            <controls:MyTimePicker x:Name="ReminderTimePicker" TimeSelected="OnTimeChanged"/>
                         </VerticalStackLayout>
                         
                     </VerticalStackLayout>
                 </Border>
-                
+
+                <!-- Zgłoś problem -->
+                <Border Style="{StaticResource MenuOption}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ReportBug_Tapped"/>
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="flower_icon.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                            Zgłoś błąd
+                        </Label>
+                    </Grid>
+                </Border>
+
             </VerticalStackLayout>
         </ScrollView>
         

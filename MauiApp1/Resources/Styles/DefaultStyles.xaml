@@ -175,7 +175,11 @@
         <Setter Property="AutoSize" Value="Disabled"/>
         <Setter Property="UnderlineColor" Value="Transparent"/>
     </Style>
-    
+
+    <Style TargetType="controls:MyTimePicker">
+        <Setter Property="TextColor" Value="{DynamicResource Text}"/>
+        <Setter Property="UnderlineColor" Value="{DynamicResource FadedText}"/>
+    </Style>
     
     
     
