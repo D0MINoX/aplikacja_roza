@@ -13,13 +13,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # NOWY KROK: Wymuszenie użycia najnowszego Xcode dostępnego na maszynie
+    - name: Setup Xcode version
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
     - name: Setup .NET 10
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '10.0.x'
 
-    # ZMIANA TUTAJ: Zamiast "install maui-ios", robimy "restore" na pliku projektu.
-    # To automatycznie zainstaluje brakującego Androida, iOS i MacCatalyst.
     - name: Restore Workloads
       run: dotnet workload restore MauiApp1/MauiApp1.csproj
 
