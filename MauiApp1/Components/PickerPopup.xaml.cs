@@ -27,9 +27,9 @@ public partial class PickerPopup : Popup
             {
                 Text = item,
                 // Ustawiamy przezroczyste tło, żeby przycisk wyglądał jak zwykły tekst/lista
-                BackgroundColor = Colors.Transparent,
+                BackgroundColor = (Color)Application.Current!.Resources["Primary"],
                 // Dostosowanie koloru czcionki (jeśli masz np. ciemny motyw)
-                TextColor = Application.Current.RequestedTheme == AppTheme.Dark ? Colors.White : Colors.Black,
+                TextColor = (Color)Application.Current!.Resources["Text"] ,
                 HorizontalOptions = LayoutOptions.Start,
                 Padding = new Thickness(10, 5),
                 FontSize = 16

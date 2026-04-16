@@ -30,13 +30,13 @@
             <VerticalStackLayout Spacing="5">
 
                 <controls:MyEntry x:Name="NameEntry"
-                  Placeholder="Imię"/>
+                  Placeholder="Imię" BackgroundColor="{DynamicResource Primary}" TextColor="{DynamicResource Text}" PlaceholderColor="{DynamicResource FadedText}"/>
 
                 <controls:MyEntry x:Name="SurnameEntry"
-                  Placeholder="Nazwisko"/>
+                  Placeholder="Nazwisko" BackgroundColor="{DynamicResource Primary}" TextColor="{DynamicResource Text}" PlaceholderColor="{DynamicResource FadedText}"/>
 
                 <controls:MyEntry x:Name="EmailEntry"
-                  Placeholder="Email"
+                  Placeholder="Email" BackgroundColor="{DynamicResource Primary}" TextColor="{DynamicResource Text}" PlaceholderColor="{DynamicResource FadedText}"
                   Keyboard="Email"/>
 
             </VerticalStackLayout>
