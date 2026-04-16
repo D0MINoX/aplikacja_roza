@@ -75,9 +75,7 @@
                             <CheckBox x:Name="CheckBox" VerticalOptions="Center" CheckedChanged="CheckBoxChanged"/>
                             <Label Text="Dodaj multimedia" 
                                  VerticalOptions="Center">
-                                <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnLabelTapped" />
-                                </Label.GestureRecognizers>
+                      
                             </Label>
                         </HorizontalStackLayout>
                         <VerticalStackLayout x:Name="multimedia">
