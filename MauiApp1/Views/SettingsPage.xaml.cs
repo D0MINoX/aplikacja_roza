@@ -1,8 +1,4 @@
-using System;
 using MauiApp1.Services;
-using Plugin.LocalNotification;
-using Plugin.LocalNotification.Core.Models;
-using Plugin.LocalNotification.Core.Models.AndroidOption;
 
 namespace MauiApp1;
 
@@ -21,9 +17,12 @@ public partial class SettingsPage : ContentPage
     {
         base.OnAppearing();
         IsLogged();
+
         DownloadSwitch.Toggled -= OnDownloadToggled;
         DownloadSwitch.IsToggled = Preferences.Default.Get("AutoDownloadMeditations", false);
         DownloadSwitch.Toggled += OnDownloadToggled;
+
+        ReminderSwitch.IsToggled = Preferences.Default.Get("RemindersEnabled", false);
     }
 
     private async void IsLogged()
@@ -72,6 +71,7 @@ public partial class SettingsPage : ContentPage
     {
         ThemeManager.SetMainTheme();
     }
+
     private async void OnDownloadToggled(object sender, ToggledEventArgs e)
     {
         bool isAllowed = e.Value;
@@ -84,9 +84,27 @@ public partial class SettingsPage : ContentPage
         }
 
     }
+
+    private async void OnRemindersToggled(object sender, ToggledEventArgs e)
+    {
+        bool isAllowed = e.Value;
+        Preferences.Default.Set("RemindersEnabled", isAllowed);
+        if (isAllowed)
+        {
+            ReminderTimeLayout.IsVisible=true;
+            await _notificationsService.ScheduleWeeklyReminders();
+        }
+        else
+        {
+            ReminderTimeLayout.IsVisible=false;
+            await _notificationsService.CancelAllReminders();
+        }
+    }
+
     private async void OnTimeChanged(object sender, TimeChangedEventArgs e)
     {
         Preferences.Default.Set("ReminderTime", e.NewTime.ToString());
-        await  _notificationsService.ScheduleWeeklyReminders();
+        await _notificationsService.ScheduleWeeklyReminders();
     }
+
 }

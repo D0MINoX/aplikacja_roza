@@ -28,19 +28,27 @@ public partial class SelectParish : ContentPage
         List<Parish> allParishes = res.Data;
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            ParishContainer.Children.Clear();
-
-            foreach (var parish in allParishes)
+            ParishContainer.BatchBegin();
+            try
             {
-                try
+                ParishContainer.Children.Clear();
+
+                foreach (var parish in allParishes)
                 {
-                    var border = CreateRosaryCard(parish);
-                    ParishContainer.Children.Add(border);
+                    try
+                    {
+                        var border = CreateRosaryCard(parish);
+                        ParishContainer.Children.Add(border);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
-                }
+            }
+            finally
+            {
+                ParishContainer.BatchCommit();
             }
         });
     }
