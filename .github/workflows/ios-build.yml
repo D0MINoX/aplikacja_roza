@@ -2,8 +2,8 @@ name: Build iOS IPA (.NET 10)
 
 on:
   push:
-    branches: [ "master", "main" ] # Twoja główna gałąź to master
-  workflow_dispatch: # Pozwala uruchomić build ręcznie z poziomu zakładki Actions na GitHubie
+    branches: [ "master", "main" ]
+  workflow_dispatch:
 
 jobs:
   build-ios:
@@ -16,13 +16,14 @@ jobs:
     - name: Setup .NET 10
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '10.0.x' # Wymuszamy .NET 10 zgodnie z życzeniem
+        dotnet-version: '10.0.x'
 
-    - name: Install .NET MAUI Workload
-      run: dotnet workload install maui-ios
+    # ZMIANA TUTAJ: Zamiast "install maui-ios", robimy "restore" na pliku projektu.
+    # To automatycznie zainstaluje brakującego Androida, iOS i MacCatalyst.
+    - name: Restore Workloads
+      run: dotnet workload restore MauiApp1/MauiApp1.csproj
 
     - name: Build and Publish iOS App
-      # Używamy specjalnych flag by obejść brak provisioning profile (Ad-Hoc)
       run: |
         dotnet publish MauiApp1/MauiApp1.csproj \
           -f net10.0-ios \
