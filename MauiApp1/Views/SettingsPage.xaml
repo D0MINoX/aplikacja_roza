@@ -110,7 +110,8 @@
                         <VerticalStackLayout Spacing="5" x:Name="ReminderTimeLayout" IsVisible="False">
                             <Label Text="Ustaw godzinę przypomnienia:" />
                             <TimePicker TimeSelected="OnTimeChanged"
-                                        TextColor="{DynamicResource Text}"/>
+                                        TextColor="{DynamicResource Text}"
+                                        BackgroundColor="{DynamicResource Primary}"/>
                         </VerticalStackLayout>
                         
                     </VerticalStackLayout>
