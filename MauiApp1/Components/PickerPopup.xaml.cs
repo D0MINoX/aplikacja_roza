@@ -23,14 +23,22 @@ public partial class PickerPopup : Popup
         RadioPicker.Children.Clear();
         foreach (var item in lista)
         {
-            var radio = new RadioButton
+            var btn = new Button
             {
-                Content = item,
-                Value = item,
+                Text = item,
+                // Ustawiamy przezroczyste tło, żeby przycisk wyglądał jak zwykły tekst/lista
+                BackgroundColor = Colors.Transparent,
+                // Dostosowanie koloru czcionki (jeśli masz np. ciemny motyw)
+                TextColor = Application.Current.RequestedTheme == AppTheme.Dark ? Colors.White : Colors.Black,
+                HorizontalOptions = LayoutOptions.Start,
+                Padding = new Thickness(10, 5),
+                FontSize = 16
             };
 
-            radio.CheckedChanged += Radio_CheckedChanged;
-            RadioPicker.Children.Add(radio);
+            // Kiedy przycisk zostanie kliknięty, wywołujemy naszą nową metodę
+            btn.Clicked += (sender, e) => OptionSelected(item);
+
+            RadioPicker.Children.Add(btn);
         }
         RadioPicker.BatchCommit();
 
@@ -46,21 +54,11 @@ public partial class PickerPopup : Popup
             selected = Preferences.Default.Get("LastMystery", "");
         }
 
-        if (!string.IsNullOrEmpty(selected))
-            RadioButtonGroup.SetSelectedValue(RadioPicker, selected);
-        else if (lista.Count > 0)
-            RadioButtonGroup.SetSelectedValue(RadioPicker, lista[0]);
-
         _isInitializing = false;
     }
 
-    private void Radio_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    private void OptionSelected(string val)
     {
-        if (_isInitializing || !e.Value)
-            return;
-
-        var radio = (RadioButton)sender;
-        string val = radio.Value?.ToString();
         if (name == "Group")
         {
             Preferences.Default.Set("LastGroup", val);
@@ -69,17 +67,14 @@ public partial class PickerPopup : Popup
                 case "Światła":
                     Preferences.Default.Set("LastMystery", "Chrzest Pana Jezusa w Jordanie");
                     break;
-
                 case "Bolesne":
                     Preferences.Default.Set("LastMystery", "Modlitwa Pana Jezusa w Ogrójcu");
                     break;
-
                 case "Chwalebne":
                     Preferences.Default.Set("LastMystery", "Zmartwychwstanie Pana Jezusa");
                     break;
-                
                 case "Radosne":
-                default: 
+                default:
                     Preferences.Default.Set("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
                     break;
             }
@@ -90,8 +85,9 @@ public partial class PickerPopup : Popup
         {
             Preferences.Default.Set("LastMystery", val);
         }
+
         Preferences.Default.Set("LastDate", 1);
-        CloseAsync();
+        CloseAsync(); // Zamyka popup
     }
 
 }
