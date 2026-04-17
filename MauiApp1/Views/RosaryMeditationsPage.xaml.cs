@@ -59,8 +59,8 @@ public partial class RosaryMeditationsPage : ContentPage
         InitializeComponent();
 
         _meditationService = meditationService;
-
     }
+
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -111,7 +111,6 @@ public partial class RosaryMeditationsPage : ContentPage
                 bool downloaded = await DownloadAllMeditationsForMystery(selectedMystery);
                 if (downloaded)
                 {
-          
                     var freshLocalData = await GetMeditationFromLocalFile(this.date, selectedMystery);
                     if (freshLocalData != null)
                     {
@@ -149,7 +148,6 @@ public partial class RosaryMeditationsPage : ContentPage
 
     private async void NextTapped(object sender, EventArgs e)
     {
-
         if (++date > 31) date = 1;
         UpdateDate();
     }
@@ -187,6 +185,7 @@ public partial class RosaryMeditationsPage : ContentPage
         var group = Preferences.Default.Get("LastGroup", "Radosne");
         await this.ShowPopupAsync(new PickerPopup(_itemsMap[group], "Mystery"));
     }
+
     private void ApplyMeditationData(LocalMeditation data)
     {
         MeditationLabel.Text = data?.Content ?? "Brak rozważania";
@@ -200,6 +199,7 @@ public partial class RosaryMeditationsPage : ContentPage
             Link = data.Link;
         }
     }
+
     private async Task<LocalMeditation> GetMeditationFromLocalFile(int day, string mystery)
     {
         try
@@ -234,6 +234,7 @@ public partial class RosaryMeditationsPage : ContentPage
         catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Błąd pobierania całości: {ex.Message}"); }
         return false;
     }
+
     private string GetFileName(string mystery)
     {
         

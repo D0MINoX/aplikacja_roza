@@ -1,9 +1,45 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.Views.MyRosariesListPage"
-             Title="MyRosariesListPage">
-    <VerticalStackLayout x:Name="RosariesContainer">
+             Title="MyRosariesListPage"
+             BackgroundColor="{DynamicResource Primary}">
+    
+    <Grid RowDefinitions="*,auto,auto,auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout x:Name="RosariesContainer"/>
+        </ScrollView>
 
-    </VerticalStackLayout>
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" IsVisible="False" x:Name="SendOptionsGrid">
+            <Border Grid.Column="0" Style="{StaticResource NavButton}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ConfirmSend_Tapped"/>
+                </Border.GestureRecognizers>
+                <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                    Zatwierdź wysyłanie
+                </Label>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource NavButton}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="SendToAll_Tapped"/>
+                </Border.GestureRecognizers>
+                <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                    Wyślij do wszystkich grup
+                </Label>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" x:Name="SendMessage" Style="{StaticResource NavButton}">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Send_Tapped"/>
+            </Border.GestureRecognizers>
+            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                Wyślij wiadomość do wielu grup
+            </Label>
+        </Border>
+
+        <mauiapp1:BottomMenu Grid.Row="3"></mauiapp1:BottomMenu>
+    </Grid>
+    
 </ContentPage>
