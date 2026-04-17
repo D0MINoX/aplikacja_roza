@@ -91,9 +91,9 @@ public partial class ExternalNumbersMenagementPage : ContentPage
             user.IsEditing = false; 
         }
     }
-    private void OpenPrywatnoscClicked(object sender, EventArgs e)
+    private async void OpenPrywatnoscClicked(object sender, EventArgs e)
     {
-
+        await Launcher.Default.OpenAsync("https://info.rosaryapi.pl/#prywatnosc");
     }
     private async void RegisterClicked(object sender, EventArgs e)
     {

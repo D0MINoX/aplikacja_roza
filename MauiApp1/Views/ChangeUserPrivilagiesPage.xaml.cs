@@ -85,4 +85,9 @@ public partial class ChangeUserPrivilagiesPage : ContentPage
             user.IsEditing = false; 
         }
     }
+   
+    private async void OnDeleteClicked(object sender, EventArgs e)
+    { 
+    
+    }
 }

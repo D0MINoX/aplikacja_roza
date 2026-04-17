@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:mauiapp1="clr-namespace:MauiApp1" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:mauiapp1="clr-namespace:MauiApp1" 
+             xmlns:controls="clr-namespace:MauiApp1.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiApp1.ProfilePage"
              Title="ProfilePage"
              BackgroundColor="{DynamicResource Primary}">
@@ -120,7 +122,31 @@
                         </Label>
                     </Grid>
                 </Border>
-
+                <!--USUŃ-->
+                <Border Style="{StaticResource MenuOption}">
+                <Grid RowDefinitions="*,*" >
+               
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="DeleteTapped"/>
+                    </Grid.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                        <Image Grid.Column="0" Source="logout.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                            USUŃ KONTO
+                        </Label>
+                        
+                    </Grid>
+               
+                <controls:MyEntry x:Name="PasswordEntry"
+              Placeholder="Hasło"
+              IsPassword="True"
+                  Grid.Row="1"/>
+                </Grid>
+                </Border>
             </VerticalStackLayout>
         </ScrollView>
 

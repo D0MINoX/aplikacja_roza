@@ -30,10 +30,14 @@
 
                         <controls:MyEntry x:Name="EmailEntry" 
                                       Placeholder="Email" 
-                                      Keyboard="Email"/>
+                                      Keyboard="Email"
+                                          BackgroundColor="{DynamicResource Primary}"
+                                          TextColor="{DynamicResource Text}" PlaceholderColor="{DynamicResource FadedText}"/>
 
                         <controls:MyEntry x:Name="PasswordEntry" 
                                       Placeholder="Hasło" 
+                                          BackgroundColor="{DynamicResource Primary}"
+                                          TextColor="{DynamicResource Text}" PlaceholderColor="{DynamicResource FadedText}"
                                       IsPassword="True"/>
 
                         <Border Style="{StaticResource NavButton}" HeightRequest="50" WidthRequest="250">
