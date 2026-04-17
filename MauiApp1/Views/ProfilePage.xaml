@@ -44,7 +44,7 @@
                                 <Label Grid.Column="0" Style="{StaticResource OptionLabel}" HorizontalOptions="Start">
                                     Edytuj profil
                                 </Label>
-                                <Image Grid.Column="1" Source="right_arrow.png" HorizontalOptions="End" DesiredSize="30,30">
+                                <Image Grid.Column="1" Source="right_arrow.png" HorizontalOptions="End" WidthRequest="30" HeightRequest="30">
                                     <Image.Behaviors>
                                         <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
                                     </Image.Behaviors>
@@ -61,7 +61,7 @@
                                 <Label Grid.Column="0" Style="{StaticResource OptionLabel}" HorizontalOptions="Start">
                                     Zmień hasło
                                 </Label>
-                                <Image Grid.Column="1" Source="right_arrow.png" HorizontalOptions="End" DesiredSize="30,30">
+                                <Image Grid.Column="1" Source="right_arrow.png" HorizontalOptions="End" WidthRequest="30" HeightRequest="30">
                                     <Image.Behaviors>
                                         <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
                                     </Image.Behaviors>
