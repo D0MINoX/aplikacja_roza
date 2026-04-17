@@ -17,6 +17,10 @@ public partial class ProfilePage : ContentPage
     private readonly ParishService _parishService;
     private bool isParish = false;
     private int UserId { get; set; }
+    private string UserName { get; set; }
+    private string UserSurname { get; set; }
+    private string UserEmail { get; set; }
+    private int UserRole { get; set; }
     private int Parish {  get; set; }
     public ProfilePage(AuthService authService,ParishService parishService, RosaryService rosaryService)
     {
@@ -38,7 +42,7 @@ public partial class ProfilePage : ContentPage
             var response = await _parishService.GetUserParish(UserId);
             if (response.isSuccess)
             {
-                //await DisplayAlertAsync("INFO", response.Data.Id.ToString(), "OK");
+                
                 ParishLabel.Text = response.Data.Name;
                 Parish = response.Data.Id;
                 if (Parish == -1)
@@ -77,10 +81,12 @@ public partial class ProfilePage : ContentPage
 
 
         var nameClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "unique_name" || c.Type == ClaimTypes.Name);
-        string userName = nameClaim?.Value ?? "Brak Imienia";
+        string username = nameClaim?.Value ?? "Brak Imienia";
 
         var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
         string userRole = roleClaim?.Value ?? "Nie jesteś członkiem róży";
+        var emailClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "email" || c.Type == ClaimTypes.Email);
+        UserEmail = emailClaim?.Value ?? "Brak adresu Email";
         var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
         if (int.TryParse(IdClaim?.Value, out int id))
         {
@@ -88,10 +94,13 @@ public partial class ProfilePage : ContentPage
         }
         List<string> roles = ["Rola: admin", "Rola: główny zeletor", "Zelator: ", "Członek rózy: "];
 
-        Name.Text = "Witaj " + userName;
-        Role.Text = roles[int.Parse(userRole)];
+        Name.Text = "Witaj " + username;
+        UserName = username.Split(" ")[0];
+        UserSurname = username.Split(" ")[1];
+        UserRole = int.Parse(userRole);
+        Role.Text = roles[UserRole];
         #if WINDOWS || MACCATALYST
-        if (int.Parse(userRole) < 3)
+        if (UserRole < 3)
         {
             adminBtn.IsVisible = true;
         }
@@ -111,7 +120,8 @@ public partial class ProfilePage : ContentPage
             }
             else
             {
-                Role.Text += rosaryInfos[0].Name;
+                List<string> roles = ["Rola: admin", "Rola: główny zeletor", "Zelator: ", "Członek rózy: "];
+                Role.Text = roles[UserRole]+" "+rosaryInfos[0].Name;
             }
         });
     }
@@ -137,7 +147,7 @@ public partial class ProfilePage : ContentPage
 
     private async void UserEditTapped(object sender, EventArgs e)
     {
-        var popup = new EditUserPopup("", "", "");
+        var popup = new EditUserPopup(UserName, UserSurname, UserEmail);
         var result = await this.ShowPopupAsync<EditUserResult>(popup, new PopupOptions
         {
             Shape = new RoundRectangle
@@ -149,20 +159,25 @@ public partial class ProfilePage : ContentPage
         });
 
 
-        if (!result.WasDismissedByTappingOutsideOfPopup)
+        if (result?.Result is EditUserResult data && !result.WasDismissedByTappingOutsideOfPopup)
         {
-            EditUserResult data = result.Result;
-            if (data != null)
+            var updateResult = await _authService.UpdateUserAsync(UserId, data.Name, data.Surname, data.Email);
+
+            if (updateResult)
             {
-                await DisplayAlertAsync("Sukces", $"Imię: {data.Name}, Nazwisko: {data.Surname}", "OK");
-                // Tutaj możesz dodać logikę do aktualizacji danych użytkownika
+                await DisplayAlertAsync("Sukces", "Dane użytkownika zostały zapisane.", "OK");
+                DecodeToken(_authService.Token);
+            }
+            else
+            {
+                await DisplayAlertAsync("Błąd", "Wystąpił błąd podczas zmiany danych spróbuj ponownie", "OK");
             }
         }
     }
 
     private async void PasswordEditTapped(object sender, EventArgs e)
     {
-        await this.ShowPopupAsync(new EditPasswordPopup(), new PopupOptions
+        var result =  await this.ShowPopupAsync<EditPasswordResult>(new EditPasswordPopup(), new PopupOptions
         {
             Shape = new RoundRectangle
             {
@@ -171,5 +186,39 @@ public partial class ProfilePage : ContentPage
             },
             Shadow = null
         });
+        if(result?.Result is EditPasswordResult data && !result.WasDismissedByTappingOutsideOfPopup)
+        {
+            var updateResult = await _authService.UpdatePasswordAsync(UserId,result.Result.OldPassword,result.Result.NewPassword);
+            if (updateResult)
+            {
+                await DisplayAlertAsync("Sukces", "Dane użytkownika zostały zapisane.", "OK");
+                
+            }
+            else
+            {
+                await DisplayAlertAsync("Błąd", "Wystąpił błąd podczas zmiany danych spróbuj ponownie", "OK");
+            }
+        } 
+    }
+    private async void DeleteTapped(object sender, EventArgs e) {
+        string password = PasswordEntry.Text;
+        if (string.IsNullOrEmpty(password))
+        {
+            await DisplayAlertAsync("BŁĄD", "Hasło nie zostało wpisane", "OK");
+        }
+        else
+        {
+            var result = await _authService.deleteUser(UserId, password);
+            if (result) 
+                {
+                    await DisplayAlertAsync("Sukces", "Dane użytkownika zostały usunięte.", "OK");
+                    await Shell.Current.GoToAsync("//Home");
+            }
+            else
+                {
+                    await DisplayAlertAsync("Błąd", "Wystąpił błąd podczas usuwania danych spróbuj ponownie", "OK");
+                }
+            }
+    
     }
 }

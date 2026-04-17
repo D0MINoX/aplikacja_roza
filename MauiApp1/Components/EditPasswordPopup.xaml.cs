@@ -1,8 +1,9 @@
 using CommunityToolkit.Maui.Views;
+using MauiApp1.Models;
 
 namespace MauiApp1.Components;
 
-public partial class EditPasswordPopup : Popup
+public partial class EditPasswordPopup : Popup<EditPasswordResult>
 {
 
     public EditPasswordPopup()
@@ -10,16 +11,20 @@ public partial class EditPasswordPopup : Popup
         InitializeComponent();
     }
 
-    private void CloseTapped(object sender, EventArgs e)
-        => CloseAsync();
+    private async void CloseTapped(object sender, EventArgs e)
+        => await CloseAsync(null);
 
     private async void SaveTapped(object sender, EventArgs e)
     {
         if (NewPasswordEntry.Text == NewPasswordRetypeEntry.Text)
         {
-            //TODO: Save changes to user profile here
+            EditPasswordResult result = new EditPasswordResult
+            {
+                OldPassword = OldPasswordEntry.Text,
+                NewPassword = NewPasswordEntry.Text
+            };
             
-            await CloseAsync();
+            await CloseAsync(result);
         }
         else
         {

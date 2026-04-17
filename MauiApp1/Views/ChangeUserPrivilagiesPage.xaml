@@ -55,11 +55,15 @@
                                         Clicked="OnEditClicked" 
                                         CommandParameter="{Binding .}" />
 
-                                    <Button Text="💾" 
+                                <Button Text="💾" 
                                         IsVisible="{Binding IsEditing}"
                                         BackgroundColor="Green"
                                         Clicked="OnSaveClicked" 
-                                        CommandParameter="{Binding .}" />
+                                        CommandParameter="{Binding .}" /> 
+                                <Button Text="🗑️"
+                                             Clicked="OnDeleteClicked" 
+                                             BackgroundColor="Red"
+                                             CommandParameter="{Binding .}" />
                                 </Grid>
                                
                             </Grid>
