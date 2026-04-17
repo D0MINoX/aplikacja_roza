@@ -10,9 +10,10 @@ public partial class SettingsPage : ContentPage
     {
         _authService = authService;
         _notificationsService = notificationsService;
-        InitializeComponent();
 
+        InitializeComponent();
     }
+
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -23,6 +24,8 @@ public partial class SettingsPage : ContentPage
         DownloadSwitch.Toggled += OnDownloadToggled;
 
         ReminderSwitch.IsToggled = Preferences.Default.Get("RemindersEnabled", false);
+
+        ReminderTimePicker.SetValue(TimePicker.TimeProperty, TimeSpan.Parse(Preferences.Default.Get("ReminderTime", "20:00:00")));
     }
 
     private async void IsLogged()
@@ -107,4 +110,8 @@ public partial class SettingsPage : ContentPage
         await _notificationsService.ScheduleWeeklyReminders();
     }
 
+    private async void ReportBug_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("ReportBug");
+    }
 }
