@@ -105,6 +105,75 @@ namespace MauiApp1.Services
             }
         }
 
+        public async Task<bool> UpdateUserAsync(int userId, string name, string surname, string email)
+        {
+            var ModifyData = new { id = userId, Name = name, Surname = surname, Email = email };
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync("api/Auth/Edit", ModifyData);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+                    Token = result.Token;
+                    await SecureStorage.Default.SetAsync(TokenKey, Token);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd Zmiany danych: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdatePasswordAsync(int id,string oldPassword,string newPassword)
+        {
+            var ModifyData = new {Id=id, OldPassword = oldPassword, NewPassword = newPassword };
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync("api/Auth/changePassword", ModifyData);
+            if (!response.IsSuccessStatusCode)
+            {
+
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine($"API ERROR: {response.StatusCode} - {errorContent}");
+                return false;
+            }
+            return true;
+        }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd rejestracji: {ex.Message}");
+                return false;
+            }
+}
+
+        public async Task<bool> deleteUser(int userId, string password)
+        {
+            var Data = new { Id = userId, Password = password };
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Delete, "api/Auth/delete")
+                {
+                    Content = JsonContent.Create(Data)
+                };
+
+                var response = await _httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    SecureStorage.Default.Remove(TokenKey);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public class PermissionResponse { public bool canSend { get; set; } }
     }
 }
