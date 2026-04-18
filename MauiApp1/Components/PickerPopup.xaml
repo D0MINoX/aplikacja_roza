@@ -13,7 +13,7 @@
             Wybierz część różańca
         </Label>
 
-        <VerticalStackLayout RadioButtonGroup.GroupName="picker" x:Name="RadioPicker" Spacing="10"/>
+        <VerticalStackLayout x:Name="Picker" Spacing="10"/>
 
     </VerticalStackLayout>
 </layouts:Popup>
