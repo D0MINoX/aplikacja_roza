@@ -1,5 +1,4 @@
-﻿using Android.Text.Style;
-using MauiApp1.Models;
+﻿using MauiApp1.Models;
 using Newtonsoft.Json.Serialization;
 using System.Buffers.Text;
 using System.Diagnostics;
