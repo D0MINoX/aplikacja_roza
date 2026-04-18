@@ -1,7 +1,10 @@
-﻿using MauiApp1.Models;
+﻿using Android.Text.Style;
+using MauiApp1.Models;
+using Newtonsoft.Json.Serialization;
 using System.Buffers.Text;
 using System.Diagnostics;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace MauiApp1.Services
@@ -10,9 +13,11 @@ namespace MauiApp1.Services
     {
 
         private readonly HttpClient _httpClient;
-        public AdminService(HttpClient httpClient)
+        private readonly AuthService _authService;
+        public AdminService(HttpClient httpClient, AuthService authService)
         {
             _httpClient = httpClient;
+            _authService = authService;
         }
 
         public async Task<(bool isSuccess, List<AdminUserView> Data, string ErrorMessage)> AdminUsers(int rosaryId)
@@ -20,6 +25,8 @@ namespace MauiApp1.Services
             string url = $"api/Admin/{rosaryId}/usersShow";
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return (false, null, "Błąd dostępu");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -45,6 +52,8 @@ namespace MauiApp1.Services
             string url = $"api/Admin/{userId}/Authorization/{rosaryId}";
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return (false, "Błąd dostępu");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.PutAsync(url, null);
 
                 if (response.IsSuccessStatusCode)
@@ -70,6 +79,8 @@ namespace MauiApp1.Services
             string url = $"api/Admin/delete-membership/{userId}/{rosaryId}";
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return (false, "Błąd dostępu");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.DeleteAsync(url);
 
                 if (response.IsSuccessStatusCode)
@@ -96,6 +107,8 @@ namespace MauiApp1.Services
             string url = $"api/Admin/zelatorsShow";
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return (false,null, "Błąd dostępu");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -120,6 +133,8 @@ namespace MauiApp1.Services
             var registerData = new { name = name, parish = parish,zelatorsId = zelatorId };
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return false;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.PostAsJsonAsync("api/Admin/AddRosary", registerData);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -141,6 +156,8 @@ namespace MauiApp1.Services
             var ModifyData = new { Title = Title,Content = Content,Date = Date,Link = link };
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return false;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.PutAsJsonAsync("api/Admin/ModifyMeditation",ModifyData);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -163,6 +180,8 @@ namespace MauiApp1.Services
             string url = $"api/Admin/usersShow/{UserRole}";
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return (false, null, $"Błąd serwera: odmowa dostępu");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -190,6 +209,8 @@ namespace MauiApp1.Services
             string url = $"api/Admin/MainZelatorsShow";
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return (false, null, $"Błąd serwera: odmowa dostępu");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -214,6 +235,8 @@ namespace MauiApp1.Services
             var registerData = new { name = name, zelatorsId = zelatorId };
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return false;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.PostAsJsonAsync("api/Admin/AddParish", registerData);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -236,6 +259,8 @@ namespace MauiApp1.Services
             var ModifyData = new { Id = userId, Role = userRole,CanSendSMS=userCanSendSMS };
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return false;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.PutAsJsonAsync("api/Admin/UpdatePermissions", ModifyData);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -282,6 +307,8 @@ namespace MauiApp1.Services
             string url = $"api/Admin/deleteExternalNumber/{userId}/{rosaryId}";
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return (false, $"Błąd serwera: odmowa dostępu");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.DeleteAsync(url);
 
                 if (response.IsSuccessStatusCode)
@@ -313,7 +340,8 @@ namespace MauiApp1.Services
                 RosaryId = rosaryId,
                 UserIp=publicIp
             };
-
+            if (string.IsNullOrEmpty(_authService.Token)) return false;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
             var response = await _httpClient.PostAsJsonAsync($"api/Admin/AddExternalMember", request);
             return response.IsSuccessStatusCode;
         }
@@ -323,6 +351,8 @@ namespace MauiApp1.Services
             var ModifyData = new {Id = userId, Name = name, Surname = surname, PhoneNumber=phoneNumber };
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return false;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.PutAsJsonAsync("api/Admin/UpdateExternalMember", ModifyData);
                 if (!response.IsSuccessStatusCode)
                 {

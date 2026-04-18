@@ -104,12 +104,13 @@ namespace MauiApp1.Services
                 return false;
             }
         }
-
         public async Task<bool> UpdateUserAsync(int userId, string name, string surname, string email)
         {
             var ModifyData = new { id = userId, Name = name, Surname = surname, Email = email };
             try
             {
+                if (string.IsNullOrEmpty(Token)) return false;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
                 var response = await _httpClient.PutAsJsonAsync("api/Auth/Edit", ModifyData);
                 if (response.IsSuccessStatusCode)
                 {
@@ -132,6 +133,8 @@ namespace MauiApp1.Services
             var ModifyData = new {Id=id, OldPassword = oldPassword, NewPassword = newPassword };
             try
             {
+                if (string.IsNullOrEmpty(Token)) return false;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
                 var response = await _httpClient.PutAsJsonAsync("api/Auth/changePassword", ModifyData);
             if (!response.IsSuccessStatusCode)
             {
@@ -154,6 +157,8 @@ namespace MauiApp1.Services
             var Data = new { Id = userId, Password = password };
             try
             {
+                if (string.IsNullOrEmpty(Token)) return false;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
                 var request = new HttpRequestMessage(HttpMethod.Delete, "api/Auth/delete")
                 {
                     Content = JsonContent.Create(Data)

@@ -1,6 +1,8 @@
 ﻿using MauiApp1.Models;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 
@@ -9,15 +11,19 @@ namespace MauiApp1.Services
     public class ParishService
     {
         private readonly HttpClient _httpClient;
-        public ParishService(HttpClient httpClient)
+        private readonly AuthService _authService;
+        public ParishService(HttpClient httpClient, AuthService authService)
         {
             _httpClient = httpClient;
+            _authService = authService;
         }
         public async Task<(bool isSuccess, List<Parish> Data, string ErrorMessage)> AllParish()
         {
             string url = $"api/Parish/getAllParish";
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return (false, null, "Błąd dostępu");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -42,6 +48,8 @@ namespace MauiApp1.Services
             string url = $"api/Parish/getUserParish/{UserId}";
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return (false, null, "Błąd dostępu");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {

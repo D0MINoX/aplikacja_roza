@@ -1,5 +1,6 @@
 ﻿using MauiApp1.Models;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -9,15 +10,19 @@ namespace MauiApp1.Services
     public class MessagesService
     {
         private readonly HttpClient _httpClient;
-        public MessagesService( HttpClient httpClient)
+        private readonly AuthService _authService;
+        public MessagesService( HttpClient httpClient, AuthService authService)
         {
             _httpClient = httpClient;
+            _authService = authService;
         }
         public async Task<(bool isSuccess, List<RosaryMessage> Data, string ErrorMessage)> GetMessagesAsync(int rosaryId)
         {
             string url = $"api/Messages/getMessages/{rosaryId}";
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return (false, null, "Błąd dostępu");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -42,6 +47,8 @@ namespace MauiApp1.Services
             try
             {
                 string url = $"api/Messages/newMessage";
+                if (string.IsNullOrEmpty(_authService.Token)) return false;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.PostAsJsonAsync(url, message);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -59,6 +66,8 @@ namespace MauiApp1.Services
         {
             try
             {
+                if (string.IsNullOrEmpty(_authService.Token)) return new List<string>();
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var phones = await _httpClient.GetFromJsonAsync<List<string>>($"api/Messages/GetExternalNumbers/{rosaryId}");
 
                 return phones ?? new List<string>();
@@ -78,6 +87,9 @@ namespace MauiApp1.Services
         {
             try
             {
+                //weryfikacja admin dodać
+                if (string.IsNullOrEmpty(_authService.Token)) return new List<ExternalNumber>();
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var phones = await _httpClient.GetFromJsonAsync<List<ExternalNumber>>($"api/Messages/GetAdminExternalNumbers/{rosaryId}");
 
                 return phones ?? new List<ExternalNumber>();
