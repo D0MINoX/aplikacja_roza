@@ -1,5 +1,7 @@
 ﻿using MauiApp1.Models;
+using MauiApp1.Services;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace MauiApp1
@@ -7,16 +9,20 @@ namespace MauiApp1
     public class MeditationsService
     {
         private readonly HttpClient _httpClient;
-        public MeditationsService(HttpClient httpClient)
+        private readonly AuthService _authService;
+        public MeditationsService(HttpClient httpClient, AuthService authService)
         {
             _httpClient = httpClient;
+            _authService = authService;
         }
         public async Task<LocalMeditation> GetMeditationData(int date, string title)
         {
 
 
             try
-            {  
+            {
+                if (string.IsNullOrEmpty(_authService.Token)) return null ;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var meditation = await _httpClient.GetFromJsonAsync<List<LocalMeditation>>(
                     $"api/meditations/search?date={date}&title={title}");
 
@@ -40,7 +46,8 @@ namespace MauiApp1
             try
             {
                 string url = $"api/meditations/search?title={Uri.EscapeDataString(title)}";
-
+                if (string.IsNullOrEmpty(_authService.Token)) return null;
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var meditations = await _httpClient.GetFromJsonAsync<List<LocalMeditation>>(url);
                 return meditations ?? new List<LocalMeditation>();
             }
