@@ -32,6 +32,7 @@ namespace MauiApp1
             Routing.RegisterRoute("AgreementsMenagement", typeof(AgreementsMenagementPage));
             Routing.RegisterRoute("ExternalNumbersMenagement", typeof(ExternalNumbersMenagementPage));
             Routing.RegisterRoute("ExternalNumbers", typeof(ExternalNumbersPage));
+            Routing.RegisterRoute("ErrorManagement", typeof(ErrorManagementPage));
 
             Routing.RegisterRoute("ReportBug", typeof(ReportBugPage));
         }

@@ -21,8 +21,7 @@ namespace MauiApp1
 
             try
             {
-                if (string.IsNullOrEmpty(_authService.Token)) return null ;
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
+               
                 var meditation = await _httpClient.GetFromJsonAsync<List<LocalMeditation>>(
                     $"api/meditations/search?date={date}&title={title}");
 
@@ -46,8 +45,7 @@ namespace MauiApp1
             try
             {
                 string url = $"api/meditations/search?title={Uri.EscapeDataString(title)}";
-                if (string.IsNullOrEmpty(_authService.Token)) return null;
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
+              
                 var meditations = await _httpClient.GetFromJsonAsync<List<LocalMeditation>>(url);
                 return meditations ?? new List<LocalMeditation>();
             }

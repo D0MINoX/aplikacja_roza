@@ -49,8 +49,9 @@
                                     <CheckBox IsChecked="{Binding UserCanSendSMS}" 
                                         IsVisible="{Binding IsEditing}"/>
                                 </HorizontalStackLayout>
-                                <Grid Grid.Column="5">
-                                    <Button Text="✏️" 
+
+                            <HorizontalStackLayout Grid.Column="5" HorizontalOptions="CenterAndExpand">
+                                <Button Text="✏️" 
                                         IsVisible="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}"
                                         Clicked="OnEditClicked" 
                                         CommandParameter="{Binding .}" />
@@ -59,14 +60,14 @@
                                         IsVisible="{Binding IsEditing}"
                                         BackgroundColor="Green"
                                         Clicked="OnSaveClicked" 
-                                        CommandParameter="{Binding .}" /> 
+                                        CommandParameter="{Binding .}" />
                                 <Button Text="🗑️"
                                              Clicked="OnDeleteClicked" 
                                              BackgroundColor="Red"
                                              CommandParameter="{Binding .}" />
-                                </Grid>
-                               
-                            </Grid>
+                            </HorizontalStackLayout>
+
+                        </Grid>
                     </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

@@ -95,6 +95,7 @@ namespace MauiApp1
             builder.Services.AddSingleton<RosaryService>();
             builder.Services.AddSingleton<AdminService>(); 
             builder.Services.AddSingleton<NotificationsService>();
+            builder.Services.AddSingleton<ErrorService>();
 
 
             builder.Services.AddTransient<MainPage>();
@@ -117,6 +118,7 @@ namespace MauiApp1
             builder.Services.AddTransient<ExternalNumbersMenagementPage>();
             builder.Services.AddTransient<AgreementsMenagementPage>();
             builder.Services.AddTransient<ExternalNumbersPage>();
+            builder.Services.AddTransient<ErrorManagementPage>();
           
             return builder.Build();
         }
