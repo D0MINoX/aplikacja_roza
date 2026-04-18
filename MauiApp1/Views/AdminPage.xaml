@@ -105,7 +105,21 @@
                 </Label>
             </Grid>
         </Border>
-    </VerticalStackLayout>
+                <Border  Background="{DynamicResource Primary}" Padding="15" x:Name="ErrorReports">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ErrorReports_Tapped"/>
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="auto,auto">
+                        <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
+                        <Label Grid.Column="1"  TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
+                            Zgłoszone błędy
+                        </Label>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
         </ScrollView>
         <VerticalStackLayout Grid.Row="1"/>
     </Grid>

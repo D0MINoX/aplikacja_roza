@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.ErrorManagementPage"
+             xmlns:conv="clr-namespace:MauiApp1.Converters"
+             Title="Zarządzanie błędami"
+             BackgroundColor="{DynamicResource Background}">
+    <ContentPage.Resources>
+        <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </ContentPage.Resources>
+    <Grid RowDefinitions="*,auto">
+
+        <!-- Nagłówki kolumn -->
+        <Grid RowDefinitions="Auto, *" Margin="10" Grid.Row="0">
+            <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,150" BackgroundColor="{DynamicResource Secondary}" Padding="10">
+                <Label Text="Numer telefonu" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>
+                <Label Text="Opis błędu" FontAttributes="Bold" TextColor="White" Grid.Column="1"/>
+                <Label Text="Status" FontAttributes="Bold" TextColor="White" Grid.Column="2"/>
+                <Label Text="Utworzono" FontAttributes="Bold" TextColor="White" Grid.Column="3"/>
+                <Label Text="Akcje" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="4"/>
+            </Grid>
+
+            <!-- Lista błędów -->
+            <CollectionView Grid.Row="1" x:Name="ErrorsList" VerticalScrollBarVisibility="Always">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeShape="RoundRectangle 0" StrokeThickness="0.5" Stroke="{DynamicResource Accent}">
+                            <Grid ColumnDefinitions="*,*,*,*,150" Padding="10" BackgroundColor="{DynamicResource Primary}">
+
+                                <!-- Numer telefonu -->
+                                <Label Text="{Binding UserPhone}"
+                                       Grid.Column="0"
+                                       FontSize="12"
+                                       VerticalOptions="Center"/>
+
+                                <!-- Opis błędu -->
+                                <Label Text="{Binding ErrorMessage}"
+                                       Grid.Column="1"
+                                       FontSize="12"
+                                       VerticalOptions="Center"/>
+
+                                <!-- Status => Picker do edycji -->
+                                <Picker Grid.Column="2" 
+                                        ItemsSource="{Binding AvailableStatuses}" 
+                                        SelectedItem="{Binding Status, Mode=TwoWay}" 
+                                        IsVisible="{Binding IsEditing}"
+                                        TextColor="Black"
+                                        FontSize="12"/>
+                                <Label Text="{Binding Status}"
+                                       Grid.Column="2"
+                                       IsVisible="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}"
+                                       FontSize="12"
+                                       VerticalOptions="Center"/>
+
+                                <!-- Data utworzenia -->
+                                <Label Text="{Binding CreatedAt, StringFormat='{0:yyyy-MM-dd HH:mm:ss}'}"
+                                       Grid.Column="3"
+                                       FontSize="12"
+                                       VerticalOptions="Center"/>
+
+                                <!-- Akcje -->
+                                <HorizontalStackLayout Grid.Column="4" Spacing="5">
+                                    <!-- Edytuj -->
+                                    <Button Text="✏️"
+                                            BackgroundColor="CadetBlue"
+                                            TextColor="White"
+                                            CommandParameter="{Binding .}"
+                                            Clicked="OnEditClicked"
+                                            IsVisible="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}"/>
+
+                                    <!-- Zapisz -->
+                                    <Button Text="💾"
+                                            BackgroundColor="Green"
+                                            TextColor="White"
+                                            CommandParameter="{Binding .}"
+                                            Clicked="OnSaveClicked"
+                                            IsVisible="{Binding IsEditing}"/>
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </Grid>
+</ContentPage>

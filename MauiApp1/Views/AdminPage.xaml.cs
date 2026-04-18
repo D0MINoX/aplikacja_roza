@@ -27,12 +27,14 @@ public partial class AdminPage : ContentPage
             ParishAdd.IsVisible = false;
             Agrements.IsVisible = false;
             MeditationsAdd.IsVisible = false;
+            ErrorReports.IsVisible = false;
         }
         if(UserRole == 2){
             RosaryAdd.IsVisible = false;
             ParishAdd.IsVisible = false;
             Agrements.IsVisible = false;
             MeditationsAdd.IsVisible = false;
+            ErrorReports.IsVisible = false;
         }
        
     }
@@ -86,5 +88,9 @@ public partial class AdminPage : ContentPage
     private async void Agrements_Tapped(object sender, TappedEventArgs e)
     {
         await Shell.Current.GoToAsync("AgreementsMenagement");
+    }
+    private async void ErrorReports_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("ErrorManagement");
     }
 }
