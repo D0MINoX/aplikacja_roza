@@ -7,12 +7,45 @@ namespace MauiApp1.Views;
 
 public partial class AdminPage : ContentPage
 {
+    private int UserRole { get; set; }
+    private int UserId { get; set; }
     private readonly AuthService _authService;
 
     public AdminPage(AuthService authService)
     {
         _authService   = authService;
         InitializeComponent();
+       
+    }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing(); 
+  
+        DecodeToken();
+        if (UserRole == 1)
+        {
+            ParishAdd.IsVisible = false;
+            Agrements.IsVisible = false;
+            MeditationsAdd.IsVisible = false;
+        }
+        if(UserRole == 2){
+            RosaryAdd.IsVisible = false;
+            ParishAdd.IsVisible = false;
+            Agrements.IsVisible = false;
+            MeditationsAdd.IsVisible = false;
+        }
+       
+    }
+    private async void DecodeToken() {
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadJwtToken(_authService.Token);
+        var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
+        string userRole = roleClaim?.Value ?? "4";
+        UserRole = int.Parse(userRole);
+        var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
+        int.TryParse(IdClaim.Value, out int Id);
+        UserId = Id;
+        
     }
 
     private async void RosaryMenagement_Tapped(object sender, TappedEventArgs e)
@@ -21,17 +54,11 @@ public partial class AdminPage : ContentPage
     }
     private async void RosaryAdd_Tapped(object sender, TappedEventArgs e)
     {
-        var handler = new JwtSecurityTokenHandler();
-        var jsonToken = handler.ReadJwtToken(_authService.Token);
-        var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
-        string userRole = roleClaim?.Value ?? "4";
-        int Role = int.Parse(userRole);
-        var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
-        int.TryParse(IdClaim.Value, out int Id);
+        
         var navigationParameter = new Dictionary<string, object>
         {
-            { "UserRole", Role },
-            {"UserId",Id }
+            { "UserRole", UserRole },
+            {"UserId",UserId }
         };
         await Shell.Current.GoToAsync("RosaryAdd",navigationParameter);
     }
@@ -46,14 +73,10 @@ public partial class AdminPage : ContentPage
 
     private async void ChangePrivilagies_Tapped(object sender, TappedEventArgs e)
     {
-        var handler = new JwtSecurityTokenHandler();
-        var jsonToken = handler.ReadJwtToken(_authService.Token);
-        var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
-        string userRole = roleClaim?.Value ?? "4";
-        int Role = int.Parse(userRole);
+        
         var navigationParameter = new Dictionary<string, object>
         {
-            { "UserRole", Role }
+            { "UserRole", UserRole }
         };
         await Shell.Current.GoToAsync("ChangeUserPrivilagies",navigationParameter);
     }

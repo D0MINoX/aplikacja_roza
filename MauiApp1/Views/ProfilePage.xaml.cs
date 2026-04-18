@@ -99,13 +99,18 @@ public partial class ProfilePage : ContentPage
         UserSurname = username.Split(" ")[1];
         UserRole = int.Parse(userRole);
         Role.Text = roles[UserRole];
-        #if WINDOWS || MACCATALYST
-        if (UserRole < 3)
+        if (UserId == 1)
         {
             adminBtn.IsVisible = true;
         }
-        #endif
-    }
+        
+#if WINDOWS || MACCATALYST
+        if (UserRole < 3 || UserId==1)
+        {
+            adminBtn.IsVisible = true;
+        }
+#endif
+        }
 
     private async void RosariesShow()
     {

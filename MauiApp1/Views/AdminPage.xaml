@@ -21,7 +21,7 @@
                 </Label>
             </Grid>
         </Border>
-        <Border  Background="{DynamicResource Primary}" Padding="15">
+        <Border  Background="{DynamicResource Primary}" Padding="15" x:Name="MeditationsAdd">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="MeditationAdd_Tapped"/>
             </Border.GestureRecognizers>
@@ -35,7 +35,7 @@
                 </Label>
             </Grid>
         </Border>
-        <Border  Background="{DynamicResource Primary}" Padding="15">
+        <Border  Background="{DynamicResource Primary}" Padding="15" x:Name="RosaryAdd">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="RosaryAdd_Tapped"/>
             </Border.GestureRecognizers>
@@ -63,7 +63,7 @@
                 </Label>
             </Grid>
         </Border>
-        <Border  Background="{DynamicResource Primary}" Padding="15">
+        <Border  Background="{DynamicResource Primary}" Padding="15" x:Name="ParishAdd">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="ParishAdd_Tapped"/>
             </Border.GestureRecognizers>
@@ -91,7 +91,7 @@
                 </Label>
             </Grid>
         </Border>
-        <Border  Background="{DynamicResource Primary}" Padding="15">
+        <Border  Background="{DynamicResource Primary}" Padding="15" x:Name="Agrements">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="Agrements_Tapped"/>
             </Border.GestureRecognizers>
