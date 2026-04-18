@@ -147,6 +147,11 @@
         <Setter Property="TextColor" Value="{DynamicResource Text}"/>
         <Setter Property="UnderlineColor" Value="{DynamicResource FadedText}"/>
         <Setter Property="MinimumHeightRequest" Value="45"/>
+        <Setter Property="BackgroundColor">
+            <OnPlatform x:TypeArguments="Color">
+                <On Platform="iOS" Value="{DynamicResource Primary}" />
+            </OnPlatform>
+        </Setter>
     </Style>
 
     <Style TargetType="Border" x:Key="ListElement">
@@ -179,6 +184,7 @@
     <Style TargetType="controls:MyTimePicker">
         <Setter Property="TextColor" Value="{DynamicResource Text}"/>
         <Setter Property="UnderlineColor" Value="{DynamicResource FadedText}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
     </Style>
     
     

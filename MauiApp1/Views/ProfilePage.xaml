@@ -122,30 +122,31 @@
                         </Label>
                     </Grid>
                 </Border>
+                
                 <!--USUŃ-->
                 <Border Style="{StaticResource MenuOption}">
-                <Grid RowDefinitions="*,*" >
-               
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="DeleteTapped"/>
-                    </Grid.GestureRecognizers>
-                    <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
-                        <Image Grid.Column="0" Source="logout.png" Style="{StaticResource OptionImage}">
-                            <Image.Behaviors>
-                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
-                            </Image.Behaviors>
-                        </Image>
-                        <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
-                            USUŃ KONTO
-                        </Label>
-                        
+                    <Grid RowDefinitions="*,*" >
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="DeleteTapped"/>
+                        </Grid.GestureRecognizers>
+                        <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
+                            <Image Grid.Column="0" Source="logout.png" Style="{StaticResource OptionImage}">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                                </Image.Behaviors>
+                            </Image>
+                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
+                                USUŃ KONTO
+                            </Label>
+
+                        </Grid>
+
+                        <controls:MyEntry x:Name="PasswordEntry"
+                                          Placeholder="Hasło"
+                                          IsPassword="True"
+                                          Grid.Row="1"/>
                     </Grid>
-               
-                <controls:MyEntry x:Name="PasswordEntry"
-              Placeholder="Hasło"
-              IsPassword="True"
-                  Grid.Row="1"/>
-                </Grid>
                 </Border>
             </VerticalStackLayout>
         </ScrollView>

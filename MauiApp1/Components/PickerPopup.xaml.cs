@@ -1,4 +1,6 @@
 using CommunityToolkit.Maui.Views;
+using MauiApp1.Models;
+using MauiApp1.Views;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MauiApp1.Components;
@@ -19,29 +21,6 @@ public partial class PickerPopup : Popup
     {
         _isInitializing = true;
 
-        RadioPicker.BatchBegin();
-        RadioPicker.Children.Clear();
-        foreach (var item in lista)
-        {
-            var btn = new Button
-            {
-                Text = item,
-                // Ustawiamy przezroczyste tło, żeby przycisk wyglądał jak zwykły tekst/lista
-                BackgroundColor = (Color)Application.Current!.Resources["Primary"],
-                // Dostosowanie koloru czcionki (jeśli masz np. ciemny motyw)
-                TextColor = (Color)Application.Current!.Resources["Text"] ,
-                HorizontalOptions = LayoutOptions.Start,
-                Padding = new Thickness(10, 5),
-                FontSize = 16
-            };
-
-            // Kiedy przycisk zostanie kliknięty, wywołujemy naszą nową metodę
-            btn.Clicked += (sender, e) => OptionSelected(item);
-
-            RadioPicker.Children.Add(btn);
-        }
-        RadioPicker.BatchCommit();
-
         string selected = "";
         if (name == "Group")
         {
@@ -54,7 +33,70 @@ public partial class PickerPopup : Popup
             selected = Preferences.Default.Get("LastMystery", "");
         }
 
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            Picker.BatchBegin();
+            try
+            {
+                Picker.Children.Clear();
+
+                foreach (var item in lista)
+                {
+                    try
+                    {
+                        Border border = CreateOption(item);
+                        if (item == selected)
+                        {
+                            border.BackgroundColor = (Color)Application.Current.Resources["TertiaryFaded"];
+                        }
+                        Picker.Children.Add(border);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
+                    }
+                }
+            }
+            finally
+            {
+                Picker.BatchCommit();
+            }
+        });
+
         _isInitializing = false;
+    }
+
+    private Border CreateOption(string item)
+    {
+        var colorPrimary = (Color)Application.Current.Resources["Primary"];
+        var colorSelected = (Color)Application.Current.Resources["TertiaryFaded"];
+        var borderStyle = (Style)Application.Current.Resources["ListElement"];
+
+        var border = new Border
+        {
+            Style = borderStyle
+        };
+
+        var tapGesture = new TapGestureRecognizer { CommandParameter = item };
+        tapGesture.Tapped += (s, e) =>
+        {
+            foreach (var child in Picker.Children)
+            {
+                if (child is Border b) b.BackgroundColor = colorPrimary;
+            }
+
+            border.BackgroundColor = colorSelected;
+            OptionSelected(item);
+        };
+        border.GestureRecognizers.Add(tapGesture);
+
+        var label = new Label
+        {
+            Text = item
+        };
+        border.Content = label;
+
+        return border;
     }
 
     private void OptionSelected(string val)
