@@ -53,6 +53,10 @@ public partial class RegisterPage : ContentPage
         {
             parishes = result.Data;
         }
+        else
+        {
+            await DisplayAlertAsync("Błąd", $"Nie można załadować parafii: {result.ErrorMessage}", "OK");
+        }
     }
 
     private async void Register_Clicked(object sender, EventArgs e)
@@ -118,9 +122,9 @@ public partial class RegisterPage : ContentPage
         }
 
     }
+
     public static bool ValidateEmail(string email)
     {
-
         string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
         return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
@@ -132,9 +136,19 @@ public partial class RegisterPage : ContentPage
             return;
 
         _isBusy = true;
+        LoadParish();
+
+        if (parishes == null || parishes.Count < 1)
+        {
+            _isBusy = false;
+            return;   
+        }
 
         await this.ShowPopupAsync(new ParishPickerPopup(parishes));
+
+        _isBusy = false;
     }
+
     private async void OpenRegulamin_Tapped(object sender, EventArgs e)
     {
 

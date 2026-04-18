@@ -22,8 +22,8 @@ namespace MauiApp1.Services
             string url = $"api/Parish/getAllParish";
             try
             {
-                if (string.IsNullOrEmpty(_authService.Token)) return (false, null, "Błąd dostępu");
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
+                //if (string.IsNullOrEmpty(_authService.Token)) return (false, null, "Błąd dostępu");
+                //_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
                 var response = await _httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
