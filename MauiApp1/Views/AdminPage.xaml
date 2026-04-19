@@ -21,7 +21,7 @@
                 </Label>
             </Grid>
         </Border>
-        <Border  Background="{DynamicResource Primary}" Padding="15">
+        <Border  Background="{DynamicResource Primary}" Padding="15" x:Name="MeditationsAdd">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="MeditationAdd_Tapped"/>
             </Border.GestureRecognizers>
@@ -35,7 +35,7 @@
                 </Label>
             </Grid>
         </Border>
-        <Border  Background="{DynamicResource Primary}" Padding="15">
+        <Border  Background="{DynamicResource Primary}" Padding="15" x:Name="RosaryAdd">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="RosaryAdd_Tapped"/>
             </Border.GestureRecognizers>
@@ -63,7 +63,7 @@
                 </Label>
             </Grid>
         </Border>
-        <Border  Background="{DynamicResource Primary}" Padding="15">
+        <Border  Background="{DynamicResource Primary}" Padding="15" x:Name="ParishAdd">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="ParishAdd_Tapped"/>
             </Border.GestureRecognizers>
@@ -91,7 +91,7 @@
                 </Label>
             </Grid>
         </Border>
-        <Border  Background="{DynamicResource Primary}" Padding="15">
+        <Border  Background="{DynamicResource Primary}" Padding="15" x:Name="Agrements">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="Agrements_Tapped"/>
             </Border.GestureRecognizers>
@@ -105,7 +105,21 @@
                 </Label>
             </Grid>
         </Border>
-    </VerticalStackLayout>
+                <Border  Background="{DynamicResource Primary}" Padding="15" x:Name="ErrorReports">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ErrorReports_Tapped"/>
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="auto,auto">
+                        <Image Grid.Column="0" Source="flower_icon.png" HeightRequest="100" WidthRequest="100" VerticalOptions="Center"/>
+                        <Label Grid.Column="1"  TextColor="{DynamicResource Text}" VerticalOptions="Center" FontSize="Large">
+                            Zgłoszone błędy
+                        </Label>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
         </ScrollView>
         <VerticalStackLayout Grid.Row="1"/>
     </Grid>

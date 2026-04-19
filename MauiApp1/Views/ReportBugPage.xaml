@@ -21,15 +21,19 @@
                     </Label>
                 </Grid>
 
-                <Border Style="{StaticResource MenuOption}" Padding="20">
-                    <Grid RowDefinitions="auto,auto,auto" RowSpacing="20">
+                <Border Style="{StaticResource MenuOption}">
+                    <Grid RowDefinitions="auto,auto,auto,auto,auto,auto,auto" ColumnSpacing="20">
+                        <Label  Grid.Row="0" Text="Prosimy o numer telefonu w razie problemów z znalezieniem błędu" Style="{StaticResource OptionLabel}" HorizontalOptions="Start"/>
+                        <controls:MyEntry Placeholder="wpisz swój numer telefonu" Grid.Row="1" x:Name="Phone"/>
+                        <Label  Grid.Row="2" Text="Strona na której wystąpił błąd(Napis u góry zakładki):" Style="{StaticResource OptionLabel}" HorizontalOptions="Start"/>
+                        <controls:MyEntry Placeholder="wpisz stronę na któej wystąpił błąd" Grid.Row="3" x:Name="PageName"/>
+                        <Label Grid.Row="4" Text="Opis błędu:" Style="{StaticResource OptionLabel}" HorizontalOptions="Start"/>
                         
-                        <Label Grid.Row="0" Text="Opis błędu:" Style="{StaticResource OptionLabel}" HorizontalOptions="Start"/>
-                        <Border Grid.Row="1" StrokeShape="RoundRectangle 5" StrokeThickness="1" Stroke="{DynamicResource Accent}">
-                            <controls:MyEditor Placeholder="Wpisz tutaj opis błędu..." AutoSize="TextChanges"/>
+                        <Border Grid.Row="5" StrokeShape="RoundRectangle 5" StrokeThickness="1" Stroke="{DynamicResource Accent}">
+                            <controls:MyEditor Placeholder="Wpisz tutaj opis błędu..." AutoSize="TextChanges" x:Name="Description"/>
                         </Border>
                         
-                        <Grid Grid.Row="2" ColumnDefinitions="*,*">
+                        <Grid Grid.Row="6" ColumnDefinitions="*,*">
                             
                             <Border Grid.Column="0" Style="{StaticResource NavButton}">
                                 <Border.GestureRecognizers>
