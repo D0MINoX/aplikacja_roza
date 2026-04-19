@@ -345,7 +345,7 @@ namespace MauiApp1.Services
             return response.IsSuccessStatusCode;
         }
 
-        internal async Task<bool> UpdateExternalMember(int userId,string? name, string? surname, string phoneNumber)
+        public async Task<bool> UpdateExternalMember(int userId,string? name, string? surname, string phoneNumber)
         {
             var ModifyData = new {Id = userId, Name = name, Surname = surname, PhoneNumber=phoneNumber };
             try
@@ -366,6 +366,33 @@ namespace MauiApp1.Services
             {
                 Debug.WriteLine($"Błąd Zmiany uprawnień: {ex.Message}");
                 return false;
+            }
+        }
+        public async Task<(bool isSuccess, string ErrorMessage)> deleteUser(int userId)
+        {
+            var Data = new { Id = userId };
+            try
+            {
+                if (string.IsNullOrEmpty(_authService.Token)) return (false,"Brak dostępu");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authService.Token);
+                var request = new HttpRequestMessage(HttpMethod.Delete, "api/Admin/deleteUser")
+                {
+                    Content = JsonContent.Create(Data)
+                };
+
+                var response = await _httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true,null);
+                }
+                var errorContent = await response.Content.ReadAsStringAsync();
+                return (false, errorContent ?? $"Błąd serwera: {response.StatusCode}");
+               
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Błąd połączenia: {ex.Message}");
             }
         }
     }
