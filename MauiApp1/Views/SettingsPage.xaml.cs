@@ -108,6 +108,7 @@ public partial class SettingsPage : ContentPage
 
     private async void OnTimeChanged(object sender, TimeChangedEventArgs e)
     {
+        await _notificationsService.CancelAllReminders();
         Preferences.Default.Set("ReminderTime", e.NewTime.ToString());
         await _notificationsService.ScheduleWeeklyReminders();
     }

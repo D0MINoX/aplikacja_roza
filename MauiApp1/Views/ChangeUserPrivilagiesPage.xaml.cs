@@ -87,7 +87,17 @@ public partial class ChangeUserPrivilagiesPage : ContentPage
     }
    
     private async void OnDeleteClicked(object sender, EventArgs e)
-    { 
-    
+    {
+        var user = (sender as Button).CommandParameter as AdminUserView;
+        var result = await _adminService.deleteUser(user.UserId);
+
+        if (result.isSuccess)
+        {
+            LoadUsers();
+        }
+        else
+        {
+            await DisplayAlertAsync("Błąd", result.ErrorMessage, "OK");
+        }
     }
 }
