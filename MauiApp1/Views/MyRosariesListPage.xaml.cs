@@ -13,16 +13,18 @@ public partial class MyRosariesListPage : ContentPage
     private readonly AuthService _authService;
     private readonly RosaryService _rosaryService;
     private readonly MessagesService _messagesService;
+    private readonly ParishService _parishService;
     private HashSet<int> _selectedRosaries;
     private HashSet<int> _allRosaries;
     private bool _isSend = false;
     private bool _isLoading = false;
-    public MyRosariesListPage(AuthService authService, RosaryService rosaryService, MessagesService messagesService)
+    public MyRosariesListPage(AuthService authService, RosaryService rosaryService, MessagesService messagesService, ParishService parishService)
 	{
         InitializeComponent();
         _authService = authService;
         _rosaryService = rosaryService;
         _messagesService = messagesService;
+        _parishService = parishService;
         _selectedRosaries = new HashSet<int>();
         _allRosaries = new HashSet<int>();
         RosariesShow();
@@ -33,9 +35,23 @@ public partial class MyRosariesListPage : ContentPage
         var handler = new JwtSecurityTokenHandler();
         var jsonToken = handler.ReadJwtToken(_authService.Token);
         var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
+
         if (IdClaim != null && int.TryParse(IdClaim.Value, out int Id))
         {
-            List<RosaryInfo> rosaryInfos = await _rosaryService.GetUserRosariesAsync(Id);
+            List<RosaryInfo> rosaryInfos = new List<RosaryInfo>();
+            var response = await _parishService.GetUserParish(Id);
+            if (response.isSuccess)
+            {
+                if (response.Data.Id!=null)
+                {
+                    rosaryInfos = await _rosaryService.GetAvailableRosariesAsync(response.Data.Id);
+                }
+            }
+            if (rosaryInfos.Count<1)
+            {
+                rosaryInfos = await _rosaryService.GetAllRosariesAsync();
+            }
+
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 RosariesContainer.BatchBegin();

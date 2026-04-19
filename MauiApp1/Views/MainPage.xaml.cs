@@ -21,6 +21,7 @@ namespace MauiApp1
             _authService = authService;
             _rosaryService = rosaryService;
         }
+
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -35,6 +36,7 @@ namespace MauiApp1
             }
             await UpdateMeditation();
         }
+
         private async void MyRosaryGroup_Tapped(object sender, TappedEventArgs e)
         {
             if (string.IsNullOrEmpty(_authService.Token)) return;
@@ -55,7 +57,7 @@ namespace MauiApp1
                 {
                     int rosaryId;
                     List<RosaryInfo> rosaryInfos = await _rosaryService.GetUserRosariesAsync(Id);
-                    if (rosaryInfos != null && rosaryInfos.Count > 0)
+                    if (rosaryInfos != null && rosaryInfos.Count == 1)
                     {
                         rosaryId = rosaryInfos[0].Id;
                         var navigationParameter = new Dictionary<string, object>{{ "RosaryId", rosaryId.ToString() }, { "UserRole", userRole }};

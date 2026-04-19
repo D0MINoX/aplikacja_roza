@@ -62,13 +62,14 @@
 
     <Style TargetType="Label" x:Key="HeaderLabel">
         <Setter Property="VerticalOptions" Value="Start"/>
-        <Setter Property="FontSize" Value="Large"/>
+        <Setter Property="FontSize" Value="Title"/>
         <Setter Property="FontAttributes" Value="Bold"/>
     </Style>
 
     <Style TargetType="Label" x:Key="HeaderLabel2">
         <Setter Property="VerticalOptions" Value="Start"/>
         <Setter Property="TextColor" Value="{DynamicResource FadedText}"/>
+        <Setter Property="FontSize" Value="Subtitle"/>
     </Style>
 
     <Style TargetType="Border" x:Key="NavButton">
