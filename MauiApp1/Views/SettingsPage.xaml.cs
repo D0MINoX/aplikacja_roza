@@ -101,6 +101,8 @@ public partial class SettingsPage : ContentPage
         {
             ReminderTimeLayout.IsVisible=false;
             await _notificationsService.CancelAllReminders();
+            Preferences.Default.Remove("ReminderTime");
+            ReminderTimePicker.SetValue(TimePicker.TimeProperty, TimeSpan.Parse(Preferences.Default.Get("ReminderTime", "20:00:00")));
         }
     }
 

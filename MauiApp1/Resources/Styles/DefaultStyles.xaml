@@ -176,7 +176,11 @@
     <Style TargetType="controls:MyEditor">
         <Setter Property="PlaceholderColor" Value="{DynamicResource FadedText}"/>
         <Setter Property="TextColor" Value="{DynamicResource Text}"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="BackgroundColor">
+            <OnPlatform x:TypeArguments="Color">
+                <On Platform="iOS" Value="{DynamicResource Primary}" />
+            </OnPlatform>
+        </Setter>
         <Setter Property="MinimumHeightRequest" Value="150"/>
         <Setter Property="AutoSize" Value="Disabled"/>
         <Setter Property="UnderlineColor" Value="Transparent"/>
@@ -185,7 +189,11 @@
     <Style TargetType="controls:MyTimePicker">
         <Setter Property="TextColor" Value="{DynamicResource Text}"/>
         <Setter Property="UnderlineColor" Value="{DynamicResource FadedText}"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="BackgroundColor">
+            <OnPlatform x:TypeArguments="Color">
+                <On Platform="iOS" Value="{DynamicResource Primary}" />
+            </OnPlatform>
+        </Setter>
     </Style>
     
     
