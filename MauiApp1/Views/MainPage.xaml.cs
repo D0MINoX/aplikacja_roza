@@ -1,6 +1,5 @@
 ﻿using MauiApp1.Models;
 using MauiApp1.Services;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
@@ -14,6 +13,41 @@ namespace MauiApp1
         public MeditationsService _meditationService;
         public AuthService _authService;
         public RosaryService _rosaryService;
+        private static readonly Dictionary<string, List<string>> _itemsMap = new() {
+            ["Radosne"] = new()
+        {
+            "Zwiastowanie Najświętszej Maryi Pannie",
+            "Nawiedzenie św. Elżbiety",
+            "Narodzenie Pana Jezusa",
+            "Ofiarowanie Pana Jezusa w świątyni",
+            "Odnalezienie Pana Jezusa w świątyni"
+        },
+            ["Światła"] = new()
+        {
+            "Chrzest Pana Jezusa w Jordanie",
+            "Objawienie się Pana Jezusa w Kanie Galilejskiej",
+            "Głoszenie Królestwa Bożego i wzywanie do nawrócenia",
+            "Przemienienie na górze Tabor",
+            "Ustanowienie Eucharystii"
+        },
+            ["Bolesne"] = new()
+        {
+            "Modlitwa Pana Jezusa w Ogrójcu",
+            "Biczowanie Pana Jezusa",
+            "Cierniem ukoronowanie Pana Jezusa",
+            "Dźwiganie krzyża na Kalwarię",
+            "Ukrzyżowanie i śmierć Pana Jezusa"
+        },
+            ["Chwalebne"] = new()
+        {
+            "Zmartwychwstanie Pana Jezusa",
+            "Wniebowstąpienie Pana Jezusa",
+            "Zesłanie Ducha Świętego",
+            "Wniebowzięcie Najświętszej Maryi Panny",
+            "Ukoronowanie Najświętszej Maryi Panny na Królową Nieba i Ziemi"
+        }
+        };
+        private string _selectedPart = null;
         public MainPage(MeditationsService meditationService, AuthService authService, RosaryService rosaryService)
         {
             InitializeComponent();
@@ -25,6 +59,9 @@ namespace MauiApp1
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+
+            StarterAnimation();
+            
             bool hasToken = await _authService.CheckAndSetTokenAsync();
             if (hasToken)
             {
@@ -35,6 +72,78 @@ namespace MauiApp1
                 RosaryTile.IsVisible = false;
             }
             await UpdateMeditation();
+        }
+
+        private async void StarterAnimation()
+        {
+
+            foreach (var btn in new[] { Radosne, Swiatla, Bolesne, Chwalebne })
+            {
+                btn.TranslationX = btn.TranslationY = 0;
+                btn.Scale = 1;
+            }
+
+            Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(250), () =>
+            {
+                var img = CenterImage.ScaleToAsync(2, 750, Easing.SinInOut);
+
+                var b1 = Radosne.TranslateToAsync(-100, -100, 1000, Easing.SinInOut);
+                var b1Scale = Radosne.ScaleToAsync(2, 1000, Easing.SinInOut);
+
+                var b2 = Swiatla.TranslateToAsync(-100, +100, 1000, Easing.SinInOut);
+                var b2Scale = Swiatla.ScaleToAsync(2, 1000, Easing.SinInOut);
+
+                var b3 = Bolesne.TranslateToAsync(+100, -100, 1000, Easing.SinInOut);
+                var b3Scale = Bolesne.ScaleToAsync(2, 1000, Easing.SinInOut);
+
+                var b4 = Chwalebne.TranslateToAsync(+100, +100, 1000, Easing.SinInOut);
+                var b4Scale = Chwalebne.ScaleToAsync(2, 1000, Easing.SinInOut);
+
+                Task.WhenAll(b1, b1Scale, b2, b2Scale, b3, b3Scale, b4, b4Scale);
+            });
+        }
+
+        private async void RosaryPart_Tapped(object sender, TappedEventArgs e)
+        {
+            Border s = sender as Border;
+            string partName = e.Parameter.ToString();
+
+            if (_selectedPart == partName)
+            {
+                switch (partName)
+            {
+                case "Radosne":
+                    s.TranslateToAsync(-100, -100, 1000, Easing.SinInOut);
+                    break;
+                case "Światła":
+                    s.TranslateToAsync(-100, +100, 1000, Easing.SinInOut);
+                    break;
+                case "Bolesne":
+                    s.TranslateToAsync(+100, -100, 1000, Easing.SinInOut);
+                    break;
+                case "Chwalebne":
+                    s.TranslateToAsync(+100, +100, 1000, Easing.SinInOut);
+                    break;
+            }
+                _selectedPart = null;
+                foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+                {
+                    btn.IsVisible = false;
+                }
+            }
+            else if (_selectedPart!=null)
+            {
+                return;
+            }
+            else
+            {
+                s.TranslateToAsync(0, 0, 1000, Easing.SinInOut);
+                _selectedPart = partName;
+                foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+                {
+                    btn.IsVisible = true;
+                }
+            }
         }
 
         private async void MyRosaryGroup_Tapped(object sender, TappedEventArgs e)
@@ -125,6 +234,7 @@ namespace MauiApp1
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         }
+
         private async Task<LocalMeditation> GetMeditationFromLocalFile(int day, string mystery)
         {
             try
@@ -140,6 +250,7 @@ namespace MauiApp1
             }
             catch { return null; }
         }
+
         private string GetFileName(string mystery)
         {
             string safeName = mystery.Replace(" ", "_").Substring(0, Math.Min(mystery.Length, 20));

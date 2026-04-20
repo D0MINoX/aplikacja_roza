@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.MainPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              BackgroundColor="{DynamicResource Primary}">
@@ -11,6 +12,59 @@
         
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Spacing="20">
+
+                <Border HeightRequest="300">
+                    <Grid RowDefinitions="*" ColumnDefinitions="*">
+
+                        <Image Grid.Row="0" Grid.Column="0" x:Name="CenterImage" Source="flower.png" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        
+                        <!-- Cztery główne części różańca -->
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Radosne" Style="{StaticResource MeditationButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="RosaryPart_Tapped" CommandParameter="Radosne"/>
+                            </Border.GestureRecognizers>
+                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
+                        </Border>
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Swiatla" Style="{StaticResource MeditationButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="RosaryPart_Tapped" CommandParameter="Swiatla"/>
+                            </Border.GestureRecognizers>
+                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
+                        </Border>
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Bolesne" Style="{StaticResource MeditationButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="RosaryPart_Tapped" CommandParameter="Bolesne"/>
+                            </Border.GestureRecognizers>
+                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
+                        </Border>
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Chwalebne" Style="{StaticResource MeditationButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="RosaryPart_Tapped" CommandParameter="Chwalebne"/>
+                            </Border.GestureRecognizers>
+                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
+                        </Border>
+
+                        <!-- Tajemnice -->
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery1" Style="{StaticResource MeditationButton}" IsVisible="False">
+                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
+                        </Border>
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery2" Style="{StaticResource MeditationButton}" IsVisible="False">
+                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
+                        </Border>
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery3" Style="{StaticResource MeditationButton}" IsVisible="False">
+                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
+                        </Border>
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery4" Style="{StaticResource MeditationButton}" IsVisible="False">
+                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
+                        </Border>
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery5" Style="{StaticResource MeditationButton}" IsVisible="False">
+                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
+                        </Border>
+
+                    </Grid>
+                </Border>
+                
+                
                 
                 <Border Style="{StaticResource MenuOption}">
                     <Border.GestureRecognizers>

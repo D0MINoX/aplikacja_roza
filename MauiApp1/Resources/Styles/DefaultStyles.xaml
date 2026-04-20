@@ -195,10 +195,18 @@
             </OnPlatform>
         </Setter>
     </Style>
-    
-    
-    
-    
+
+    <Style TargetType="Border" x:Key="MeditationButton">
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="WidthRequest" Value="40"/>
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="StrokeShape">
+            <RoundRectangle CornerRadius="20"/>
+        </Setter>
+    </Style>
+
+
 
     <Style TargetType="Border" x:Key="Header">
         <Setter Property="Background" Value="{DynamicResource Primary}"/>
