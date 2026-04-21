@@ -49,35 +49,35 @@ namespace MauiApp1
         private static readonly Dictionary<string, List<string>> _imagesMap = new(){
             ["Radosne"] = new()
         {
-            "theme.png",
-            "test.png",
-            "test.png",
-            "test.png",
-            "test.png"
+            "r1.png",
+            "r2.png",
+            "r3.png",
+            "r4.png",
+            "r5.png"
         },
             ["Światła"] = new()
         {
-            "flower.png",
-            "test.png",
-            "test.png",
-            "test.png",
-            "test.png"
+            "s1.png",
+            "s2.png",
+            "s3.png",
+            "s4.png",
+            "s5.png"
         },
             ["Bolesne"] = new()
         {
-            "test.png",
-            "test.png",
-            "test.png",
-            "test.png",
-            "test.png"
+            "b1.png",
+            "b2.png",
+            "b3.png",
+            "b4.png",
+            "b5.png"
         },
             ["Chwalebne"] = new()
         {
-            "test.png",
-            "test.png",
-            "test.png",
-            "test.png",
-            "eg_meditation.png"
+            "c1.png",
+            "c2.png",
+            "c3.png",
+            "c4.png",
+            "c5.png"
         }
         };
         private string _selectedPart = null;
