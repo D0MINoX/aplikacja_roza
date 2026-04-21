@@ -27,7 +27,7 @@
                         </Border>
                         <Border Grid.Row="0" Grid.Column="0" x:Name="Swiatla" Style="{StaticResource MeditationButton}">
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="RosaryPart_Tapped" CommandParameter="Swiatla"/>
+                                <TapGestureRecognizer Tapped="RosaryPart_Tapped" CommandParameter="Światła"/>
                             </Border.GestureRecognizers>
                             <Image Source="eg_meditation.png" Aspect="AspectFill"/>
                         </Border>
@@ -45,19 +45,19 @@
                         </Border>
 
                         <!-- Tajemnice -->
-                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery1" Style="{StaticResource MeditationButton}" IsVisible="False">
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery1" Style="{StaticResource MeditationButton}">
                             <Image Source="eg_meditation.png" Aspect="AspectFill"/>
                         </Border>
-                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery2" Style="{StaticResource MeditationButton}" IsVisible="False">
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery2" Style="{StaticResource MeditationButton}">
                             <Image Source="eg_meditation.png" Aspect="AspectFill"/>
                         </Border>
-                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery3" Style="{StaticResource MeditationButton}" IsVisible="False">
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery3" Style="{StaticResource MeditationButton}">
                             <Image Source="eg_meditation.png" Aspect="AspectFill"/>
                         </Border>
-                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery4" Style="{StaticResource MeditationButton}" IsVisible="False">
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery4" Style="{StaticResource MeditationButton}">
                             <Image Source="eg_meditation.png" Aspect="AspectFill"/>
                         </Border>
-                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery5" Style="{StaticResource MeditationButton}" IsVisible="False">
+                        <Border Grid.Row="0" Grid.Column="0" x:Name="Mystery5" Style="{StaticResource MeditationButton}">
                             <Image Source="eg_meditation.png" Aspect="AspectFill"/>
                         </Border>
 

@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
 
-
 namespace MauiApp1
 {
     public partial class MainPage : ContentPage
@@ -60,6 +59,7 @@ namespace MauiApp1
         {
             base.OnAppearing();
 
+            _selectedPart = null;
             StarterAnimation();
             
             bool hasToken = await _authService.CheckAndSetTokenAsync();
@@ -72,6 +72,12 @@ namespace MauiApp1
                 RosaryTile.IsVisible = false;
             }
             await UpdateMeditation();
+
+            foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            {
+                btn.IsVisible = false;
+                btn.TranslationX = btn.TranslationY = 0;
+            }
         }
 
         private async void StarterAnimation()
@@ -83,7 +89,7 @@ namespace MauiApp1
                 btn.Scale = 1;
             }
 
-            Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(250), () =>
+            Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(1000), () =>
             {
                 var img = CenterImage.ScaleToAsync(2, 750, Easing.SinInOut);
 
@@ -110,6 +116,7 @@ namespace MauiApp1
 
             if (_selectedPart == partName)
             {
+                await CloseMystryAnimation(s);
                 switch (partName)
             {
                 case "Radosne":
@@ -126,10 +133,6 @@ namespace MauiApp1
                     break;
             }
                 _selectedPart = null;
-                foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
-                {
-                    btn.IsVisible = false;
-                }
             }
             else if (_selectedPart!=null)
             {
@@ -139,10 +142,52 @@ namespace MauiApp1
             {
                 s.TranslateToAsync(0, 0, 1000, Easing.SinInOut);
                 _selectedPart = partName;
-                foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
-                {
-                    btn.IsVisible = true;
-                }
+
+                await ShowMysteryAnimation(s);
+            }
+        }
+
+        private async Task ShowMysteryAnimation(Border s)
+        {
+            var animationTasks = new List<Task>();
+            double radius = s.Height / 2 + 50;
+            double center = s.Height / 2;
+            double angleOffset = -Math.PI / 10;
+            int i = 0;
+            foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            {
+                btn.IsVisible = true;
+                btn.Opacity = 0;
+                double btnSize = btn.Height;
+                double angle = i * 2 * Math.PI / 5 + angleOffset;
+                double tx = center + radius * Math.Cos(angle) - btnSize / 2;
+                double ty = center + radius * Math.Sin(angle) - btnSize / 2;
+                var btnTranslate = btn.TranslateToAsync(tx, ty, 1000, Easing.SinInOut);
+                var btnFade = btn.FadeToAsync(1, 1000, Easing.SinInOut);
+                animationTasks.Add(btnTranslate);
+                animationTasks.Add(btnFade);
+                i++;
+            }
+            await Task.WhenAll(animationTasks);
+        }
+
+        private async Task CloseMystryAnimation(Border s)
+        {
+            var animationTasks = new List<Task>();
+            foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            {
+                double btnSize = btn.Height;
+                var btnTranslate = btn.TranslateToAsync(0, 0, 1000, Easing.SinInOut);
+                var btnFade = btn.FadeToAsync(0, 1000, Easing.SinInOut);
+                animationTasks.Add(btnTranslate);
+                animationTasks.Add(btnFade);
+            }
+
+            await Task.WhenAll(animationTasks);
+
+            foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            {
+                btn.IsVisible = false;
             }
         }
 
