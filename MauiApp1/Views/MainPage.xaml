@@ -13,9 +13,9 @@
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Spacing="20">
 
-                <Border HeightRequest="300">
+                <Border HeightRequest="400" StrokeThickness="0">
                     <Grid RowDefinitions="*" ColumnDefinitions="*">
-
+                        
                         <Image Grid.Row="0" Grid.Column="0" x:Name="CenterImage" Source="flower.png" HorizontalOptions="Center" VerticalOptions="Center"/>
 
                         <!-- Tajemnice -->
@@ -51,30 +51,42 @@
                         </VerticalStackLayout>
 
                         <!-- Cztery główne części różańca -->
-                        <Border Grid.Row="0" Grid.Column="0" x:Name="Radosne" Style="{StaticResource MeditationButton}">
-                            <Border.GestureRecognizers>
+                        <Grid x:Name="Radosne" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="RosaryPart_Tapped" CommandParameter="Radosne"/>
-                            </Border.GestureRecognizers>
-                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
-                        </Border>
-                        <Border Grid.Row="0" Grid.Column="0" x:Name="Swiatla" Style="{StaticResource MeditationButton}">
-                            <Border.GestureRecognizers>
+                            </Grid.GestureRecognizers>
+                            <Border x:Name="RadosneBorder" Grid.Row="0" Style="{StaticResource MeditationButton}">
+                                <Image Source="radosne.png" Aspect="AspectFill"/>
+                            </Border>
+                            <Label x:Name="RadosneLabel" Grid.Row="1" Text="Radosne" HorizontalOptions="Center"/>
+                        </Grid>
+                        <Grid x:Name="Swiatla" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="RosaryPart_Tapped" CommandParameter="Światła"/>
-                            </Border.GestureRecognizers>
-                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
-                        </Border>
-                        <Border Grid.Row="0" Grid.Column="0" x:Name="Bolesne" Style="{StaticResource MeditationButton}">
-                            <Border.GestureRecognizers>
+                            </Grid.GestureRecognizers>
+                            <Border x:Name="SwiatlaBorder" Grid.Row="0" Style="{StaticResource MeditationButton}">
+                                <Image Source="swiatla.png" Aspect="AspectFill"/>
+                            </Border>
+                            <Label x:Name="SwiatlaLabel" Grid.Row="1" Text="Światła" HorizontalOptions="Center"/>
+                        </Grid>
+                        <Grid x:Name="Bolesne" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="RosaryPart_Tapped" CommandParameter="Bolesne"/>
-                            </Border.GestureRecognizers>
-                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
-                        </Border>
-                        <Border Grid.Row="0" Grid.Column="0" x:Name="Chwalebne" Style="{StaticResource MeditationButton}">
-                            <Border.GestureRecognizers>
+                            </Grid.GestureRecognizers>
+                            <Border x:Name="BolesneBorder" Grid.Row="0" Style="{StaticResource MeditationButton}">
+                                <Image Source="bolesne.png" Aspect="AspectFill"/>
+                            </Border>
+                            <Label x:Name="BolesneLabel" Grid.Row="1" Text="Bolesne" HorizontalOptions="Center"/>
+                        </Grid>
+                        <Grid x:Name="Chwalebne" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="RosaryPart_Tapped" CommandParameter="Chwalebne"/>
-                            </Border.GestureRecognizers>
-                            <Image Source="eg_meditation.png" Aspect="AspectFill"/>
-                        </Border>
+                            </Grid.GestureRecognizers>
+                            <Border x:Name="ChwalebneBorder" Grid.Row="0" Style="{StaticResource MeditationButton}">
+                                <Image Source="chwalebne.png" Aspect="AspectFill"/>
+                            </Border>
+                            <Label x:Name="ChwalebneLabel" Grid.Row="1" Text="Chwalebne" HorizontalOptions="Center"/>
+                        </Grid>
 
                     </Grid>
                 </Border>

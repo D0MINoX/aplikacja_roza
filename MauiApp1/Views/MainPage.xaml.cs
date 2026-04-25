@@ -94,7 +94,7 @@ namespace MauiApp1
             base.OnAppearing();
 
             _selectedPart = null;
-            StarterAnimation();
+            await StarterAnimation();
             
             bool hasToken = await _authService.CheckAndSetTokenAsync();
             if (hasToken)
@@ -109,81 +109,104 @@ namespace MauiApp1
 
             foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
             {
-                btn.IsVisible = false;
                 btn.TranslationX = btn.TranslationY = 0;
+                btn.Scale = 0.33;
+                btn.IsVisible = false;
             }
         }
 
-        private async void StarterAnimation()
+        private async Task StarterAnimation()
         {
-
             foreach (var btn in new[] { Radosne, Swiatla, Bolesne, Chwalebne })
             {
                 btn.TranslationX = btn.TranslationY = 0;
-                btn.Scale = 1;
+                btn.Opacity = 1;
+                btn.Scale = 0.33;
             }
 
-            Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(1000), () =>
+            foreach (var btn in new[] { RadosneLabel, SwiatlaLabel, BolesneLabel, ChwalebneLabel })
             {
-                var img = CenterImage.ScaleToAsync(2, 750, Easing.SinInOut);
+                btn.Scale = 0.33;
+                btn.Opacity = 1;
+            }
 
-                var b1 = Radosne.TranslateToAsync(-100, -100, 1000, Easing.SinInOut);
-                var b1Scale = Radosne.ScaleToAsync(2, 1000, Easing.SinInOut);
+            Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(750), () =>
+            {
+                var img = CenterImage.ScaleToAsync(2, 500, Easing.SinInOut);
 
-                var b2 = Swiatla.TranslateToAsync(-100, +100, 1000, Easing.SinInOut);
-                var b2Scale = Swiatla.ScaleToAsync(2, 1000, Easing.SinInOut);
+                var b1 = Radosne.TranslateToAsync(-100, -100, 750, Easing.SinInOut);
+                var b1Scale = Radosne.ScaleToAsync(0.66, 750, Easing.SinInOut);
+                var b1Label = RadosneLabel.TranslateToAsync(0, -5, 750, Easing.SinInOut);
+                var b1LabelScale = RadosneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
-                var b3 = Bolesne.TranslateToAsync(+100, -100, 1000, Easing.SinInOut);
-                var b3Scale = Bolesne.ScaleToAsync(2, 1000, Easing.SinInOut);
+                var b2 = Swiatla.TranslateToAsync(-100, +100, 750, Easing.SinInOut);
+                var b2Scale = Swiatla.ScaleToAsync(0.66, 750, Easing.SinInOut);
+                var b2Label = SwiatlaLabel.TranslateToAsync(0, -5, 750, Easing.SinInOut);
+                var b2LabelScale = SwiatlaLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
-                var b4 = Chwalebne.TranslateToAsync(+100, +100, 1000, Easing.SinInOut);
-                var b4Scale = Chwalebne.ScaleToAsync(2, 1000, Easing.SinInOut);
+                var b3 = Bolesne.TranslateToAsync(+100, -100, 750, Easing.SinInOut);
+                var b3Scale = Bolesne.ScaleToAsync(0.66, 750, Easing.SinInOut);
+                var b3Label = BolesneLabel.TranslateToAsync(0, -5, 750, Easing.SinInOut);
+                var b3LabelScale = BolesneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
-                Task.WhenAll(b1, b1Scale, b2, b2Scale, b3, b3Scale, b4, b4Scale);
+                var b4 = Chwalebne.TranslateToAsync(+100, +100, 750, Easing.SinInOut);
+                var b4Scale = Chwalebne.ScaleToAsync(0.66, 750, Easing.SinInOut);
+                var b4Label = ChwalebneLabel.TranslateToAsync(0, -5, 750, Easing.SinInOut);
+                var b4LabelScale = ChwalebneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
+
+                Task.WhenAll(b1, b1Scale, b2, b2Scale, b3, b3Scale, b4, b4Scale, b1Label, b2Label, b3Label, b4Label);
             });
+
         }
 
         private async void RosaryPart_Tapped(object sender, TappedEventArgs e)
         {
-            Border s = sender as Border;
+            Grid s = sender as Grid;
             string partName = e.Parameter.ToString();
-
             if (_selectedPart == partName)
             {
                 await CloseMystryAnimation();
-                var scale = s.ScaleToAsync(2, 1000, Easing.SinInOut);
-                Task t, o1, o2, o3;
+                var scale = s.ScaleToAsync(0.66, 750, Easing.SinInOut);
+                Task t, o1, o2, o3, labelScale, labelFade;
 
                 switch (partName)
                 {
                     case "Radosne":
-                        t = s.TranslateToAsync(-100, -100, 1000, Easing.SinInOut);
-                        o1 = Swiatla.FadeToAsync(1, 1000, Easing.SinInOut);
-                        o2 = Bolesne.FadeToAsync(1, 1000, Easing.SinInOut);
-                        o3 = Chwalebne.FadeToAsync(1, 1000, Easing.SinInOut);
+                        t = s.TranslateToAsync(-100, -100, 750, Easing.SinInOut);
+                        o1 = Swiatla.FadeToAsync(1, 750, Easing.SinInOut);
+                        o2 = Bolesne.FadeToAsync(1, 750, Easing.SinInOut);
+                        o3 = Chwalebne.FadeToAsync(1, 750, Easing.SinInOut);
+                        labelScale = RadosneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
+                        labelFade = RadosneLabel.FadeToAsync(1, 750, Easing.SinInOut);
                         break;
                     case "Światła":
-                        t = s.TranslateToAsync(-100, +100, 1000, Easing.SinInOut);
-                        o1 = Radosne.FadeToAsync(1, 1000, Easing.SinInOut);
-                        o2 = Bolesne.FadeToAsync(1, 1000, Easing.SinInOut);
-                        o3 = Chwalebne.FadeToAsync(1, 1000, Easing.SinInOut);
+                        t = s.TranslateToAsync(-100, +100, 750, Easing.SinInOut);
+                        o1 = Radosne.FadeToAsync(1, 750, Easing.SinInOut);
+                        o2 = Bolesne.FadeToAsync(1, 750, Easing.SinInOut);
+                        o3 = Chwalebne.FadeToAsync(1, 750, Easing.SinInOut);
+                        labelScale = SwiatlaLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
+                        labelFade = SwiatlaLabel.FadeToAsync(1, 750, Easing.SinInOut);
                         break;
                     case "Bolesne":
-                        t = s.TranslateToAsync(+100, -100, 1000, Easing.SinInOut);
-                        o1 = Radosne.FadeToAsync(1, 1000, Easing.SinInOut);
-                        o2 = Swiatla.FadeToAsync(1, 1000, Easing.SinInOut);
-                        o3 = Chwalebne.FadeToAsync(1, 1000, Easing.SinInOut);
+                        t = s.TranslateToAsync(+100, -100, 750, Easing.SinInOut);
+                        o1 = Radosne.FadeToAsync(1, 750, Easing.SinInOut);
+                        o2 = Swiatla.FadeToAsync(1, 750, Easing.SinInOut);
+                        o3 = Chwalebne.FadeToAsync(1, 750, Easing.SinInOut);
+                        labelScale = BolesneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
+                        labelFade = BolesneLabel.FadeToAsync(1, 750, Easing.SinInOut);
                         break;
                     case "Chwalebne":
                     default:
-                        t = s.TranslateToAsync(+100, +100, 1000, Easing.SinInOut);
-                        o1 = Radosne.FadeToAsync(1, 1000, Easing.SinInOut);
-                        o2 = Swiatla.FadeToAsync(1, 1000, Easing.SinInOut);
-                        o3 = Bolesne.FadeToAsync(1, 1000, Easing.SinInOut);
+                        t = s.TranslateToAsync(+100, +100, 750, Easing.SinInOut);
+                        o1 = Radosne.FadeToAsync(1, 750, Easing.SinInOut);
+                        o2 = Swiatla.FadeToAsync(1, 750, Easing.SinInOut);
+                        o3 = Bolesne.FadeToAsync(1, 750, Easing.SinInOut);
+                        labelScale = ChwalebneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
+                        labelFade = ChwalebneLabel.FadeToAsync(1, 750, Easing.SinInOut);
                         break;
                 }
                 
-                await Task.WhenAll(scale, t, o1, o2, o3);
+                await Task.WhenAll(scale, t, o1, o2, o3, labelScale, labelFade);
                 _selectedPart = null;
             }
             else if (_selectedPart!=null)
@@ -192,39 +215,52 @@ namespace MauiApp1
             }
             else
             {
-                var scale = s.ScaleToAsync(3, 1000, Easing.SinInOut);
-                var t = s.TranslateToAsync(0, 0, 1000, Easing.SinInOut);
-                Task o1, o2, o3;
+                Task scale = s.ScaleToAsync(1, 750, Easing.SinInOut);
+                Task t = s.TranslateToAsync(0, 30, 750, Easing.SinInOut);
+                Task o1, o2, o3, labelScale, labelFade;
+                Border border = null;
 
                 switch (partName)
                 {
                     case "Radosne":
-                        o1 = Swiatla.FadeToAsync(0, 1000, Easing.SinInOut);
-                        o2 = Bolesne.FadeToAsync(0, 1000, Easing.SinInOut);
-                        o3 = Chwalebne.FadeToAsync(0, 1000, Easing.SinInOut);
+                        border = RadosneBorder;
+                        o1 = Swiatla.FadeToAsync(0, 750, Easing.SinInOut);
+                        o2 = Bolesne.FadeToAsync(0, 750, Easing.SinInOut);
+                        o3 = Chwalebne.FadeToAsync(0, 750, Easing.SinInOut);
+                        labelScale = RadosneLabel.ScaleToAsync(1, 750, Easing.SinInOut);
+                        labelFade = RadosneLabel.FadeToAsync(0, 750, Easing.SinInOut);
                         break;
                     case "Światła":
-                        o1 = Radosne.FadeToAsync(0, 1000, Easing.SinInOut);
-                        o2 = Bolesne.FadeToAsync(0, 1000, Easing.SinInOut);
-                        o3 = Chwalebne.FadeToAsync(0, 1000, Easing.SinInOut);
+                        border = SwiatlaBorder;
+                        o1 = Radosne.FadeToAsync(0, 750, Easing.SinInOut);
+                        o2 = Bolesne.FadeToAsync(0, 750, Easing.SinInOut);
+                        o3 = Chwalebne.FadeToAsync(0, 750, Easing.SinInOut);
+                        labelScale = SwiatlaLabel.ScaleToAsync(1, 750, Easing.SinInOut);
+                        labelFade = SwiatlaLabel.FadeToAsync(0, 750, Easing.SinInOut);
                         break;
                     case "Bolesne":
-                        o1 = Radosne.FadeToAsync(0, 1000, Easing.SinInOut);
-                        o2 = Swiatla.FadeToAsync(0, 1000, Easing.SinInOut);
-                        o3 = Chwalebne.FadeToAsync(0, 1000, Easing.SinInOut);
+                        border = BolesneBorder;
+                        o1 = Radosne.FadeToAsync(0, 750, Easing.SinInOut);
+                        o2 = Swiatla.FadeToAsync(0, 750, Easing.SinInOut);
+                        o3 = Chwalebne.FadeToAsync(0, 750, Easing.SinInOut);
+                        labelScale = BolesneLabel.ScaleToAsync(1, 750, Easing.SinInOut);
+                        labelFade = BolesneLabel.FadeToAsync(0, 750, Easing.SinInOut);
                         break;
                     case "Chwalebne":
                     default:
-                        o1 = Radosne.FadeToAsync(0, 1000, Easing.SinInOut);
-                        o2 = Swiatla.FadeToAsync(0, 1000, Easing.SinInOut);
-                        o3 = Bolesne.FadeToAsync(0, 1000, Easing.SinInOut);
+                        border = ChwalebneBorder;
+                        o1 = Radosne.FadeToAsync(0, 750, Easing.SinInOut);
+                        o2 = Swiatla.FadeToAsync(0, 750, Easing.SinInOut);
+                        o3 = Bolesne.FadeToAsync(0, 750, Easing.SinInOut);
+                        labelScale = ChwalebneLabel.ScaleToAsync(1, 750, Easing.SinInOut);
+                        labelFade = ChwalebneLabel.FadeToAsync(0, 750, Easing.SinInOut);
                         break;
                 }
 
-                await Task.WhenAll(scale, t, o1, o2, o3);
+                await Task.WhenAll(scale, t, o1, o2, o3, labelScale, labelFade);
                 _selectedPart = partName;
 
-                await ShowMysteryAnimation(s);
+                await ShowMysteryAnimation(border);
             }
         }
 
@@ -248,23 +284,35 @@ namespace MauiApp1
             SetImageAndLabel();
 
             var animationTasks = new List<Task>();
-            double radius = s.Height / 2 + 90;
-            double center = s.Height / 2;
+            var btn = Mystery1.Children.OfType<Border>().FirstOrDefault();
+            double btnSize = btn.Width;
+            double radius = s.Width / 2 + 60;
+            double center = s.Width / 2;
             double angleOffset = - 2 * Math.PI / 5 - Math.PI / 10;
             int i = 0;
             foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
             {
+                var lbl = layout.Children.OfType<Label>().FirstOrDefault();
+                lbl.Scale = 1;
+
                 layout.IsVisible = true;
                 layout.Opacity = 0;
-                var btn = layout.Children.OfType<Border>().FirstOrDefault();
-                double btnSize = btn.Width;
+
                 double angle = i * 2 * Math.PI / 5 + angleOffset;
                 double tx = center + radius * Math.Cos(angle) - btnSize / 2;
-                double ty = center + radius * Math.Sin(angle) - btnSize / 2;
-                var btnTranslate = layout.TranslateToAsync(tx, ty, 1000, Easing.SinInOut);
-                var btnFade = layout.FadeToAsync(1, 1000, Easing.SinInOut);
+                double ty = center + radius * Math.Sin(angle) - btnSize / 2 + 20;
+
+                Task btnTranslate = layout.TranslateToAsync(tx, ty, 750, Easing.SinInOut);
+                Task btnFade = layout.FadeToAsync(1, 750, Easing.SinInOut);
+                Task btnScale = layout.ScaleToAsync(0.66, 750, Easing.SinInOut);
                 animationTasks.Add(btnTranslate);
                 animationTasks.Add(btnFade);
+                animationTasks.Add(btnScale);
+
+                Task lblScale = lbl.ScaleToAsync(1.5, 750, Easing.SinInOut);
+                Task lblTranslate = lbl.TranslateToAsync(0, -5, 750, Easing.SinInOut);
+                animationTasks.Add(lblScale);
+                animationTasks.Add(lblTranslate);
                 i++;
             }
             await Task.WhenAll(animationTasks);
@@ -273,14 +321,20 @@ namespace MauiApp1
         private async Task CloseMystryAnimation()
         {
             var animationTasks = new List<Task>();
+            var btn = Mystery1.Children.OfType<Border>().FirstOrDefault();
+            double btnSize = btn.Width;
+
             foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
             {
-                var btn = layout.Children.OfType<Border>().FirstOrDefault();
-                double btnSize = btn.Width;
-                var btnTranslate = layout.TranslateToAsync(0, 0, 1000, Easing.SinInOut);
-                var btnFade = layout.FadeToAsync(0, 1000, Easing.SinInOut);
+                Task btnTranslate = layout.TranslateToAsync(0, 0, 750, Easing.SinInOut);
+                Task btnFade = layout.FadeToAsync(0, 750, Easing.SinInOut);
+                Task btnScale = layout.ScaleToAsync(0.33, 750, Easing.SinInOut);
                 animationTasks.Add(btnTranslate);
                 animationTasks.Add(btnFade);
+                animationTasks.Add(btnScale);
+
+                Task lblScale = layout.Children.OfType<Label>().FirstOrDefault().ScaleToAsync(0.33, 750, Easing.SinInOut);
+                animationTasks.Add(lblScale);
             }
 
             await Task.WhenAll(animationTasks);
