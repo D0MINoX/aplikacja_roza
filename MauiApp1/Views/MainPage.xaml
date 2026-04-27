@@ -19,36 +19,51 @@
                         <Image Grid.Row="0" Grid.Column="0" x:Name="CenterImage" Source="flower.png" HorizontalOptions="Center" VerticalOptions="Center"/>
 
                         <!-- Tajemnice -->
-                        <VerticalStackLayout x:Name="Mystery1" Grid.Row="0" Grid.Column="0" Spacing="5" HorizontalOptions="Center" VerticalOptions="Center">
-                            <Border Style="{StaticResource MeditationButton}">
+                        <Grid x:Name="Mystery1" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Mystery_Tapped" CommandParameter="1"/>
+                            </Grid.GestureRecognizers>
+                            <Border Grid.Row="0" Style="{StaticResource MeditationButton}">
                                 <Image x:Name="Mystery1Image" Source="test.png" Aspect="AspectFill"/>
                             </Border>
-                            <Label x:Name="Mystery1Label" Text="Tajemnica 1" HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
-                        <VerticalStackLayout x:Name="Mystery2" Grid.Row="0" Grid.Column="0" Spacing="5" HorizontalOptions="Center" VerticalOptions="Center">
-                            <Border Style="{StaticResource MeditationButton}">
+                            <Label Grid.Row="1" x:Name="Mystery1Label" Text="Tajemnica 1" HorizontalOptions="Center"/>
+                        </Grid>
+                        <Grid x:Name="Mystery2" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Mystery_Tapped" CommandParameter="2"/>
+                            </Grid.GestureRecognizers>
+                            <Border Grid.Row="0" Style="{StaticResource MeditationButton}">
                                 <Image x:Name="Mystery2Image" Source="test.png" Aspect="AspectFill"/>
                             </Border>
-                            <Label x:Name="Mystery2Label" Text="Tajemnica 2" HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
-                        <VerticalStackLayout x:Name="Mystery3" Grid.Row="0" Grid.Column="0" Spacing="5" HorizontalOptions="Center" VerticalOptions="Center">
-                            <Border Style="{StaticResource MeditationButton}">
+                            <Label Grid.Row="1" x:Name="Mystery2Label" Text="Tajemnica 2" HorizontalOptions="Center"/>
+                        </Grid>
+                        <Grid x:Name="Mystery3" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Mystery_Tapped" CommandParameter="3"/>
+                            </Grid.GestureRecognizers>
+                            <Border Grid.Row="0" Style="{StaticResource MeditationButton}">
                                 <Image x:Name="Mystery3Image" Source="test.png" Aspect="AspectFill"/>
                             </Border>
-                            <Label x:Name="Mystery3Label" Text="Tajemnica 3" HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
-                        <VerticalStackLayout x:Name="Mystery4" Grid.Row="0" Grid.Column="0" Spacing="5" HorizontalOptions="Center" VerticalOptions="Center">
-                            <Border Style="{StaticResource MeditationButton}">
+                            <Label Grid.Row="1" x:Name="Mystery3Label" Text="Tajemnica 3" HorizontalOptions="Center"/>
+                        </Grid>
+                        <Grid x:Name="Mystery4" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Mystery_Tapped" CommandParameter="4"/>
+                            </Grid.GestureRecognizers>
+                            <Border Grid.Row="0" Style="{StaticResource MeditationButton}">
                                 <Image x:Name="Mystery4Image" Source="test.png" Aspect="AspectFill"/>
                             </Border>
-                            <Label x:Name="Mystery4Label" Text="Tajemnica 4" HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
-                        <VerticalStackLayout x:Name="Mystery5" Grid.Row="0" Grid.Column="0" Spacing="5" HorizontalOptions="Center" VerticalOptions="Center">
-                            <Border Style="{StaticResource MeditationButton}">
+                            <Label Grid.Row="1" x:Name="Mystery4Label" Text="Tajemnica 4" HorizontalOptions="Center"/>
+                        </Grid>
+                        <Grid x:Name="Mystery5" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Mystery_Tapped" CommandParameter="5"/>
+                            </Grid.GestureRecognizers>
+                            <Border Grid.Row="0" Style="{StaticResource MeditationButton}">
                                 <Image x:Name="Mystery5Image" Source="test.png" Aspect="AspectFill"/>
                             </Border>
-                            <Label x:Name="Mystery5Label" Text="Tajemnica 5" HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
+                            <Label Grid.Row="1" x:Name="Mystery5Label" Text="Tajemnica 5" HorizontalOptions="Center"/>
+                        </Grid>
 
                         <!-- Cztery główne części różańca -->
                         <Grid x:Name="Radosne" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">
@@ -92,7 +107,7 @@
                 </Border>
                 
                 
-                
+                <!--
                 <Border Style="{StaticResource MenuOption}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Meditation_Tapped"/>
@@ -146,6 +161,7 @@
                     </Border>
                     
                 </VerticalStackLayout>
+                -->
             </VerticalStackLayout>
         </ScrollView>
         

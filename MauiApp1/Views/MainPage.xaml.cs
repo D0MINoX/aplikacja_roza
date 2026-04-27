@@ -2,7 +2,6 @@
 using MauiApp1.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace MauiApp1
 {
@@ -96,22 +95,22 @@ namespace MauiApp1
             _selectedPart = null;
             await StarterAnimation();
             
-            bool hasToken = await _authService.CheckAndSetTokenAsync();
-            if (hasToken)
-            {
-                RosaryTile.IsVisible = true;
-            }
-            else
-            {
-                RosaryTile.IsVisible = false;
-            }
-            await UpdateMeditation();
+            //bool hasToken = await _authService.CheckAndSetTokenAsync();
+            //if (hasToken)
+            //{
+            //    RosaryTile.IsVisible = true;
+            //}
+            //else
+            //{
+            //    RosaryTile.IsVisible = false;
+            //}
+            //await UpdateMeditation();
 
             foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
             {
                 btn.TranslationX = btn.TranslationY = 0;
                 btn.Scale = 0.33;
-                btn.IsVisible = false;
+                btn.Opacity = 0;
             }
         }
 
@@ -120,7 +119,7 @@ namespace MauiApp1
             foreach (var btn in new[] { Radosne, Swiatla, Bolesne, Chwalebne })
             {
                 btn.TranslationX = btn.TranslationY = 0;
-                btn.Opacity = 1;
+                btn.Opacity = 0;
                 btn.Scale = 0.33;
             }
 
@@ -132,29 +131,30 @@ namespace MauiApp1
 
             Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(750), () =>
             {
+                var b1Fade = Radosne.FadeToAsync(1, 500, Easing.SinInOut);
+                var b2Fade = Swiatla.FadeToAsync(1, 500, Easing.SinInOut);
+                var b3Fade = Bolesne.FadeToAsync(1, 500, Easing.SinInOut);
+                var b4Fade = Chwalebne.FadeToAsync(1, 500, Easing.SinInOut);
+
                 var img = CenterImage.ScaleToAsync(2, 500, Easing.SinInOut);
 
                 var b1 = Radosne.TranslateToAsync(-100, -100, 750, Easing.SinInOut);
                 var b1Scale = Radosne.ScaleToAsync(0.66, 750, Easing.SinInOut);
-                var b1Label = RadosneLabel.TranslateToAsync(0, -5, 750, Easing.SinInOut);
                 var b1LabelScale = RadosneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
                 var b2 = Swiatla.TranslateToAsync(-100, +100, 750, Easing.SinInOut);
                 var b2Scale = Swiatla.ScaleToAsync(0.66, 750, Easing.SinInOut);
-                var b2Label = SwiatlaLabel.TranslateToAsync(0, -5, 750, Easing.SinInOut);
                 var b2LabelScale = SwiatlaLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
                 var b3 = Bolesne.TranslateToAsync(+100, -100, 750, Easing.SinInOut);
                 var b3Scale = Bolesne.ScaleToAsync(0.66, 750, Easing.SinInOut);
-                var b3Label = BolesneLabel.TranslateToAsync(0, -5, 750, Easing.SinInOut);
                 var b3LabelScale = BolesneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
                 var b4 = Chwalebne.TranslateToAsync(+100, +100, 750, Easing.SinInOut);
                 var b4Scale = Chwalebne.ScaleToAsync(0.66, 750, Easing.SinInOut);
-                var b4Label = ChwalebneLabel.TranslateToAsync(0, -5, 750, Easing.SinInOut);
                 var b4LabelScale = ChwalebneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
-                Task.WhenAll(b1, b1Scale, b2, b2Scale, b3, b3Scale, b4, b4Scale, b1Label, b2Label, b3Label, b4Label);
+                Task.WhenAll(b1, b1Scale, b2, b2Scale, b3, b3Scale, b4, b4Scale, b1Fade, b2Fade, b3Fade, b4Fade);
             });
 
         }
@@ -295,7 +295,6 @@ namespace MauiApp1
                 var lbl = layout.Children.OfType<Label>().FirstOrDefault();
                 lbl.Scale = 1;
 
-                layout.IsVisible = true;
                 layout.Opacity = 0;
 
                 double angle = i * 2 * Math.PI / 5 + angleOffset;
@@ -321,8 +320,6 @@ namespace MauiApp1
         private async Task CloseMystryAnimation()
         {
             var animationTasks = new List<Task>();
-            var btn = Mystery1.Children.OfType<Border>().FirstOrDefault();
-            double btnSize = btn.Width;
 
             foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
             {
@@ -333,17 +330,27 @@ namespace MauiApp1
                 animationTasks.Add(btnFade);
                 animationTasks.Add(btnScale);
 
-                Task lblScale = layout.Children.OfType<Label>().FirstOrDefault().ScaleToAsync(0.33, 750, Easing.SinInOut);
+                Label lbl = layout.Children.OfType<Label>().FirstOrDefault();
+                Task lblScale = lbl.ScaleToAsync(1.5, 750, Easing.SinInOut);
                 animationTasks.Add(lblScale);
             }
 
             await Task.WhenAll(animationTasks);
-
-            foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
-            {
-                layout.IsVisible = false;
-            }
         }
+
+        private async void Mystery_Tapped(object sender, TappedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_selectedPart)) return;
+
+            int mysteryNumber = int.Parse(e.Parameter.ToString());
+            List<string> mysteries = _itemsMap[_selectedPart];
+
+            DisplayAlertAsync("INFO", mysteries[mysteryNumber - 1], "OK");
+
+            await Shell.Current.GoToAsync("RosaryMeditations");
+        }
+
+
 
         private async void MyRosaryGroup_Tapped(object sender, TappedEventArgs e)
         {
@@ -384,76 +391,76 @@ namespace MauiApp1
             await Shell.Current.GoToAsync("RosaryMeditations");
         }
 
-        private async void Meditation_Tapped(object sender, TappedEventArgs e)
-        {
-            string textToSend = MeditationLabel.Text;
+        //private async void Meditation_Tapped(object sender, TappedEventArgs e)
+        //{
+        //    string textToSend = MeditationLabel.Text;
 
-            if (string.IsNullOrWhiteSpace(textToSend) || textToSend == "Brak rozważania")
-                return;
+        //    if (string.IsNullOrWhiteSpace(textToSend) || textToSend == "Brak rozważania")
+        //        return;
 
-            var navigationParameter = new Dictionary<string, object>
-            {
-                { "MeditationContent", textToSend }
-            };
-            await Shell.Current.GoToAsync("FullMeditation", navigationParameter);
-        }
+        //    var navigationParameter = new Dictionary<string, object>
+        //    {
+        //        { "MeditationContent", textToSend }
+        //    };
+        //    await Shell.Current.GoToAsync("FullMeditation", navigationParameter);
+        //}
 
-        private async Task UpdateMeditation()
-        {
-            try
-            {
+        //private async Task UpdateMeditation()
+        //{
+        //    try
+        //    {
                
-                date=Preferences.Default.Get("LastDate", 1);
+        //        date=Preferences.Default.Get("LastDate", 1);
                 
-                string selectedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
-                if (string.IsNullOrEmpty(selectedMystery)) return;
+        //        string selectedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
+        //        if (string.IsNullOrEmpty(selectedMystery)) return;
 
-                MeditationLabel.Text = "Ładowanie ....";
+        //        MeditationLabel.Text = "Ładowanie ....";
 
 
-                var localData = await GetMeditationFromLocalFile(this.date, selectedMystery);
+        //        var localData = await GetMeditationFromLocalFile(this.date, selectedMystery);
 
-                if (localData != null)
-                {
-                    DateLabel.Text = "Dzień " + this.date;
-                    MysteryLabel.Text = selectedMystery;
-                    MeditationLabel.Text = localData?.Content ?? "Brak rozważania";
+        //        if (localData != null)
+        //        {
+        //            DateLabel.Text = "Dzień " + this.date;
+        //            MysteryLabel.Text = selectedMystery;
+        //            MeditationLabel.Text = localData?.Content ?? "Brak rozważania";
                   
-                    return;
-                }
+        //            return;
+        //        }
 
-                var data = await _meditationService.GetMeditationData(this.date, selectedMystery);
-                DateLabel.Text = "Dzień " + this.date;
-                MysteryLabel.Text = selectedMystery;
-                MeditationLabel.Text = data?.Content ?? "Brak rozważania";
-            }
-            catch (Exception ex)
-            {
-                MeditationLabel.Text = "Błąd połączenia";
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-            }
-        }
+        //        var data = await _meditationService.GetMeditationData(this.date, selectedMystery);
+        //        DateLabel.Text = "Dzień " + this.date;
+        //        MysteryLabel.Text = selectedMystery;
+        //        MeditationLabel.Text = data?.Content ?? "Brak rozważania";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MeditationLabel.Text = "Błąd połączenia";
+        //        System.Diagnostics.Debug.WriteLine(ex.Message);
+        //    }
+        //}
 
-        private async Task<LocalMeditation> GetMeditationFromLocalFile(int day, string mystery)
-        {
-            try
-            {
+        //private async Task<LocalMeditation> GetMeditationFromLocalFile(int day, string mystery)
+        //{
+        //    try
+        //    {
 
-                string path = GetFileName(mystery);
-                if (!File.Exists(path)) return null;
+        //        string path = GetFileName(mystery);
+        //        if (!File.Exists(path)) return null;
 
-                string json = await File.ReadAllTextAsync(path);
-                var allMeditations = JsonSerializer.Deserialize<List<LocalMeditation>>(json);
+        //        string json = await File.ReadAllTextAsync(path);
+        //        var allMeditations = JsonSerializer.Deserialize<List<LocalMeditation>>(json);
 
-                return allMeditations?.FirstOrDefault(m => m.Date == day);
-            }
-            catch { return null; }
-        }
+        //        return allMeditations?.FirstOrDefault(m => m.Date == day);
+        //    }
+        //    catch { return null; }
+        //}
 
-        private string GetFileName(string mystery)
-        {
-            string safeName = mystery.Replace(" ", "_").Substring(0, Math.Min(mystery.Length, 20));
-            return Path.Combine(FileSystem.AppDataDirectory, $"meditations_{safeName}.json");
-        }
+        //private string GetFileName(string mystery)
+        //{
+        //    string safeName = mystery.Replace(" ", "_").Substring(0, Math.Min(mystery.Length, 20));
+        //    return Path.Combine(FileSystem.AppDataDirectory, $"meditations_{safeName}.json");
+        //}
     }
 }
