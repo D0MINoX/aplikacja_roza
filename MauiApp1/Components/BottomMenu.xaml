@@ -10,6 +10,7 @@
             <!-- ten label jest tylko po to zeby zmieniac kolor ikonek dynamicnie -->
             <Label x:Name="Ref" BackgroundColor="{DynamicResource Tertiary}" IsEnabled="False" IsVisible="False" />
             
+            <!-- Start -->
             <Grid RowDefinitions="auto,auto" Grid.Column="0">
                 <Image Grid.Row="0" Source="home.png" Style="{StaticResource OptionImage}">
                     <Image.GestureRecognizers>
@@ -23,6 +24,8 @@
                     Start
                 </Label>
             </Grid>
+            
+            <!-- Rozważania -->
             <Grid RowDefinitions="auto,auto" Grid.Column="1">
                 <Image Grid.Row="0" Source="book.png" Style="{StaticResource OptionImage}">
                     <Image.GestureRecognizers>
@@ -36,6 +39,8 @@
                     Rozważania
                 </Label>
             </Grid>
+            
+            <!-- Ustawienia -->
             <Grid RowDefinitions="auto,auto" Grid.Column="2">
                 <Image Grid.Row="0" Source="settings.png" Style="{StaticResource OptionImage}">
                     <Image.GestureRecognizers>
