@@ -11,39 +11,40 @@ namespace MauiApp1
         public MeditationsService _meditationService;
         public AuthService _authService;
         public RosaryService _rosaryService;
-        private static readonly Dictionary<string, List<string>> _itemsMap = new() {
+        private static readonly Dictionary<string, List<MysteryItem>> _itemsMap = new()
+        {
             ["Radosne"] = new()
-        {
-            "Zwiastowanie Najświętszej Maryi Pannie",
-            "Nawiedzenie św. Elżbiety",
-            "Narodzenie Pana Jezusa",
-            "Ofiarowanie Pana Jezusa w świątyni",
-            "Odnalezienie Pana Jezusa w świątyni"
-        },
+    {
+        new MysteryItem("Zwiastowanie", "Zwiastowanie Najświętszej Maryi Pannie"),
+        new MysteryItem("Nawiedzenie", "Nawiedzenie św. Elżbiety"),
+        new MysteryItem("Narodzenie", "Narodzenie Pana Jezusa"),
+        new MysteryItem("Ofiarowanie", "Ofiarowanie Pana Jezusa w świątyni"),
+        new MysteryItem("Odnalezienie", "Odnalezienie Pana Jezusa w świątyni")
+    },
             ["Światła"] = new()
-        {
-            "Chrzest Pana Jezusa w Jordanie",
-            "Objawienie się Pana Jezusa w Kanie Galilejskiej",
-            "Głoszenie Królestwa Bożego i wzywanie do nawrócenia",
-            "Przemienienie na górze Tabor",
-            "Ustanowienie Eucharystii"
-        },
+    {
+        new MysteryItem("Chrzest", "Chrzest Pana Jezusa w Jordanie"),
+        new MysteryItem("Kana", "Objawienie się Pana Jezusa w Kanie Galilejskiej"),
+        new MysteryItem("Królestwo", "Głoszenie Królestwa Bożego i wzywanie do nawrócenia"),
+        new MysteryItem("Przemienienie", "Przemienienie na górze Tabor"),
+        new MysteryItem("Eucharystia", "Ustanowienie Eucharystii")
+    },
             ["Bolesne"] = new()
-        {
-            "Modlitwa Pana Jezusa w Ogrójcu",
-            "Biczowanie Pana Jezusa",
-            "Cierniem ukoronowanie Pana Jezusa",
-            "Dźwiganie krzyża na Kalwarię",
-            "Ukrzyżowanie i śmierć Pana Jezusa"
-        },
+    {
+        new MysteryItem("Modlitwa", "Modlitwa Pana Jezusa w Ogrójcu"),
+        new MysteryItem("Biczowanie", "Biczowanie Pana Jezusa"),
+        new MysteryItem("ukoronowanie", "Cierniem ukoronowanie Pana Jezusa"),
+        new MysteryItem("Dźwiganie krzyża", "Dźwiganie krzyża na Kalwarię"),
+        new MysteryItem("Ukrzyżowanie", "Ukrzyżowanie i śmierć Pana Jezusa")
+    },
             ["Chwalebne"] = new()
-        {
-            "Zmartwychwstanie Pana Jezusa",
-            "Wniebowstąpienie Pana Jezusa",
-            "Zesłanie Ducha Świętego",
-            "Wniebowzięcie Najświętszej Maryi Panny",
-            "Ukoronowanie Najświętszej Maryi Panny na Królową Nieba i Ziemi"
-        }
+    {
+        new MysteryItem("Zmartwychwstanie", "Zmartwychwstanie Pana Jezusa"),
+        new MysteryItem("Wniebowstąpienie", "Wniebowstąpienie Pana Jezusa"),
+        new MysteryItem("Zesłanie", "Zesłanie Ducha Świętego"),
+        new MysteryItem("Wniebowzięcie", "Wniebowzięcie Najświętszej Maryi Panny"),
+        new MysteryItem("Ukoronowanie", "Ukoronowanie Najświętszej Maryi Panny na Królową Nieba i Ziemi")
+    }
         };
         private static readonly Dictionary<string, List<string>> _imagesMap = new(){
             ["Radosne"] = new()
@@ -128,7 +129,11 @@ namespace MauiApp1
                 btn.Scale = 0.33;
                 btn.Opacity = 1;
             }
-
+            if (!CenterImage.IsVisible)
+            {
+                CenterImage.IsVisible = true;
+                await CenterImage.FadeToAsync(1, 400, Easing.SinInOut);
+            }
             Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(750), () =>
             {
                 var b1Fade = Radosne.FadeToAsync(1, 500, Easing.SinInOut);
@@ -153,8 +158,9 @@ namespace MauiApp1
                 var b4 = Chwalebne.TranslateToAsync(+100, +100, 750, Easing.SinInOut);
                 var b4Scale = Chwalebne.ScaleToAsync(0.66, 750, Easing.SinInOut);
                 var b4LabelScale = ChwalebneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
-
-                Task.WhenAll(b1, b1Scale, b2, b2Scale, b3, b3Scale, b4, b4Scale, b1Fade, b2Fade, b3Fade, b4Fade);
+                var logo = CenterImage.FadeToAsync(1, 400, Easing.SinInOut);
+                CenterImage.IsVisible = true;
+                Task.WhenAll(logo,b1, b1Scale, b2, b2Scale, b3, b3Scale, b4, b4Scale, b1Fade, b2Fade, b3Fade, b4Fade);
             });
 
         }
@@ -166,6 +172,7 @@ namespace MauiApp1
             if (_selectedPart == partName)
             {
                 await CloseMystryAnimation();
+                
                 var scale = s.ScaleToAsync(0.66, 750, Easing.SinInOut);
                 Task t, o1, o2, o3, labelScale, labelFade;
 
@@ -208,6 +215,11 @@ namespace MauiApp1
                 
                 await Task.WhenAll(scale, t, o1, o2, o3, labelScale, labelFade);
                 _selectedPart = null;
+                if(!CenterImage.IsVisible)
+                {
+                    CenterImage.IsVisible = true;
+                    await CenterImage.FadeToAsync(1, 400, Easing.SinInOut);
+                }
             }
             else if (_selectedPart!=null)
             {
@@ -256,10 +268,15 @@ namespace MauiApp1
                         labelFade = ChwalebneLabel.FadeToAsync(0, 750, Easing.SinInOut);
                         break;
                 }
-
+                if (CenterImage.IsVisible)
+                {
+                    await CenterImage.FadeToAsync(0, 400, Easing.SinInOut);
+                    CenterImage.IsVisible = false;
+                }
+                
                 await Task.WhenAll(scale, t, o1, o2, o3, labelScale, labelFade);
                 _selectedPart = partName;
-
+                ThemeManager.SetTheme(partName);
                 await ShowMysteryAnimation(border);
             }
         }
@@ -272,50 +289,107 @@ namespace MauiApp1
             Mystery4Image.Source = _imagesMap[_selectedPart][3];
             Mystery5Image.Source = _imagesMap[_selectedPart][4];
 
-            //Mystery1Label.Text = _itemsMap[_selectedPart][0];
-            //Mystery2Label.Text = _itemsMap[_selectedPart][1];
-            //Mystery3Label.Text = _itemsMap[_selectedPart][2];
-            //Mystery4Label.Text = _itemsMap[_selectedPart][3];
-            //Mystery5Label.Text = _itemsMap[_selectedPart][4];
+            Mystery1Label.Text = _itemsMap[_selectedPart][0].ShortLabel;
+            Mystery2Label.Text = _itemsMap[_selectedPart][1].ShortLabel;
+            Mystery3Label.Text = _itemsMap[_selectedPart][2].ShortLabel;
+            Mystery4Label.Text = _itemsMap[_selectedPart][3].ShortLabel;
+            Mystery5Label.Text = _itemsMap[_selectedPart][4].ShortLabel;
         }
 
-        private async Task ShowMysteryAnimation(Border s)
-        {
-            SetImageAndLabel();
+         private async Task ShowMysteryAnimation(Border s)
+         {
 
-            var animationTasks = new List<Task>();
-            var btn = Mystery1.Children.OfType<Border>().FirstOrDefault();
-            double btnSize = btn.Width;
-            double radius = s.Width / 2 + 60;
-            double center = s.Width / 2;
-            double angleOffset = - 2 * Math.PI / 5 - Math.PI / 10;
-            int i = 0;
-            foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
-            {
-                var lbl = layout.Children.OfType<Label>().FirstOrDefault();
-                lbl.Scale = 1;
+             SetImageAndLabel();
 
-                layout.Opacity = 0;
+             var animationTasks = new List<Task>();
+             var btn = Mystery1.Children.OfType<Border>().FirstOrDefault();
+             double btnSize = btn.Width;
+             double radius = s.Width / 2 + 60;
+             double center = s.Width / 2;
+             double angleOffset = - 2 * Math.PI / 5 - Math.PI / 10;
+             int i = 0;
+             foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+             {
+                 var lbl = layout.Children.OfType<Label>().FirstOrDefault();
+                 lbl.Scale = 1;
 
-                double angle = i * 2 * Math.PI / 5 + angleOffset;
-                double tx = center + radius * Math.Cos(angle) - btnSize / 2;
-                double ty = center + radius * Math.Sin(angle) - btnSize / 2 + 20;
+                 layout.Opacity = 0;
 
-                Task btnTranslate = layout.TranslateToAsync(tx, ty, 750, Easing.SinInOut);
-                Task btnFade = layout.FadeToAsync(1, 750, Easing.SinInOut);
-                Task btnScale = layout.ScaleToAsync(0.66, 750, Easing.SinInOut);
-                animationTasks.Add(btnTranslate);
-                animationTasks.Add(btnFade);
-                animationTasks.Add(btnScale);
+                 double angle = i * 2 * Math.PI / 5 + angleOffset;
+                 double tx = center + radius * Math.Cos(angle) - btnSize / 2;
+                 double ty = center + radius * Math.Sin(angle) - btnSize / 2 + 20;
 
-                Task lblScale = lbl.ScaleToAsync(1.5, 750, Easing.SinInOut);
-                Task lblTranslate = lbl.TranslateToAsync(0, -5, 750, Easing.SinInOut);
-                animationTasks.Add(lblScale);
-                animationTasks.Add(lblTranslate);
-                i++;
-            }
-            await Task.WhenAll(animationTasks);
-        }
+                 Task btnTranslate = layout.TranslateToAsync(tx, ty, 750, Easing.SinInOut);
+                 Task btnFade = layout.FadeToAsync(1, 750, Easing.SinInOut);
+                 Task btnScale = layout.ScaleToAsync(0.66, 750, Easing.SinInOut);
+                 animationTasks.Add(btnTranslate);
+                 animationTasks.Add(btnFade);
+                 animationTasks.Add(btnScale);
+
+                 Task lblScale = lbl.ScaleToAsync(1.5, 750, Easing.SinInOut);
+                 Task lblTranslate = lbl.TranslateToAsync(0, -5, 750, Easing.SinInOut);
+                 animationTasks.Add(lblScale);
+                 animationTasks.Add(lblTranslate);
+                 i++;
+             }
+             await Task.WhenAll(animationTasks);
+
+         }
+        /* private async Task ShowMysteryAnimation(Border s)
+         {
+             SetImageAndLabel();
+
+             var animationTasks = new List<Task>();
+             var btn = Mystery1.Children.OfType<Border>().FirstOrDefault();
+             double btnSize = btn.Width;
+             double centerW = s.Width / 2;
+             double offsetY = 15; // możesz dopasować np. -40, -50 w zależności od rozmiarów i wyglądu
+             double centerH = s.Height / 2 + offsetY;
+             double vertical = s.Height / 2 + 60;
+             double horizontal = s.Width / 2 + 60;
+             double spacing = btnSize + 10;
+
+             (double x, double y)[] positions = new (double, double)[]
+             {
+         // Mystery1 - GÓRA
+         (centerW - btnSize/2, centerH - vertical - btnSize/2),
+         // Mystery2 - LEWO
+         (centerW - horizontal - btnSize/2, centerH - btnSize/2),
+         // Mystery3 - PRAWO
+         (centerW + horizontal - btnSize/2, centerH - btnSize/2),
+         // Mystery4 - DÓŁ ŚRODEK
+         (centerW - btnSize/2, centerH + vertical - btnSize/2),
+         // Mystery5 - DÓŁ JESZCZE NIŻEJ
+         (centerW - btnSize/2, centerH + vertical + spacing - btnSize/2),
+             };
+
+             int i = 0;
+             foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+             {
+                 var lbl = layout.Children.OfType<Label>().FirstOrDefault();
+                 lbl.Scale = 1;
+                 layout.Opacity = 0;
+
+                 double tx = positions[i].x;
+                 double ty = positions[i].y;
+
+                 Task btnTranslate = layout.TranslateToAsync(tx, ty, 750, Easing.SinInOut);
+                 Task btnFade = layout.FadeToAsync(1, 750, Easing.SinInOut);
+                 Task btnScale = layout.ScaleToAsync(0.66, 750, Easing.SinInOut);
+                 animationTasks.Add(btnTranslate);
+                 animationTasks.Add(btnFade);
+                 animationTasks.Add(btnScale);
+
+                 Task lblScale = lbl.ScaleToAsync(1.5, 750, Easing.SinInOut);
+                 Task lblTranslate = lbl.TranslateToAsync(0, -5, 750, Easing.SinInOut);
+                 animationTasks.Add(lblScale);
+                 animationTasks.Add(lblTranslate);
+
+                 i++;
+             }
+             await Task.WhenAll(animationTasks);
+         }
+        */
 
         private async Task CloseMystryAnimation()
         {
@@ -343,11 +417,11 @@ namespace MauiApp1
             if (string.IsNullOrEmpty(_selectedPart)) return;
 
             int mysteryNumber = int.Parse(e.Parameter.ToString());
-            List<string> mysteries = _itemsMap[_selectedPart];
-
-            DisplayAlertAsync("INFO", mysteries[mysteryNumber - 1], "OK");
-
-            await Shell.Current.GoToAsync("RosaryMeditations");
+            List<MysteryItem> mysteries = _itemsMap[_selectedPart];
+            Preferences.Default.Set("LastMystery", mysteries[mysteryNumber - 1].FullDescription);
+            //  DisplayAlertAsync("INFO", mysteries[mysteryNumber - 1].FullDescription, "OK");
+           
+            await Shell.Current.GoToAsync("FullMeditation");
         }
 
 
