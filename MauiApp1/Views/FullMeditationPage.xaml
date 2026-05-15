@@ -20,20 +20,20 @@
             <Border Grid.Row="1" Style="{StaticResource MenuOption}">
                 <Grid RowDefinitions="auto,*,auto" RowSpacing="10" Padding="10" >
                     <!-- data -->
-                    <Label Grid.Row="0" x:Name="DayLabel" InputTransparent="True"/>
+                    <Label Grid.Row="0" x:Name="DateLabel" InputTransparent="True"/>
                     <!-- tekst rozważania -->
                     <ScrollView Grid.Row="1" Orientation="Vertical">
                         <Label VerticalOptions="Center" x:Name="FullMeditation" InputTransparent="True"/>
                     </ScrollView>
 
                     <!-- przyciski -->
-                    <Grid ColumnDefinitions="*,*" Grid.Row="2">
+                    <Grid ColumnDefinitions="*,*,*" Grid.Row="2">
                         <Border Grid.Column="0" HorizontalOptions="Start" Style="{StaticResource NavButton}">
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="BackTapped"/>
+                                <TapGestureRecognizer Tapped="PreviousTapped"/>
                             </Border.GestureRecognizers>
                             <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
-                                Wróć
+                                Wstecz
                             </Label>
                         </Border>
                         <Border Grid.Column="1" HorizontalOptions="End" x:Name="Complete" Style="{StaticResource NavButton}">
@@ -42,6 +42,14 @@
                             </Border.GestureRecognizers>
                             <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
                                 Ukończono
+                            </Label>
+                        </Border>
+                        <Border Grid.Column="2" HorizontalOptions="End" Style="{StaticResource NavButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="NextTapped"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                Dalej
                             </Label>
                         </Border>
                     </Grid>
