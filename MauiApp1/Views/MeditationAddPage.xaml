@@ -64,24 +64,12 @@
                                 >
                         </Picker>
 
-                        <Editor 
-                            x:Name="DescriptionEditor"
-                            Placeholder="Wpisz treść rozważania..."
-                            AutoSize="TextChanges"
-                            MinimumHeightRequest="200"
-                            TextColor="{DynamicResource Text}"
-                            BackgroundColor="{DynamicResource Primary}"/>
-                        <HorizontalStackLayout Spacing="10" Padding="10">
-                            <CheckBox x:Name="CheckBox" VerticalOptions="Center" CheckedChanged="CheckBoxChanged"/>
-                            <Label Text="Dodaj multimedia" 
-                                 VerticalOptions="Center">
-                      
-                            </Label>
-                        </HorizontalStackLayout>
-                        <VerticalStackLayout x:Name="multimedia">
-                            <Label Text="Link do multimediów"/>
-                            <Entry x:Name="linkEntry"/>
-                        </VerticalStackLayout>
+                        <Border StrokeShape="RoundRectangle 5" StrokeThickness="1" Stroke="Gray" HeightRequest="300">
+                            <WebView 
+                                x:Name="HtmlEditorWebView"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand" />
+                        </Border>
                         <Button Text="EDYTUJ ROZWAŻANIE" 
                               Clicked="Edit_Clicked"
                               CornerRadius="10"

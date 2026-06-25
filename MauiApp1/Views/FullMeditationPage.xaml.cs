@@ -27,9 +27,9 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             _meditationText = query["MeditationContent"] as string;
 
 
-            if (FullMeditation != null)
+            if (MeditationWebView != null)
             {
-                FullMeditation.Text = _meditationText;
+                LoadHtmlToWebView(_meditationText);
             }
         }
     }
@@ -46,16 +46,6 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         UpdateDate();
     }
 
-    /*  private void UpdateUI()
-      {
-
-          if (FullMeditation != null && !string.IsNullOrEmpty(_meditationText))
-          {
-              int date = Preferences.Default.Get("LastDate", 1);
-              DateLabel.Text = "Dzień " + date.ToString();
-              FullMeditation.Text = _meditationText;
-          }
-     }*/
     private async void UpdateDate()
     {
         if (_isBusy) return;
@@ -65,10 +55,11 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             Preferences.Default.Set("LastDate", date);
 
             string selectedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
+            MysteryLabel.Text = selectedMystery;
             if (string.IsNullOrEmpty(selectedMystery)) return;
 
-           FullMeditation.Text = "Ładowanie ....";
-
+            // Wyświetlenie komunikatu o ładowaniu w formacie HTML
+            LoadHtmlToWebView("<p style='text-align: center; font-style: italic;'>Ładowanie ....</p>");
 
             var localData = await GetMeditationFromLocalFile(this.date, selectedMystery);
 
@@ -78,12 +69,10 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
                 return;
             }
 
-
             bool autoDownload = Preferences.Default.Get("AutoDownloadMeditations", false);
 
             if (autoDownload)
             {
-
                 bool downloaded = await DownloadAllMeditationsForMystery(selectedMystery);
                 if (downloaded)
                 {
@@ -101,13 +90,56 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         }
         catch (Exception ex)
         {
-            FullMeditation.Text = "Błąd połączenia";
+            LoadHtmlToWebView("<p style='text-align: center; color: red;'>Błąd połączenia</p>");
             System.Diagnostics.Debug.WriteLine(ex.Message);
         }
     }
     private void ApplyMeditationData(LocalMeditation data)
     {
-        FullMeditation.Text = data?.Content ?? "Brak rozważania";
+        string rawContent = data?.Content ?? "Brak rozważania";
+        LoadHtmlToWebView(rawContent);
+    }
+    private void LoadHtmlToWebView(string contentHtml)
+    {
+        if (MeditationWebView == null) return;
+
+        // Prosty szablon HTML z CSS gwarantujący poprawne skalowanie na telefonach i JUSTOWANIE tekstu
+        string fullHtmlPage = $@"
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset='utf-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+            <style>
+                body {{
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #333333;
+                    padding: 5px;
+                    margin: 0;
+                    background-color: transparent;
+                }}
+                p {{
+                    text-align: justify; /* JUSTOWANIE TEKSTU */
+                    text-justify: inter-word;
+                    margin-bottom: 14px;
+                }}
+                text-align: justify;
+
+                h1, h2, h3 {{ color: #111111; margin-top: 18px; }}
+            </style>
+        </head>
+        <body>
+            {contentHtml}
+        </body>
+        </html>";
+
+        // Przypisanie źródła HTML do WebView
+        MeditationWebView.Source = new HtmlWebViewSource
+        {
+            Html = fullHtmlPage
+        };
     }
     private async void CompletedTapped(object sender, TappedEventArgs e)
     {

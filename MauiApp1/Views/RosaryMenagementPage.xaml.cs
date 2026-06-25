@@ -1,13 +1,16 @@
+using MauiApp1.Models;
+using MauiApp1.Services;
+    
 namespace MauiApp1.Views;
 
 [QueryProperty(nameof(RosaryId), "RosaryId")]
 public partial class RosaryMenagementPage : ContentPage
 {
-
+    private readonly AdminService _adminService;
     public int RosaryId { get; set; }
-    public RosaryMenagementPage()
+    public RosaryMenagementPage(AdminService adminService)
     {
-
+        _adminService = adminService;
         InitializeComponent();
     }
 

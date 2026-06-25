@@ -4,14 +4,21 @@
              xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.Views.MyRosariesListPage"
              Title="MyRosariesListPage"
+             Shell.NavBarIsVisible="False"
              BackgroundColor="{DynamicResource Primary}">
     
-    <Grid RowDefinitions="*,auto,auto,auto">
-        <ScrollView Grid.Row="0">
+    <Grid RowDefinitions="auto,*,auto,auto,auto">
+        <Grid ColumnDefinitions="auto,*" Grid.Row="0"  Style="{StaticResource Head}">
+            
+            <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
+                Lista Róż
+            </Label>
+        </Grid>
+        <ScrollView Grid.Row="1">
             <VerticalStackLayout x:Name="RosariesContainer"/>
         </ScrollView>
 
-        <Grid Grid.Row="1" ColumnDefinitions="*,*" IsVisible="False" x:Name="SendOptionsGrid">
+        <Grid Grid.Row="2" ColumnDefinitions="*,*" IsVisible="False" x:Name="SendOptionsGrid">
             <Border Grid.Column="0" Style="{StaticResource NavButton}">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Tapped="ConfirmSend_Tapped"/>
@@ -30,7 +37,7 @@
             </Border>
         </Grid>
 
-        <Border Grid.Row="2" x:Name="SendMessage" Style="{StaticResource NavButton}">
+        <Border Grid.Row="3" x:Name="SendMessage" Style="{StaticResource NavButton}">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="Send_Tapped"/>
             </Border.GestureRecognizers>
@@ -39,7 +46,7 @@
             </Label>
         </Border>
 
-        <mauiapp1:BottomMenu Grid.Row="3"></mauiapp1:BottomMenu>
+        <mauiapp1:BottomMenu Grid.Row="4"></mauiapp1:BottomMenu>
     </Grid>
     
 </ContentPage>

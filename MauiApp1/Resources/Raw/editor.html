@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <style>
+        /* Definicja palety kolorów jako zmienne CSS */
+        :root {
+            --bg-color: #FFFFFF;
+            --text-color: #333333;
+            --border-color: #CCCCCC;
+            --toolbar-bg: #F3F3F3;
+        }
+
+        /* Automatyczne mapowanie, gdy ciało strony ma klasę .dark */
+        body.dark {
+            --bg-color: #1E1E1E; /* Dopasuj ten kolor do koloru tła Twojej aplikacji (Primary) */
+            --text-color: #FFFFFF;
+            --border-color: #444444;
+            --toolbar-bg: #2D2D2D;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #editor-container {
+            height: calc(100vh - 42px);
+            font-size: 16px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: none;
+        }
+
+        .ql-editor {
+            text-align: justify;
+        }
+
+        /* Dostosowanie paska narzędzi Quill do motywów */
+        .ql-toolbar.ql-snow {
+            background-color: var(--toolbar-bg);
+            border: 1px solid var(--border-color) !important;
+        }
+
+        .ql-container.ql-snow {
+            border: 1px solid var(--border-color) !important;
+            border-top: none !important;
+        }
+
+        /* Kolory ikon paska narzędzi w ciemnym motywie */
+        body.dark .ql-snow .ql-stroke {
+            stroke: #FFFFFF;
+        }
+
+        body.dark .ql-snow .ql-fill {
+            fill: #FFFFFF;
+        }
+
+        body.dark .ql-snow .ql-picker {
+            color: #FFFFFF;
+        }
+
+        body.dark .ql-snow .ql-picker-options {
+            background-color: #2D2D2D;
+            border-color: #444444;
+        }
+    </style>
+</head>
+<body class="light">
+    <div id="editor-container"></div>
+    <script>
+        var quill = new Quill('#editor-container', {
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            },
+            theme: 'snow'
+        });
+
+        // Funkcje sterujące motywem z poziomu C#
+        function setDarkMode(isDark) {
+            if (isDark) {
+                document.body.classList.remove('light');
+                document.body.classList.add('dark');
+            } else {
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+            }
+        }
+
+        function getHtml() { return quill.root.innerHTML; }
+        function setHtml(html) { quill.root.innerHTML = html; }
+    </script>
+</body>
+</html>

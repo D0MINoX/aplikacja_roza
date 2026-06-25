@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.FullMeditationPage"
              Title="FullMeditationPage"
+             Shell.NavBarIsVisible="False"
              BackgroundColor="{DynamicResource Primary}">
     <Grid RowDefinitions="*,auto">
         <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="20">
@@ -11,7 +12,7 @@
                 <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
                     Rozważania różańcowe
                 </Label>
-                <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
+                <Label Grid.Row="1" x:Name="MysteryLabel" Style="{StaticResource HeaderLabel2}">
                     Pełne rozważanie
                 </Label>
             </Grid>
@@ -20,11 +21,15 @@
             <Border Grid.Row="1" Style="{StaticResource MenuOption}">
                 <Grid RowDefinitions="auto,*,auto" RowSpacing="10" Padding="10" >
                     <!-- data -->
-                    <Label Grid.Row="0" x:Name="DateLabel" InputTransparent="True"/>
+                
+                        <Label x:Name="DateLabel" Grid.Row="0" InputTransparent="True"/>
+                        
+ 
                     <!-- tekst rozważania -->
-                    <ScrollView Grid.Row="1" Orientation="Vertical">
-                        <Label VerticalOptions="Center" x:Name="FullMeditation" InputTransparent="True"/>
-                    </ScrollView>
+                    <WebView Grid.Row="1" 
+                         x:Name="MeditationWebView" 
+                         HorizontalOptions="FillAndExpand" 
+                         VerticalOptions="FillAndExpand" />
 
                     <!-- przyciski -->
                     <Grid ColumnDefinitions="*,*,*" Grid.Row="2">

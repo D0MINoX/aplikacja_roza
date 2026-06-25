@@ -49,4 +49,5 @@ public partial class MyRosaryPage : ContentPage
         var navigationParameter = new Dictionary<string, object>{{ "RosaryId", RosaryId }};
         await Shell.Current.GoToAsync("Messages", navigationParameter);
     }
+
 }

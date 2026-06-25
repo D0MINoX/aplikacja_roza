@@ -4,24 +4,26 @@
              xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.MainPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             BackgroundColor="{DynamicResource Primary}">
+             BackgroundColor="{DynamicResource Primary}"
+             Shell.NavBarIsVisible="False">
 
     <Grid RowDefinitions="auto,*,auto">
+        <Image Source="mainpagebackground.png" 
+            Aspect="AspectFill"
+            Grid.RowSpan="2" />
         <!-- ten label jest tylko po to zeby zmieniac kolor ikonek dynamicnie -->
         <Label x:Name="Ref" BackgroundColor="{DynamicResource Tertiary}" IsEnabled="False" IsVisible="False" />
         
-        <Grid Style="{StaticResource Head}">
-            <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
+        <Grid Style="{StaticResource Head}" Padding="0,40,0,0">
+            
+            <Label Grid.Row="0" Style="{StaticResource HeaderLabel}" HorizontalOptions="Center">
                 Różańcowy Szlak
-            </Label>
-            <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
-                Wybór rozważań
             </Label>
         </Grid>
         <Border Grid.Row="1" StrokeThickness="0" x:Name="root">
                     <Grid RowDefinitions="*" ColumnDefinitions="*">
-
-                        <Image Grid.Row="0" Grid.Column="0" x:Name="CenterImage" Source="logo.png" HorizontalOptions="Center" VerticalOptions="Center"  HeightRequest="60" WidthRequest="60" Aspect="AspectFill"/>
+                           
+                <Image Grid.Row="0" Grid.Column="0" x:Name="CenterImage" Source="logo.png" HorizontalOptions="Center" VerticalOptions="Center"  HeightRequest="60" WidthRequest="60" Aspect="AspectFill"/>
 
                         <!-- Tajemnice -->
                         <Grid x:Name="Mystery1" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">

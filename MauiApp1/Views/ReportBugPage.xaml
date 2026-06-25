@@ -5,19 +5,26 @@
              xmlns:controls="clr-namespace:MauiApp1.Controls"
              x:Class="MauiApp1.Views.ReportBugPage"
              Title="ReportBugPage"
+             Shell.NavBarIsVisible="False"
              BackgroundColor="{DynamicResource Primary}">
     
     <Grid RowDefinitions="*,auto">
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Spacing="20">
-                
-                <!-- Header -->
-                <Grid Style="{StaticResource Head}">
-                    <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
+
+                <Grid ColumnDefinitions="auto,*" Grid.Row="0" Grid.Column="1" Style="{StaticResource Head}">
+                    <Image Grid.Column="0" Grid.Row="0"
+                        Source="back_arrow.png" 
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        Margin="10,0,10,0"
+                        HeightRequest="24" WidthRequest="24">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="BackButton_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
                         Zgłoś błąd
-                    </Label>
-                    <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
-                        Opisz problem, który napotkałeś
                     </Label>
                 </Grid>
 
@@ -25,36 +32,21 @@
                     <Grid RowDefinitions="auto,auto,auto,auto,auto,auto,auto" ColumnSpacing="20">
                         <Label  Grid.Row="0" Text="Prosimy o numer telefonu w razie problemów z znalezieniem błędu" Style="{StaticResource OptionLabel}" HorizontalOptions="Start"/>
                         <controls:MyEntry Placeholder="wpisz swój numer telefonu" Grid.Row="1" x:Name="Phone"/>
-                        <Label  Grid.Row="2" Text="Strona na której wystąpił błąd(Napis u góry zakładki):" Style="{StaticResource OptionLabel}" HorizontalOptions="Start"/>
+                        <Label  Grid.Row="2" Text="Strona na której wystąpił błąd (Napis u góry zakładki):" Style="{StaticResource OptionLabel}" HorizontalOptions="Start"/>
                         <controls:MyEntry Placeholder="wpisz stronę na któej wystąpił błąd" Grid.Row="3" x:Name="PageName"/>
                         <Label Grid.Row="4" Text="Opis błędu:" Style="{StaticResource OptionLabel}" HorizontalOptions="Start"/>
-                        
+
                         <Border Grid.Row="5" StrokeShape="RoundRectangle 5" StrokeThickness="1" Stroke="{DynamicResource Accent}">
                             <controls:MyEditor Placeholder="Wpisz tutaj opis błędu..." AutoSize="TextChanges" x:Name="Description"/>
                         </Border>
-                        
-                        <Grid Grid.Row="6" ColumnDefinitions="*,*">
-                            
-                            <Border Grid.Column="0" Style="{StaticResource NavButton}">
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="Back_Tapped"/>
-                                </Border.GestureRecognizers>
-                                <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
-                                    Wstecz
-                                </Label>
-                            </Border>
-                            
-                            <Border Grid.Column="1" Style="{StaticResource NavButton}">
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="SendReport_Tapped"/>
-                                </Border.GestureRecognizers>
-                                <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
-                                    Wyślij
-                                </Label>
-                            </Border>
-                            
-                        </Grid>
-                        
+                        <Border  Grid.Row="6" Style="{StaticResource NavButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="SendReport_Tapped"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                Wyślij
+                            </Label>
+                        </Border>
                     </Grid>
                 </Border>
 

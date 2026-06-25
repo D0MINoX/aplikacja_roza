@@ -18,7 +18,6 @@ namespace MauiApp1.Services
             _httpClient = httpClient;
             _authService = authService;
         }
-
         public async Task<(bool isSuccess, List<AdminUserView> Data, string ErrorMessage)> AdminUsers(int rosaryId)
         {
             string url = $"api/Admin/{rosaryId}/usersShow";
@@ -45,7 +44,6 @@ namespace MauiApp1.Services
                 return (false, null, $"Błąd połączenia: {ex.Message}");
             }
         }
-
         public async Task<(bool isSuccess, string ErrorMessage)> VerifyUser(int userId, int rosaryId)
         {
             string url = $"api/Admin/{userId}/Authorization/{rosaryId}";
@@ -100,7 +98,6 @@ namespace MauiApp1.Services
                 return (false, $"Błąd połączenia: {ex.Message}");
             }
         }
-
         public async Task<(bool isSuccess, List<AdminUserView> Data, string ErrorMessage)> AdminZelators()
         {
             string url = $"api/Admin/zelatorsShow";
@@ -173,7 +170,6 @@ namespace MauiApp1.Services
                 return false;
             }
         }
-
         public async Task<(bool isSuccess, List<AdminUserView> Data, string ErrorMessage)> UsersPrivilagiesShow(int UserRole)
         {
             string url = $"api/Admin/usersShow/{UserRole}";
@@ -200,9 +196,6 @@ namespace MauiApp1.Services
                 return (false, null, $"Błąd połączenia: {ex.Message}");
             }
         }
-
-       
-
         public async Task<(bool isSuccess, List<AdminUserView> Data, string ErrorMessage)> AdminMainZelators()
         {
             string url = $"api/Admin/MainZelatorsShow";
@@ -252,7 +245,6 @@ namespace MauiApp1.Services
                 return false;
             }
         }
-
         public async Task<bool> UpdateUserPermissions(int userId, int userRole, bool userCanSendSMS)
         {
             var ModifyData = new { Id = userId, Role = userRole,CanSendSMS=userCanSendSMS };
@@ -300,7 +292,6 @@ namespace MauiApp1.Services
                 return (false, null, $"Błąd połączenia: {ex.Message}");
             }
         }
-
         public async Task<(bool isSuccess, string ErrorMessage)> DeleteExternalNumber(int userId, int rosaryId)
         {
             string url = $"api/Admin/deleteExternalNumber/{userId}/{rosaryId}";
@@ -328,7 +319,6 @@ namespace MauiApp1.Services
                 return (false, $"Błąd połączenia: {ex.Message}");
             }
         }
-
         public async Task<bool> RegisterExternalMemberAsync(string? name, string? surname, string phone, int rosaryId,string publicIp)
         {
             var request = new
@@ -344,7 +334,6 @@ namespace MauiApp1.Services
             var response = await _httpClient.PostAsJsonAsync($"api/Admin/AddExternalMember", request);
             return response.IsSuccessStatusCode;
         }
-
         public async Task<bool> UpdateExternalMember(int userId,string? name, string? surname, string phoneNumber)
         {
             var ModifyData = new {Id = userId, Name = name, Surname = surname, PhoneNumber=phoneNumber };
