@@ -5,6 +5,7 @@ namespace MauiApp1.Views;
 public partial class MeditationAddPage : ContentPage
 {
     private readonly AdminService _adminService;
+    private bool _isWebViewLoaded = false;
     private readonly MeditationsService _meditationsService;
     public MeditationAddPage(AdminService adminService, MeditationsService meditationsService)
     {
@@ -13,76 +14,69 @@ public partial class MeditationAddPage : ContentPage
         InitializeComponent();
         List<int> days = Enumerable.Range(1, 31).ToList();
         DayPicker.ItemsSource = days;
-        
+        HtmlEditorWebView.Navigated += async (s, e) =>
+        {
+            _isWebViewLoaded = true;
+            bool isAppDarkTheme = Application.Current?.UserAppTheme == AppTheme.Dark
+            || (Application.Current?.UserAppTheme == AppTheme.Unspecified && Application.Current?.RequestedTheme == AppTheme.Dark);
+            await HtmlEditorWebView.EvaluateJavaScriptAsync($"setDarkMode({isAppDarkTheme.ToString().ToLower()})");
+        };
+        HtmlEditorWebView.Source = "editor.html";
     }
 
     private async void Edit_Clicked(object sender, EventArgs e)
     {
-        if (DayPicker.SelectedItem != null && MysteryPicker.SelectedItem != null && DescriptionEditor.Text != null)
+      
+        string htmlResult = await HtmlEditorWebView.EvaluateJavaScriptAsync("getHtml()");
+
+        string description = System.Text.RegularExpressions.Regex.Unescape(htmlResult).Trim('"');
+
+        // Walidacja (sprawdzamy description zamiast starego DescriptionEditor.Text)
+        if (DayPicker.SelectedItem != null && MysteryPicker.SelectedItem != null && !string.IsNullOrEmpty(description) && description != "<p><br></p>")
         {
             int Date = int.Parse(DayPicker.SelectedItem.ToString());
             string Title = MysteryPicker.SelectedItem.ToString();
-            string description = DescriptionEditor.Text;
             string Link = null;
-            var confirm = await DisplayAlertAsync("INFO", "Czy napewno chcesz zmienić rozważanie?", "TAK", "NIE");
+
+            var confirm = await DisplayAlertAsync("INFO", "Czy na pewno chcesz zmienić rozważanie?", "TAK", "NIE");
             if (confirm)
             {
-                if (CheckBox.IsChecked)
-                {
-                    Link = linkEntry.Text;
-                }
-                bool isSuccess = await _adminService.ModifyMeditationAsync(Title,description,Date,Link);
+               
+                // Wysyłamy sformatowany kod HTML prosto do bazy danych!
+                bool isSuccess = await _adminService.ModifyMeditationAsync(Title, description, Date, Link);
                 if (isSuccess)
                 {
                     await DisplayAlertAsync("INFO", "Zmieniono treść rozważania", "OK");
-
-
                 }
                 else
                 {
-
-                    await DisplayAlertAsync("Błąd","Błąd dodawania rozważania" , "OK");
-
-                    
+                    await DisplayAlertAsync("Błąd", "Błąd dodawania rozważania", "OK");
                 }
             }
         }
-        
     }
     private async void OnDetailChanged(object sender, EventArgs e)
     {
-        if(MysteryPicker.SelectedItem!=null && DayPicker.SelectedItem != null)
+        // NOWOŚĆ: Jeśli WebView jeszcze się nie załadowało, nie dotykamy kodu JavaScript
+        if (!_isWebViewLoaded) return;
+
+        if (MysteryPicker.SelectedItem != null && DayPicker.SelectedItem != null)
         {
-            
-            int Date = int.Parse(DayPicker.SelectedItem.ToString());
-            string Title = MysteryPicker.SelectedItem.ToString();
+            int Date = int.Parse(DayPicker.SelectedItem.ToString()!);
+            string Title = MysteryPicker.SelectedItem.ToString()!;
+
             var data = await _meditationsService.GetMeditationData(Date, Title);
             if (data != null)
             {
-                DescriptionEditor.Text = data.Content;
-                if (!string.IsNullOrEmpty(data.Link))
-                {
-                    linkEntry.Text = data.Link;
-                    CheckBox.IsChecked = true;
-                }
-                else
-                {
-                    linkEntry.Text = "";
-                    CheckBox.IsChecked = false;
-                }
-            }
-        }
-    }
+                string safeHtml = System.Web.HttpUtility.JavaScriptStringEncode(data.Content);
+                await HtmlEditorWebView.EvaluateJavaScriptAsync($"setHtml('{safeHtml}')");
 
-    private void CheckBoxChanged(object sender, CheckedChangedEventArgs e)
-    {
-        if (CheckBox.IsChecked)
-        {
-            multimedia.IsVisible = true;
-        }
-        else
-        {
-            multimedia.IsVisible = false;
+                
+            }
+            else
+            {
+                await HtmlEditorWebView.EvaluateJavaScriptAsync("setHtml('')");
+            }
         }
     }
 }

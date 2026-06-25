@@ -4,11 +4,26 @@
              xmlns:mauiapp1="clr-namespace:MauiApp1"
              x:Class="MauiApp1.Views.MessagesPage"
              Title="MessagesPage"
+             Shell.NavBarIsVisible="False"
              BackgroundColor="{DynamicResource Primary}">
-    <Grid RowDefinitions="*, auto">
-        
+    <Grid RowDefinitions="auto,*, auto">
+        <Grid ColumnDefinitions="auto,*" Grid.Row="0" Grid.Column="1" Style="{StaticResource Head}">
+            <Image Grid.Column="0" Grid.Row="0"
+            Source="back_arrow.png" 
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            Margin="10,0,10,0"
+            HeightRequest="24" WidthRequest="24">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="BackButton_Tapped" />
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
+                Panel logowania
+            </Label>
+        </Grid>
         <!-- Wiadomości -->
-        <CollectionView Grid.Row="0"
+        <CollectionView Grid.Row="1"
                         x:Name="MessagesList"
                         ItemsUpdatingScrollMode="KeepLastItemInView">
             <CollectionView.EmptyView>
@@ -56,6 +71,7 @@
 
 
         <Button x:Name="FabButton"
+                Grid.Row="1"
         Text="+"
         FontSize="24"
         FontAttributes="Bold"
@@ -70,6 +86,6 @@
         Margin="0,0,20,20"
         Clicked="OnFabClicked"/>
 
-        <mauiapp1:BottomMenu Grid.Row="1"></mauiapp1:BottomMenu>
+        <mauiapp1:BottomMenu Grid.Row="2"></mauiapp1:BottomMenu>
     </Grid>
 </ContentPage>

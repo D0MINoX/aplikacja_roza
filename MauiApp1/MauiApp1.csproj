@@ -63,6 +63,8 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+
+
 	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="14.0.1" />
@@ -72,6 +74,7 @@
 		<PackageReference Include="Plugin.LocalNotification" Version="14.0.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
 	</ItemGroup>
+
 
 	<ItemGroup>
 	  <MauiXaml Update="Components\BottomMenu.xaml">

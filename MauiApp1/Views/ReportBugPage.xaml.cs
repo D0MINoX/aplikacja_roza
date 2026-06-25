@@ -43,8 +43,9 @@ public partial class ReportBugPage : ContentPage
             await DisplayAlertAsync("Błąd", $"Coś poszło nie tak: {error}", "OK");
         }
     }
-    private async void Back_Tapped(object sender, TappedEventArgs e)
-	{
-		await Shell.Current.GoToAsync("..");
+  
+    private async void BackButton_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("..", false);
     }
 }

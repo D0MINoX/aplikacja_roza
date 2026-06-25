@@ -115,4 +115,9 @@ public partial class MessagesPage : ContentPage, IQueryAttributable
             }
         }
     }
+    private async void BackButton_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("..", false);
+    }
+
 }

@@ -6,18 +6,27 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiApp1.LoginPage"
              Title="LoginPage"
+             Shell.NavBarIsVisible="False"
              BackgroundColor="{DynamicResource Primary}">
 
     <Grid RowDefinitions="*,auto">
         <ScrollView Grid.Row="0">
-            <Grid RowDefinitions="auto,*" RowSpacing="20">
+            <Grid RowDefinitions="auto,*"  RowSpacing="20">
                 <!-- Header -->
-                <Grid Grid.Row="0" Style="{StaticResource Head}">
-                    <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
+               
+                <Grid ColumnDefinitions="auto,*" Grid.Row="0" Grid.Column="1" Style="{StaticResource Head}">
+                    <Image Grid.Column="0" Grid.Row="0"
+                            Source="back_arrow.png" 
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"
+                            Margin="10,0,10,0"
+                            HeightRequest="24" WidthRequest="24">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="BackButton_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
                         Panel logowania
-                    </Label>
-                    <Label Grid.Row="1" Style="{StaticResource HeaderLabel2}">
-                        Zaloguj się do swojego konta
                     </Label>
                 </Grid>
 

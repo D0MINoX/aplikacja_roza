@@ -159,4 +159,8 @@ public partial class RegisterPage : ContentPage
     {
         await Launcher.Default.OpenAsync("https://info.rosaryapi.pl/#prywatnosc");
     }
+    private async void BackButton_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("..", false);
+    }
 }

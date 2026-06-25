@@ -34,6 +34,8 @@ public partial class LoginPage : ContentPage
             {
                 await DisplayAlertAsync("Sukces", "Zalogowano!", "OK");
                 _isBusy = false;
+                var stack = Shell.Current.Navigation.NavigationStack.ToArray();
+                Shell.Current.Navigation.RemovePage(stack[stack.Length - 1]);
 
                 await Shell.Current.GoToAsync("Profile");
             }
@@ -60,5 +62,9 @@ public partial class LoginPage : ContentPage
     private async void OnRegisterClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("Register");
+    }
+    private async void BackButton_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("..", false);
     }
 }

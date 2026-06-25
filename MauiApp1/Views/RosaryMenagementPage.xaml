@@ -13,7 +13,7 @@
                 </Label>
             </Grid>
         </Border>
-        
+
         <Border Style="{StaticResource MenuOption}">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="UserVerification_Tapped"/>

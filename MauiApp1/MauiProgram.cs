@@ -119,6 +119,7 @@ namespace MauiApp1
             builder.Services.AddTransient<AgreementsMenagementPage>();
             builder.Services.AddTransient<ExternalNumbersPage>();
             builder.Services.AddTransient<ErrorManagementPage>();
+         
           
             return builder.Build();
         }

@@ -45,7 +45,7 @@ public partial class ExternalNumbersMenagementPage : ContentPage
         var button = sender as Button;
         var user = button.BindingContext as ExternalNumber;
 
-        bool confirm = await DisplayAlertAsync("UWAGA", $"Czy na pewno usunąć numer użytkownika {user.Name} {user.Surname}?", "USUŃ", "Anuluj");
+        bool confirm = await DisplayAlertAsync("UWAGA", $"Czy na pewno usunąć użytkownika {user.Name} {user.Surname}?", "USUŃ", "Anuluj");
         if (confirm)
         {
             await _adminService.DeleteExternalNumber(user.Id, RosaryId);
