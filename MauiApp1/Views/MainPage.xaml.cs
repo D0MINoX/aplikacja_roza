@@ -143,19 +143,19 @@ namespace MauiApp1
 
                 var img = CenterImage.ScaleToAsync(2, 500, Easing.SinInOut);
 
-                var b1 = Radosne.TranslateToAsync(-100, -100, 750, Easing.SinInOut);
+                var b1 = Radosne.TranslateToAsync(+100, -100, 750, Easing.SinInOut);
                 var b1Scale = Radosne.ScaleToAsync(0.66, 750, Easing.SinInOut);
                 var b1LabelScale = RadosneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
-                var b2 = Swiatla.TranslateToAsync(-100, +100, 750, Easing.SinInOut);
+                var b2 = Swiatla.TranslateToAsync(+100, +100, 750, Easing.SinInOut);
                 var b2Scale = Swiatla.ScaleToAsync(0.66, 750, Easing.SinInOut);
                 var b2LabelScale = SwiatlaLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
-                var b3 = Bolesne.TranslateToAsync(+100, -100, 750, Easing.SinInOut);
+                var b3 = Bolesne.TranslateToAsync(-100, +100, 750, Easing.SinInOut);
                 var b3Scale = Bolesne.ScaleToAsync(0.66, 750, Easing.SinInOut);
                 var b3LabelScale = BolesneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
-                var b4 = Chwalebne.TranslateToAsync(+100, +100, 750, Easing.SinInOut);
+                var b4 = Chwalebne.TranslateToAsync(-100, -100, 750, Easing.SinInOut);
                 var b4Scale = Chwalebne.ScaleToAsync(0.66, 750, Easing.SinInOut);
                 var b4LabelScale = ChwalebneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
                 var logo = CenterImage.FadeToAsync(1, 400, Easing.SinInOut);
