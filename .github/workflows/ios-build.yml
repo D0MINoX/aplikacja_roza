@@ -23,8 +23,11 @@ jobs:
       uses: actions/setup-dotnet@v4
 
     # Ta komenda zainstaluje wersję workloadu idealnie dopasowaną do naszego global.json/Xcode 26.3
+   # Poprawiony krok: Instalujemy pełne wsparcie dla obu platform (iOS i Android)
     - name: Install Workloads
-      run: dotnet workload install maui-ios
+      run: |
+        dotnet workload install maui
+        dotnet workload restore MauiApp1/MauiApp1.csproj
 
     - name: Build and Publish iOS App
       run: |
