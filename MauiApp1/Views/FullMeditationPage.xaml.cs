@@ -158,7 +158,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             Html = fullHtmlPage
         };
     }
-    private async void CompletedTapped(object sender, TappedEventArgs e)
+   /* private async void CompletedTapped(object sender, TappedEventArgs e)
     {
         Color? color = Complete.BackgroundColor;
         float newAlpha = color.Alpha < 1f ? 1f : 0.5f;
@@ -168,7 +168,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
 
         
         await _notificationService.ScheduleWeeklyReminders();
-    }
+    }*/
 
     private async void BackTapped(object sender, TappedEventArgs e)
     {
