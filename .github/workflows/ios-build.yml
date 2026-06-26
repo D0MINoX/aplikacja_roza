@@ -27,7 +27,7 @@ jobs:
     - name: Restore Workloads
       run: dotnet workload restore MauiApp1/MauiApp1.csproj
 
-   - name: Build and Publish iOS App
+    - name: Build and Publish iOS App
       run: |
         dotnet publish MauiApp1/MauiApp1.csproj \
           -f net10.0-ios \
@@ -37,7 +37,7 @@ jobs:
           -p:CodesignKey="-" \
           -p:CodesignProvision="-" \
           -p:RequireProvisioningProfile=False \
-          -p:_SdkAllowedXcodeVersion=26.3 # OBLATUJEMY BLOKADĘ: Pozwalamy na użycie dostępnego Xcode 26.3
+          -p:_SdkAllowedXcodeVersion=26.3
 
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
