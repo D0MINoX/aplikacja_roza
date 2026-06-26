@@ -26,12 +26,26 @@ jobs:
     # ZAMIAST SEUP-XCODE: Automatycznie wybieramy najwyższą dostępną wersję Xcode 16 bezpośrednio w systemie macOS
     - name: Select Correct Xcode Version
       run: |
-        XCODE_PATH=$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -n 1)
+        echo "Szukam dostępnych wersji Xcode..."
+        for app in /Applications/Xcode*.app; do
+          if [ -d "$app" ]; then
+            VERSION_INFO=$("$app/Contents/Developer/usr/bin/xcodebuild" -version 2>/dev/null | head -n 1)
+            echo "Znaleziono $app z wersją: $VERSION_INFO"
+            
+            # Sprawdzamy czy wersja zawiera upragnione 26.5 lub 16.5
+            if [[ "$VERSION_INFO" == *"26.5"* || "$VERSION_INFO" == *"16.5"* ]]; then
+              echo "Idealne dopasowanie! Przełączam na: $app"
+              sudo xcode-select -s "$app/Contents/Developer"
+              exit 0
+            fi
+          fi
+        done
+
+        # Jeśli nie znaleziono idealnej wersji, szukamy najwyższej dostępnej z serii 26.x
+        echo "Nie znaleziono dokładnie 26.5. Przełączam na domyślny najwyższy Xcode 16..."
+        XCODE_PATH=$(ls -d /Applications/Xcode_16*.app /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -n 1)
         if [ -n "$XCODE_PATH" ]; then
-          echo "Znaleziono Xcode: $XCODE_PATH"
           sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
-        else
-          echo "Nie znaleziono dedykowanego Xcode 16, używam domyślnego."
         fi
 
     - name: Build and Publish iOS App
