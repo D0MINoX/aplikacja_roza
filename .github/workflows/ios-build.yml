@@ -7,23 +7,21 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macos-15
+    runs-on: macos-15 # Ten obraz ma już fabrycznie zdefiniowane najnowsze narzędzia
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # Wymuszamy wersję 26.3.0, która na macos-15 jest ZAWSZE dostępna
-    - name: Setup Xcode version
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '26.3.0'
+    # USUNĘLIŚMY SETUP-XCODE: zamiast tego pozwalamy systemowi macOS 15 
+    # użyć swojego domyślnego, najnowszego produkcyjnego Xcode (którym jest 26.5 / 16.5)
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
 
-    # Ta komenda zainstaluje wersję workloadu idealnie dopasowaną do naszego global.json/Xcode 26.3
-   # Poprawiony krok: Instalujemy pełne wsparcie dla obu platform (iOS i Android)
+    # Instalujemy pełne środowisko MAUI (iOS + Android)
     - name: Install Workloads
       run: |
         dotnet workload install maui
