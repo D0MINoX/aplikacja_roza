@@ -13,25 +13,24 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # Ustawiamy najwyższą dostępną i stabilną wersję Xcode 26.3
+    # Ustalamy stabilną, zawsze dostępną wersję Xcode 26.3
     - name: Setup Xcode version
       uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: '26.3.0'
 
-    # Instalujemy czysty .NET 10
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '10.0.x'
 
-    # Instalujemy pełne obciążenia MAUI
+    # Pobieramy czyste obciążenia MAUI
     - name: Install Workloads
       run: |
         dotnet workload install maui
         dotnet workload restore MauiApp1/MauiApp1.csproj
 
-    # Budujemy aplikację, uciszając błąd sprawdzania wersji Xcode
+    # Budujemy aplikację - teraz projekt sam wie, że ma ignorować wersję Xcode
     - name: Build and Publish iOS App
       run: |
         dotnet publish MauiApp1/MauiApp1.csproj \
@@ -41,8 +40,7 @@ jobs:
           -p:BuildIpa=True \
           -p:CodesignKey="-" \
           -p:CodesignProvision="-" \
-          -p:RequireProvisioningProfile=False \
-          -p:ContinueOnXcodeVersionMismatch=true
+          -p:RequireProvisioningProfile=False
           
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
