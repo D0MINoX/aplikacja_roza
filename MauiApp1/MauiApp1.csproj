@@ -45,6 +45,10 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-ios|AnyCPU'">
 	  <BuildIpa>False</BuildIpa>
 	</PropertyGroup>
+<PropertyGroup>
+  <ServerGarbageCollection>true</ServerGarbageCollection> 
+  <ContinueOnXcodeVersionMismatch>true</ContinueOnXcodeVersionMismatch>
+</PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
