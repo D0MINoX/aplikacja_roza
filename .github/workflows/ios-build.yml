@@ -7,48 +7,27 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macos-15 # Wymuszamy najnowszy obraz macOS z zainstalowanymi nowymi SDK
+    runs-on: macos-15
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    # NOWY KROK: Wymuszenie użycia najnowszego Xcode dostępnego na maszynie
+    - name: Setup Xcode version
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
 
     - name: Setup .NET 10
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '10.0.x'
 
-    - name: Install & Restore Workloads
-      run: |
-        dotnet workload install maui-ios
-        dotnet workload restore MauiApp1/MauiApp1.csproj
+    - name: Restore Workloads
+      run: dotnet workload restore MauiApp1/MauiApp1.csproj
 
-    # ZAMIAST SEUP-XCODE: Automatycznie wybieramy najwyższą dostępną wersję Xcode 16 bezpośrednio w systemie macOS
-    - name: Select Correct Xcode Version
-      run: |
-        echo "Szukam dostępnych wersji Xcode..."
-        for app in /Applications/Xcode*.app; do
-          if [ -d "$app" ]; then
-            VERSION_INFO=$("$app/Contents/Developer/usr/bin/xcodebuild" -version 2>/dev/null | head -n 1)
-            echo "Znaleziono $app z wersją: $VERSION_INFO"
-            
-            # Sprawdzamy czy wersja zawiera upragnione 26.5 lub 16.5
-            if [[ "$VERSION_INFO" == *"26.5"* || "$VERSION_INFO" == *"16.5"* ]]; then
-              echo "Idealne dopasowanie! Przełączam na: $app"
-              sudo xcode-select -s "$app/Contents/Developer"
-              exit 0
-            fi
-          fi
-        done
-
-        # Jeśli nie znaleziono idealnej wersji, szukamy najwyższej dostępnej z serii 26.x
-        echo "Nie znaleziono dokładnie 26.5. Przełączam na domyślny najwyższy Xcode 16..."
-        XCODE_PATH=$(ls -d /Applications/Xcode_16*.app /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -n 1)
-        if [ -n "$XCODE_PATH" ]; then
-          sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
-        fi
-
-    - name: Build and Publish iOS App
+   - name: Build and Publish iOS App
       run: |
         dotnet publish MauiApp1/MauiApp1.csproj \
           -f net10.0-ios \
@@ -57,7 +36,8 @@ jobs:
           -p:BuildIpa=True \
           -p:CodesignKey="-" \
           -p:CodesignProvision="-" \
-          -p:RequireProvisioningProfile=False
+          -p:RequireProvisioningProfile=False \
+          -p:_SdkAllowedXcodeVersion=26.3 # OBLATUJEMY BLOKADĘ: Pozwalamy na użycie dostępnego Xcode 26.3
 
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
