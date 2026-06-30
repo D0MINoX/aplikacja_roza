@@ -13,18 +13,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # Ustawiamy stabilny i fizycznie dostępny Xcode 26.3
-    - name: Setup Xcode version
-      uses: maxim-lobanov/setup-xcode@v1
+    # POBIERAMY I INSTALUJEMY DOKŁADNIE XCODE 16.5 (Wewnętrznie 26.5)
+    # Ta akcja używa gotowych, zaufanych mirrorów, bez błędów Homebrew
+    - name: Install Xcode 16.5 (26.5)
+      uses: ammarahm-ed/setup-xcode@v1
       with:
-        xcode-version: '26.3.0'
+        xcode-version: '16.5'
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '10.0.x'
 
-    # Ta komenda pobierze wersję MAUI zablokowaną w global.json (czyli z kwietnia)
     - name: Install Workloads
       run: |
         dotnet workload install maui
