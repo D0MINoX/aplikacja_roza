@@ -179,7 +179,7 @@ namespace MauiApp1
                 switch (partName)
                 {
                     case "Radosne":
-                        t = s.TranslateToAsync(-100, -100, 750, Easing.SinInOut);
+                        t = s.TranslateToAsync(+100, -100, 750, Easing.SinInOut);
                         o1 = Swiatla.FadeToAsync(1, 750, Easing.SinInOut);
                         o2 = Bolesne.FadeToAsync(1, 750, Easing.SinInOut);
                         o3 = Chwalebne.FadeToAsync(1, 750, Easing.SinInOut);
@@ -187,7 +187,7 @@ namespace MauiApp1
                         labelFade = RadosneLabel.FadeToAsync(1, 750, Easing.SinInOut);
                         break;
                     case "Światła":
-                        t = s.TranslateToAsync(-100, +100, 750, Easing.SinInOut);
+                        t = s.TranslateToAsync(+100, +100, 750, Easing.SinInOut);
                         o1 = Radosne.FadeToAsync(1, 750, Easing.SinInOut);
                         o2 = Bolesne.FadeToAsync(1, 750, Easing.SinInOut);
                         o3 = Chwalebne.FadeToAsync(1, 750, Easing.SinInOut);
@@ -195,7 +195,7 @@ namespace MauiApp1
                         labelFade = SwiatlaLabel.FadeToAsync(1, 750, Easing.SinInOut);
                         break;
                     case "Bolesne":
-                        t = s.TranslateToAsync(+100, -100, 750, Easing.SinInOut);
+                        t = s.TranslateToAsync(-100, +100, 750, Easing.SinInOut);
                         o1 = Radosne.FadeToAsync(1, 750, Easing.SinInOut);
                         o2 = Swiatla.FadeToAsync(1, 750, Easing.SinInOut);
                         o3 = Chwalebne.FadeToAsync(1, 750, Easing.SinInOut);
@@ -204,7 +204,7 @@ namespace MauiApp1
                         break;
                     case "Chwalebne":
                     default:
-                        t = s.TranslateToAsync(+100, +100, 750, Easing.SinInOut);
+                        t = s.TranslateToAsync(-100, -100, 750, Easing.SinInOut);
                         o1 = Radosne.FadeToAsync(1, 750, Easing.SinInOut);
                         o2 = Swiatla.FadeToAsync(1, 750, Easing.SinInOut);
                         o3 = Bolesne.FadeToAsync(1, 750, Easing.SinInOut);
@@ -304,7 +304,7 @@ namespace MauiApp1
              var animationTasks = new List<Task>();
              var btn = Mystery1.Children.OfType<Border>().FirstOrDefault();
              double btnSize = btn.Width;
-             double radius = s.Width / 2 + 60;
+             double radius = s.Width / 2 + 80;
              double center = s.Width / 2;
              double angleOffset = - 2 * Math.PI / 5 - Math.PI / 10;
              int i = 0;

@@ -38,7 +38,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         base.OnAppearing();
         _isBusy = true;
 
-        date = Preferences.Default.Get("LastDate", 1);
+        date = Preferences.Default.Get("LastDate", 0);
         string savedGroup = Preferences.Default.Get("LastGroup", "Radosne");
         string savedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
         _isBusy = false;
@@ -217,13 +217,13 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     }
     private async void PreviousTapped(object sender, EventArgs e)
     {
-        if (--date < 1) date = 31;
+        if (--date < 0) date = 31;
         UpdateDate();
     }
 
     private async void NextTapped(object sender, EventArgs e)
     {
-        if (++date > 31) date = 1;
+        if (++date > 31) date = 0;
         UpdateDate();
     }
 }
