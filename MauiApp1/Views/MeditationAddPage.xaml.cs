@@ -12,7 +12,7 @@ public partial class MeditationAddPage : ContentPage
         _adminService = adminService;
         _meditationsService = meditationsService;
         InitializeComponent();
-        List<int> days = Enumerable.Range(1, 31).ToList();
+        List<int> days = Enumerable.Range(0, 32).ToList();
         DayPicker.ItemsSource = days;
         HtmlEditorWebView.Navigated += async (s, e) =>
         {
@@ -57,7 +57,7 @@ public partial class MeditationAddPage : ContentPage
     }
     private async void OnDetailChanged(object sender, EventArgs e)
     {
-        // NOWOŚĆ: Jeśli WebView jeszcze się nie załadowało, nie dotykamy kodu JavaScript
+        
         if (!_isWebViewLoaded) return;
 
         if (MysteryPicker.SelectedItem != null && DayPicker.SelectedItem != null)

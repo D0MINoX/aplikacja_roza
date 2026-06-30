@@ -14,15 +14,15 @@
         <!-- ten label jest tylko po to zeby zmieniac kolor ikonek dynamicnie -->
         <Label x:Name="Ref" BackgroundColor="{DynamicResource Tertiary}" IsEnabled="False" IsVisible="False" />
         
-        <Grid Style="{StaticResource Head}" Padding="0,40,0,0">
-            
-            <Label Grid.Row="0" Style="{StaticResource HeaderLabel}" HorizontalOptions="Center">
+      
+          
+            <Label Grid.Row="0" Style="{StaticResource HeaderLabel}" Margin="0,100,0,0" HorizontalOptions="Center">
                 Różańcowy Szlak
             </Label>
-        </Grid>
-        <Border Grid.Row="1" StrokeThickness="0" x:Name="root">
+
+        <Border Grid.Row="1" StrokeThickness="0" x:Name="root" Margin="0,-100,0,0">
                     <Grid RowDefinitions="*" ColumnDefinitions="*">
-                           
+
                 <Image Grid.Row="0" Grid.Column="0" x:Name="CenterImage" Source="logo.png" HorizontalOptions="Center" VerticalOptions="Center"  HeightRequest="60" WidthRequest="60" Aspect="AspectFill"/>
 
                         <!-- Tajemnice -->
