@@ -103,56 +103,63 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     {
         if (MeditationWebView == null) return;
 
-        // Prosty szablon HTML z CSS gwarantujący poprawne skalowanie na telefonach i JUSTOWANIE tekstu
         string fullHtmlPage = $@"
-       <!DOCTYPE html>
-    <html lang='pl'>
-    <head>
-        <meta charset='utf-8'>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
-        <style>
-            body {{
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-                font-size: 16px;
-                line-height: 1.6;
-                color: #333333;
-                padding: 5px;
-                margin: 0;
-                background-color: transparent;
-                
-                /* Justowanie domyślne dla całego body (w tym divów i surowego tekstu) */
-                text-align: justify;
-                text-justify: inter-word;
-                
-                /* Wymuszenie dzielenia wyrazów na iOS (WebKit) i Androidzie */
-                -webkit-hyphens: auto;
-                -moz-hyphens: auto;
-                -ms-hyphens: auto;
-                hyphens: auto;
-            }}
-            p {{
-                text-align: justify;
-                text-justify: inter-word;
-                margin-bottom: 14px;
-                
-                -webkit-hyphens: auto;
-                -moz-hyphens: auto;
-                -ms-hyphens: auto;
-                hyphens: auto;
-            }}
-            h1, h2, h3 {{ 
-                color: #111111; 
-                margin-top: 18px; 
-                text-align: left; /* Nagłówki zazwyczaj lepiej wyglądają wyrównane do lewej */
-            }}
-        </style>
-    </head>
-    <body>
-        {contentHtml}
-    </body>
-    </html>";
+<!DOCTYPE html>  
+<html lang='pl'>  
+<head>      
+    <meta charset='utf-8'>      
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>      
+    <style>          
+        body {{              
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;              
+            font-size: 16px;              
+            line-height: 1.6;              
+            color: #333333;              
+            padding: 5px;              
+            margin: 0;              
+            background-color: transparent;                              
+            text-align: justify;              
+            text-justify: inter-word;                              
+            -webkit-hyphens: auto;              
+            -moz-hyphens: auto;              
+            -ms-hyphens: auto;              
+            hyphens: auto;
+            
+            /* KLUCZOWA ZMIANA: interpretuje znaki \n jako miękkie przejście do nowej linii */
+            white-space: pre-line; 
+        }}          
+        p {{              
+            text-align: justify;              
+            text-justify: inter-word;              
+            margin-bottom: 14px;                              
+            -webkit-hyphens: auto;              
+            -moz-hyphens: auto;              
+            -ms-hyphens: auto;              
+            hyphens: auto;
+            
+            /* KLUCZOWA ZMIANA również tutaj */
+            white-space: pre-line; 
+        }}          
+        h1, h2, h3 {{               
+             color: #111111;               
+             margin-top: 18px;               
+             text-align: left;              
+            -webkit-hyphens: none !important;              
+            -ms-hyphens: none !important;              
+            hyphens: none !important;               
+             word-break: keep-all;
+             
+             /* W nagłówkach wyłączamy pre-line, żeby nie łamało ich dziwnie z automatu */
+             white-space: normal; 
+        }}      
+    </style>  
+</head>  
+<body>      
+    {contentHtml}  
+</body>  
+</html>";
 
-        // Przypisanie źródła HTML do WebView
+        
         MeditationWebView.Source = new HtmlWebViewSource
         {
             Html = fullHtmlPage
