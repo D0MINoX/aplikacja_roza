@@ -83,6 +83,7 @@
 <body class="light">
     <div id="editor-container"></div>
     <script>
+        // Konfiguracja modułu klawiatury dla obsługi Soft Enter (Shift+Enter)
         var quill = new Quill('#editor-container', {
             modules: {
                 toolbar: [
@@ -90,7 +91,23 @@
                     ['bold', 'italic', 'underline'],
                     [{ 'align': [] }],
                     ['clean']
-                ]
+                ],
+                keyboard: {
+                    bindings: {
+                        // Przechwytujemy Shift + Enter
+                        shiftEnter: {
+                            key: 'Enter',
+                            shiftKey: true,
+                            handler: function (range, context) {
+                                // Wstawiamy znak nowej linii (soft break) w miejscu kursora
+                                this.quill.insertText(range.index, '\n', 'user');
+                                // Przesuwamy kursor o 1 znak do przodu za wstawione złamanie
+                                this.quill.setSelection(range.index + 1, 'silent');
+                                return false; // Blokuje domyślne zachowanie edytora
+                            }
+                        }
+                    }
+                }
             },
             theme: 'snow'
         });
