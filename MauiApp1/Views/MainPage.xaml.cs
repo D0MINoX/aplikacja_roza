@@ -87,7 +87,8 @@ namespace MauiApp1
             _meditationService = meditationService;
             _authService = authService;
             _rosaryService = rosaryService;
-            CalendarSelectionView.ItemsSource = Enumerable.Range(0, 32).ToList();
+            GenerateCalendarGrid();
+           
         }
 
         protected override async void OnAppearing()
@@ -416,8 +417,7 @@ namespace MauiApp1
             SelectedMysteryPreview.Opacity = 1;
             SelectedMysteryPreview.Scale = 0.8;
 
-            CalendarSelectionView.IsVisible = true;
-            CalendarSelectionView.Opacity = 1; // REPRODUKCJA FIX: Wymuszamy pełną widoczność siatki dni
+          
 
             // 5. Pokazujemy CAŁY kontener (Kafelek tajemnicy + Kalendarz)
             CalendarContainer.IsVisible = true;
@@ -429,7 +429,7 @@ namespace MauiApp1
             );
         }
 
-        private async void OnDaySelected(object sender, SelectionChangedEventArgs e)
+        /*private async void OnDaySelected(object sender, SelectionChangedEventArgs e)
         {
             if (e.CurrentSelection.FirstOrDefault() is int wybranyDzien)
             {
@@ -472,7 +472,7 @@ namespace MauiApp1
                 await StarterAnimation();
             }
         }
-
+*/
         private async void OnBackToMysteries_Tapped(object sender, TappedEventArgs e)
         {
             // 1. Płynnie ukrywamy kontener z kalendarzem i podglądem tajemnicy
@@ -482,7 +482,7 @@ namespace MauiApp1
             );
 
             CalendarContainer.IsVisible = false;
-            CalendarSelectionView.IsVisible = false;
+          
             SelectedMysteryPreview.IsVisible = false;
 
             // 2. Przywracamy widoczność aktywnej części różańca (tekst na dole/górze ekranu)
@@ -549,7 +549,99 @@ namespace MauiApp1
                 }
             }
         }
+        private void GenerateCalendarGrid()
+        {
+            CalendarGrid.Children.Clear();
 
+            int totalItems = 32; // Liczba dni: od 0 do 31
+            int columnsCount = 6; // 6 kolumn w rzędzie
+
+            for (int i = 0; i < totalItems; i++)
+            {
+                int dayNumber = i; // Lokalna kopia zmiennej dla obsługi kliknięcia
+                int row = i / columnsCount;
+                int col = i % columnsCount;
+
+                // 1. Tworzymy Border (Klocek dnia)
+                var border = new Border
+                {
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill
+                };
+
+                // Pobieramy dynamiczny styl przypisany w projekcie
+                if (App.Current.Resources.TryGetValue("AppCalendarDayButton", out var borderStyle))
+                {
+                    border.Style = (Style)borderStyle;
+                }
+
+                // 2. Tworzymy Label wewnątrz klocka
+                var label = new Label
+                {
+                    Text = dayNumber.ToString(),
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center
+                };
+
+                if (App.Current.Resources.TryGetValue("AppCalendarDayLabel", out var labelStyle))
+                {
+                    label.Style = (Style)labelStyle;
+                }
+
+                border.Content = label;
+
+                // 3. Dodajemy obsługę kliknięcia w kafelek (Zastępuje dawne SelectionChanged)
+                var tapGesture = new TapGestureRecognizer();
+                tapGesture.Tapped += async (s, e) =>
+                {
+                    // Efekt kliknięcia (opcjonalne mikro-skalowanie dla responsywności)
+                    await border.ScaleTo(0.9, 50, Easing.Linear);
+                    await border.ScaleTo(1.0, 50, Easing.Linear);
+
+                    HandleDaySelection(dayNumber);
+                };
+                border.GestureRecognizers.Add(tapGesture);
+
+                // 4. Przypisujemy pozycję w siatce i dodajemy do widoku
+                Grid.SetRow(border, row);
+                Grid.SetColumn(border, col);
+                CalendarGrid.Children.Add(border);
+            }
+        }
+        private async void HandleDaySelection(int wybranyDzien)
+        {
+            this.date = wybranyDzien;
+            Preferences.Default.Set("LastDate", date);
+
+            // Ukrywamy cały kontener kalendarza
+            await Task.WhenAll(
+                CalendarContainer.FadeToAsync(0, 300, Easing.SinInOut),
+                CalendarContainer.ScaleToAsync(0.8, 300, Easing.SinInOut)
+            );
+
+            CalendarContainer.IsVisible = false;
+            SelectedMysteryPreview.IsVisible = false;
+            SelectedMysteryPreview.Opacity = 0;
+
+            // Reset kafelków tajemnic wokół środka
+            foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            {
+                layout.Scale = 0.33;
+                layout.Opacity = 0;
+                layout.TranslationX = 0;
+                layout.TranslationY = 0;
+            }
+
+            // Przygotowujemy stan widoku głównego pod powrót
+            _selectedPart = null;
+
+            // Przejście do widoku pełnej medytacji
+            await Shell.Current.GoToAsync("FullMeditation");
+
+            // Po powrocie z medytacji, odpalamy czysty powrót do ekranu wyjściowego
+            await CloseMystryAnimation();
+            await StarterAnimation();
+        }
         private async void RosaryMeditations_Tapped(object sender, TappedEventArgs e)
         {
             await Shell.Current.GoToAsync("RosaryMeditations");

@@ -109,52 +109,47 @@
                             </Border>
                             <Label x:Name="ChwalebneLabel" Grid.Row="1" Text="Chwalebne" HorizontalOptions="Center"/>
                         </Grid>
-                <VerticalStackLayout x:Name="CalendarContainer"
-                     Grid.Row="0" Grid.Column="0"
-                     VerticalOptions="Center"
-                     HorizontalOptions="Center"
-                     IsVisible="False"
-                     Opacity="0"
-                     Spacing="20">
-
-                  
-                    <Grid x:Name="SelectedMysteryPreview" 
-          RowDefinitions="auto,auto" 
-          RowSpacing="5" 
-          HorizontalOptions="Center">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnBackToMysteries_Tapped" />
-                        </Grid.GestureRecognizers>
-                        <Border Grid.Row="0" Style="{StaticResource MeditationButton}">
-                            <Image x:Name="SelectedMysteryImage" Aspect="AspectFill"/>
-                        </Border>
-                        <Label Grid.Row="1" x:Name="SelectedMysteryLabel" HorizontalOptions="Center"/>
-                    </Grid>
-
-                    <CollectionView x:Name="CalendarSelectionView"
-                    SelectionMode="Single"
-                    SelectionChanged="OnDaySelected">
-                        <CollectionView.ItemsLayout>
-                            <GridItemsLayout Orientation="Vertical" 
-                             Span="6" 
-                             HorizontalItemSpacing="5" 
-                             VerticalItemSpacing="5" />
-                        </CollectionView.ItemsLayout>
-
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Border Style="{DynamicResource AppCalendarDayButton}">
-                                    <Label Text="{Binding .}" Style="{DynamicResource AppCalendarDayLabel}" />
-                                </Border>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </VerticalStackLayout>
+                <!-- Zastąp sekcję NAPRAWIONEGO KONTENERA KALENDARZA tym kodem -->
+               
             </Grid>
+            
                 </Border>
-                
-                
-         
+        <Grid x:Name="CalendarContainer"
+Grid.Row="1" Grid.Column="0"
+RowDefinitions="Auto, *"
+RowSpacing="15"
+IsVisible="False"
+Opacity="0">
+
+            <!-- Górny podgląd wybranej tajemnicy -->
+            <Grid x:Name="SelectedMysteryPreview" 
+    Grid.Row="0"
+    RowDefinitions="auto,auto" 
+    RowSpacing="5" 
+    HorizontalOptions="Center">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnBackToMysteries_Tapped" />
+                </Grid.GestureRecognizers>
+                <Border Grid.Row="0" Style="{StaticResource MeditationButton}">
+                    <Image x:Name="SelectedMysteryImage" Aspect="AspectFill"/>
+                </Border>
+                <Label Grid.Row="1" x:Name="SelectedMysteryLabel" HorizontalOptions="Center"/>
+            </Grid>
+
+            <!-- NOWY REPOZYTORIUM DNI - Elastyczny Grid zamiast CollectionView -->
+            <!-- Dla 32 elementów (indeksy 0 do 31) potrzebujemy 6 wierszy i 6 kolumn (6x6 = 36 miejsc) -->
+            <Grid x:Name="CalendarGrid"
+    Grid.Row="1"
+    RowDefinitions="*,*,*,*,*,*"
+    ColumnDefinitions="*,*,*,*,*,*"
+    RowSpacing="8"
+    ColumnSpacing="8"
+    Margin="20,0,20,20">
+                <!-- Elementy zostaną wygenerowane automatycznie w kodzie C# -->
+            </Grid>
+        </Grid>
+
+
         <mauiapp1:BottomMenu Grid.Row="2"></mauiapp1:BottomMenu>
     </Grid>
 </ContentPage>
