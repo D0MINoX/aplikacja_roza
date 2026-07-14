@@ -23,7 +23,7 @@
         <Border Grid.Row="1" StrokeThickness="0" x:Name="root" Margin="0,-100,0,0">
                     <Grid RowDefinitions="*" ColumnDefinitions="*">
 
-                <Image Grid.Row="0" Grid.Column="0" x:Name="CenterImage" Source="logo.png" HorizontalOptions="Center" VerticalOptions="Center"  HeightRequest="60" WidthRequest="60" Aspect="AspectFill"/>
+                        <Image Grid.Row="0" Grid.Column="0" x:Name="CenterImage" Source="logo.png" HorizontalOptions="Center" VerticalOptions="Center"  HeightRequest="60" WidthRequest="60" Aspect="AspectFill"/>
 
                         <!-- Tajemnice -->
                         <Grid x:Name="Mystery1" Grid.Row="0" Grid.Column="0" RowDefinitions="auto,auto" RowSpacing="5" HorizontalOptions="Center" VerticalOptions="Center">
@@ -109,66 +109,51 @@
                             </Border>
                             <Label x:Name="ChwalebneLabel" Grid.Row="1" Text="Chwalebne" HorizontalOptions="Center"/>
                         </Grid>
+                <VerticalStackLayout x:Name="CalendarContainer"
+                     Grid.Row="0" Grid.Column="0"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Center"
+                     IsVisible="False"
+                     Opacity="0"
+                     Spacing="20">
 
+                  
+                    <Grid x:Name="SelectedMysteryPreview" 
+          RowDefinitions="auto,auto" 
+          RowSpacing="5" 
+          HorizontalOptions="Center">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnBackToMysteries_Tapped" />
+                        </Grid.GestureRecognizers>
+                        <Border Grid.Row="0" Style="{StaticResource MeditationButton}">
+                            <Image x:Name="SelectedMysteryImage" Aspect="AspectFill"/>
+                        </Border>
+                        <Label Grid.Row="1" x:Name="SelectedMysteryLabel" HorizontalOptions="Center"/>
                     </Grid>
-                </Border>
-                
-                
-                <!--
-                <Border Style="{StaticResource MenuOption}">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Meditation_Tapped"/>
-                    </Border.GestureRecognizers>
-                    <VerticalStackLayout Spacing="10">
-                        <Label x:Name="DateLabel">
-                            Tu skończyłeś!
-                        </Label>
-                        <Label x:Name="MysteryLabel">
-                            Tu skończyłeś!
-                        </Label>
-                        <Label MaxLines="5" LineBreakMode="TailTruncation" x:Name="MeditationLabel">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </Label>
-                        <ProgressBar HeightRequest="5" Progress="0.25" ProgressColor="{DynamicResource Text}"></ProgressBar>
-                    </VerticalStackLayout>
-                </Border>
-                
-                <VerticalStackLayout Spacing="50">
-                    
-                    <Border Style="{StaticResource MenuOption}" x:Name="RosaryTile">
-                        <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="MyRosaryGroup_Tapped"/>
-                            </Grid.GestureRecognizers>
-                            <Image Grid.Column="0" Source="flower.png" Style="{StaticResource OptionImage}">
-                                <Image.Behaviors>
-                                    <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
-                                </Image.Behaviors>
-                            </Image>
-                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
-                                Moja róża
-                            </Label>
-                        </Grid>
-                    </Border>
-                    
-                    <Border Style="{StaticResource MenuOption}">
-                        <Grid ColumnDefinitions="auto,auto" ColumnSpacing="20">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="RosaryMeditations_Tapped"/>
-                            </Grid.GestureRecognizers>
-                            <Image Grid.Column="0" Source="book.png" Style="{StaticResource OptionImage}">
-                                <Image.Behaviors>
-                                    <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
-                                </Image.Behaviors>
-                            </Image>
-                            <Label Grid.Column="1" Style="{StaticResource OptionLabel}">
-                                Rozważania różańcowe
-                            </Label>
-                        </Grid>
-                    </Border>
-                    
+
+                    <CollectionView x:Name="CalendarSelectionView"
+                    SelectionMode="Single"
+                    SelectionChanged="OnDaySelected">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" 
+                             Span="6" 
+                             HorizontalItemSpacing="5" 
+                             VerticalItemSpacing="5" />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{DynamicResource AppCalendarDayButton}">
+                                    <Label Text="{Binding .}" Style="{DynamicResource AppCalendarDayLabel}" />
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
-                -->
+            </Grid>
+                </Border>
+                
+                
          
         <mauiapp1:BottomMenu Grid.Row="2"></mauiapp1:BottomMenu>
     </Grid>
