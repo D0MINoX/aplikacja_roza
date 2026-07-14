@@ -87,6 +87,7 @@ namespace MauiApp1
             _meditationService = meditationService;
             _authService = authService;
             _rosaryService = rosaryService;
+            CalendarSelectionView.ItemsSource = Enumerable.Range(0, 32).ToList();
         }
 
         protected override async void OnAppearing()
@@ -335,61 +336,6 @@ namespace MauiApp1
              await Task.WhenAll(animationTasks);
 
          }
-        /* private async Task ShowMysteryAnimation(Border s)
-         {
-             SetImageAndLabel();
-
-             var animationTasks = new List<Task>();
-             var btn = Mystery1.Children.OfType<Border>().FirstOrDefault();
-             double btnSize = btn.Width;
-             double centerW = s.Width / 2;
-             double offsetY = 15; // możesz dopasować np. -40, -50 w zależności od rozmiarów i wyglądu
-             double centerH = s.Height / 2 + offsetY;
-             double vertical = s.Height / 2 + 60;
-             double horizontal = s.Width / 2 + 60;
-             double spacing = btnSize + 10;
-
-             (double x, double y)[] positions = new (double, double)[]
-             {
-         // Mystery1 - GÓRA
-         (centerW - btnSize/2, centerH - vertical - btnSize/2),
-         // Mystery2 - LEWO
-         (centerW - horizontal - btnSize/2, centerH - btnSize/2),
-         // Mystery3 - PRAWO
-         (centerW + horizontal - btnSize/2, centerH - btnSize/2),
-         // Mystery4 - DÓŁ ŚRODEK
-         (centerW - btnSize/2, centerH + vertical - btnSize/2),
-         // Mystery5 - DÓŁ JESZCZE NIŻEJ
-         (centerW - btnSize/2, centerH + vertical + spacing - btnSize/2),
-             };
-
-             int i = 0;
-             foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
-             {
-                 var lbl = layout.Children.OfType<Label>().FirstOrDefault();
-                 lbl.Scale = 1;
-                 layout.Opacity = 0;
-
-                 double tx = positions[i].x;
-                 double ty = positions[i].y;
-
-                 Task btnTranslate = layout.TranslateToAsync(tx, ty, 750, Easing.SinInOut);
-                 Task btnFade = layout.FadeToAsync(1, 750, Easing.SinInOut);
-                 Task btnScale = layout.ScaleToAsync(0.66, 750, Easing.SinInOut);
-                 animationTasks.Add(btnTranslate);
-                 animationTasks.Add(btnFade);
-                 animationTasks.Add(btnScale);
-
-                 Task lblScale = lbl.ScaleToAsync(1.5, 750, Easing.SinInOut);
-                 Task lblTranslate = lbl.TranslateToAsync(0, -5, 750, Easing.SinInOut);
-                 animationTasks.Add(lblScale);
-                 animationTasks.Add(lblTranslate);
-
-                 i++;
-             }
-             await Task.WhenAll(animationTasks);
-         }
-        */
 
         private async Task CloseMystryAnimation()
         {
@@ -414,18 +360,162 @@ namespace MauiApp1
 
         private async void Mystery_Tapped(object sender, TappedEventArgs e)
         {
+            // Bezpiecznik na starcie - jeśli brak wybranej części, nie robimy nic
             if (string.IsNullOrEmpty(_selectedPart)) return;
 
             int mysteryNumber = int.Parse(e.Parameter.ToString());
+            int index = mysteryNumber - 1; // Indeks listy (0-4)
+
             List<MysteryItem> mysteries = _itemsMap[_selectedPart];
-            Preferences.Default.Set("LastMystery", mysteries[mysteryNumber - 1].FullDescription);
-            //  DisplayAlertAsync("INFO", mysteries[mysteryNumber - 1].FullDescription, "OK");
-           
-            await Shell.Current.GoToAsync("FullMeditation");
+
+            // 1. Przypisujemy dane wybranej tajemnicy do kafelka podglądu nad kalendarzem
+            if (_imagesMap.ContainsKey(_selectedPart))
+            {
+                SelectedMysteryImage.Source = _imagesMap[_selectedPart][index];
+            }
+            SelectedMysteryLabel.Text = mysteries[index].ShortLabel;
+
+            // 2. Przygotowujemy zadania ukrywania obecnych elementów
+            var hideTasks = new List<Task>();
+
+            foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            {
+                hideTasks.Add(layout.FadeToAsync(0, 300, Easing.SinInOut));
+                hideTasks.Add(layout.ScaleToAsync(0.33, 300, Easing.SinInOut));
+            }
+
+            Grid activeRosaryGrid = _selectedPart switch
+            {
+                "Radosne" => Radosne,
+                "Światła" => Swiatla,
+                "Bolesne" => Bolesne,
+                "Chwalebne" => Chwalebne,
+                _ => null
+            };
+
+            if (activeRosaryGrid != null)
+            {
+                hideTasks.Add(activeRosaryGrid.FadeToAsync(0, 300, Easing.SinInOut));
+            }
+
+            // Ukrywamy logo w tle
+            if (CenterImage.IsVisible)
+            {
+                hideTasks.Add(CenterImage.FadeToAsync(0, 300, Easing.SinInOut));
+            }
+
+            // Czekamy na zakończenie animacji znikania
+            await Task.WhenAll(hideTasks);
+            CenterImage.IsVisible = false;
+
+            // 3. Zapisujemy wybraną tajemnicę w pamięci urządzenia
+            Preferences.Default.Set("LastMystery", mysteries[index].FullDescription);
+
+            // 4. Przygotowujemy elementy wewnątrz kontenera (upewniamy się, że mają Opacity = 1)
+            SelectedMysteryPreview.IsVisible = true;
+            SelectedMysteryPreview.Opacity = 1;
+            SelectedMysteryPreview.Scale = 0.8;
+
+            CalendarSelectionView.IsVisible = true;
+            CalendarSelectionView.Opacity = 1; // REPRODUKCJA FIX: Wymuszamy pełną widoczność siatki dni
+
+            // 5. Pokazujemy CAŁY kontener (Kafelek tajemnicy + Kalendarz)
+            CalendarContainer.IsVisible = true;
+            CalendarContainer.Scale = 0.8;
+
+            await Task.WhenAll(
+                CalendarContainer.FadeToAsync(1, 450, Easing.SinInOut),
+                CalendarContainer.ScaleToAsync(1, 450, Easing.SinInOut)
+            );
         }
 
+        private async void OnDaySelected(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.FirstOrDefault() is int wybranyDzien)
+            {
+                this.date = wybranyDzien;
+                Preferences.Default.Set("LastDate", date);
 
+                CalendarSelectionView.SelectedItem = null;
 
+                // FIX: Animujemy i ukrywamy CAŁY KONTENER, a nie pojedyncze elementy wewnątrz.
+                // Dzięki temu nie psujemy wartości Opacity dla samej siatki kalendarza.
+                await Task.WhenAll(
+                    CalendarContainer.FadeToAsync(0, 300, Easing.SinInOut),
+                    CalendarContainer.ScaleToAsync(0.8, 300, Easing.SinInOut)
+                );
+
+                // Po animacji chowamy logicznie cały kontener oraz elementy wewnętrzne
+                CalendarContainer.IsVisible = false;
+                CalendarSelectionView.IsVisible = false;
+                SelectedMysteryPreview.IsVisible = false;
+                SelectedMysteryPreview.Opacity = 0;
+
+                // Resetujemy stan kafelków tajemnic wokół środka
+                foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+                {
+                    layout.Scale = 1;
+                    layout.Opacity = 0;
+                }
+
+                // Przygotowujemy logo do ponownego pokazania przez StarterAnimation
+                CenterImage.IsVisible = true;
+                CenterImage.Opacity = 0;
+
+                _selectedPart = null;
+
+                // Przejście do widoku pełnej medytacji
+                await Shell.Current.GoToAsync("FullMeditation");
+
+                // Przywracanie widoku w tle (na wypadek powrotu z FullMeditation wstecz)
+                await CloseMystryAnimation();
+                await StarterAnimation();
+            }
+        }
+
+        private async void OnBackToMysteries_Tapped(object sender, TappedEventArgs e)
+        {
+            // 1. Płynnie ukrywamy kontener z kalendarzem i podglądem tajemnicy
+            await Task.WhenAll(
+                CalendarContainer.FadeToAsync(0, 250, Easing.SinInOut),
+                CalendarContainer.ScaleToAsync(0.66, 250, Easing.SinInOut)
+            );
+
+            CalendarContainer.IsVisible = false;
+            CalendarSelectionView.IsVisible = false;
+            SelectedMysteryPreview.IsVisible = false;
+
+            // 2. Przywracamy widoczność aktywnej części różańca (tekst na dole/górze ekranu)
+            Grid activeRosaryGrid = _selectedPart switch
+            {
+                "Radosne" => Radosne,
+                "Światła" => Swiatla,
+                "Bolesne" => Bolesne,
+                "Chwalebne" => Chwalebne,
+                _ => null
+            };
+
+            var showMenuTasks = new List<Task>();
+
+            if (activeRosaryGrid != null)
+            {
+                showMenuTasks.Add(activeRosaryGrid.FadeToAsync(1, 250, Easing.SinInOut));
+            }
+
+            // 3. Przywracamy małe logo w środku (bo wokół niego kręcą się tajemnice)
+           // CenterImage.IsVisible = true;
+            showMenuTasks.Add(CenterImage.FadeToAsync(1, 250, Easing.SinInOut));
+
+            // 4. Resetujemy pozycję i płynnie przywracamy widok 5 tajemnic (Mystery1 - Mystery5)
+            foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            {
+                layout.Scale = .66; // Przywracamy domyślną skalę sprzed ukrycia
+                showMenuTasks.Add(layout.FadeToAsync(1, 300, Easing.SinInOut));
+            }
+
+            // Odpalamy animacje powrotu do widoku wyboru tajemnic
+            await Task.WhenAll(showMenuTasks);
+        }
         private async void MyRosaryGroup_Tapped(object sender, TappedEventArgs e)
         {
             if (string.IsNullOrEmpty(_authService.Token)) return;
