@@ -61,6 +61,47 @@ namespace MauiApp1
                 return null;
             }
         }
+        public async Task<bool> RecordPrayerAsync(int userId, DateTime date)
+        {
+            try
+            {
+                var requestPayload = new
+                {
+                    UserId = userId,
+                    Date = date.ToString("yyyy-MM-ddTHH:mm:ss") 
+                };
+                var token = _authService.Token; 
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
+
+              
+                var response = await _httpClient.PostAsJsonAsync("api/meditations/RecordPrayer", requestPayload);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("### MODLITWA ZAREJESTROWANA POMYŚLNIE");
+                    return true;
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"### BŁĄD API ({response.StatusCode}): {errorResponse}");
+                    return false;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Debug.WriteLine($"### BŁĄD SIECI / HTTP: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"### BŁĄD KRYTYCZNY ZAPISU: {ex.Message}");
+                return false;
+            }
+        }
     }
 }
 
