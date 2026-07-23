@@ -41,14 +41,14 @@
                                 Wstecz
                             </Label>
                         </Border>
-                        <!--<Border Grid.Column="1" HorizontalOptions="End" x:Name="Complete" Style="{StaticResource NavButton}">
+                        <Border Grid.Column="1" HorizontalOptions="End" x:Name="Complete" Style="{StaticResource NavButton}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="CompletedTapped"/>
                             </Border.GestureRecognizers>
                             <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
                                 Ukończono
                             </Label>
-                        </Border>-->
+                        </Border>
                         <Border Grid.Column="2" HorizontalOptions="End" Style="{StaticResource NavButton}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="NextTapped"/>

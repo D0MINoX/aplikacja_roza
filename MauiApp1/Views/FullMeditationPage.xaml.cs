@@ -1,5 +1,7 @@
 using MauiApp1.Models;
 using MauiApp1.Services;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace MauiApp1;
@@ -12,11 +14,13 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     private bool _isBusy = false;
     private readonly NotificationsService _notificationService;
     public MeditationsService _meditationService;
-    public FullMeditationPage(NotificationsService notificationsService, MeditationsService meditationService)
+    public AuthService _authService;
+    public FullMeditationPage(NotificationsService notificationsService, MeditationsService meditationService, AuthService authService)
     {
         InitializeComponent();
         _notificationService = notificationsService;
         _meditationService = meditationService;
+        _authService = authService;
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -124,8 +128,6 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             -moz-hyphens: auto;              
             -ms-hyphens: auto;              
             hyphens: auto;
-            
-            /* KLUCZOWA ZMIANA: interpretuje znaki \n jako miękkie przejście do nowej linii */
             white-space: pre-line; 
         }}          
         p {{              
@@ -136,8 +138,6 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             -moz-hyphens: auto;              
             -ms-hyphens: auto;              
             hyphens: auto;
-            
-            /* KLUCZOWA ZMIANA również tutaj */
             white-space: pre-line; 
         }}          
         h1, h2, h3 {{               
@@ -147,9 +147,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             -webkit-hyphens: none !important;              
             -ms-hyphens: none !important;              
             hyphens: none !important;               
-             word-break: keep-all;
-             
-             /* W nagłówkach wyłączamy pre-line, żeby nie łamało ich dziwnie z automatu */
+             word-break: keep-all; 
              white-space: normal; 
         }}      
     </style>  
@@ -165,17 +163,23 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             Html = fullHtmlPage
         };
     }
-   /* private async void CompletedTapped(object sender, TappedEventArgs e)
+    private async void CompletedTapped(object sender, TappedEventArgs e)
     {
         Color? color = Complete.BackgroundColor;
         float newAlpha = color.Alpha < 1f ? 1f : 0.5f;
         Complete.BackgroundColor = color.WithAlpha(newAlpha);
         string todayKey = DateTime.Today.ToString("yyyy-MM-dd");
         Preferences.Default.Set($"Done_{todayKey}", true);
-
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadJwtToken(_authService.Token);
+        var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
+        if (int.TryParse(IdClaim?.Value, out int id))
+        {
+            await _meditationService.RecordPrayerAsync(id, DateTime.Today);
+        }
         
         await _notificationService.ScheduleWeeklyReminders();
-    }*/
+    }
 
     private async void BackTapped(object sender, TappedEventArgs e)
     {
