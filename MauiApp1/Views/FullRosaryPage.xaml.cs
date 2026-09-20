@@ -195,15 +195,7 @@ namespace MauiApp1.Views
             };
         }
 
-        private async void CompletedTapped(object sender, TappedEventArgs e)
-        {
-            Color? color = Complete.BackgroundColor;
-            float newAlpha = color.Alpha < 1f ? 1f : 0.5f;
-            Complete.BackgroundColor = color.WithAlpha(newAlpha);
-
-            Preferences.Default.Set("LastCompleteDate", date);
-        }
-
+       
         private async void PreviousTapped(object sender, EventArgs e)
         {
             if (--date < 1) date = 31;
