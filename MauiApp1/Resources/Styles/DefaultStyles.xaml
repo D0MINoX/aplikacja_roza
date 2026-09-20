@@ -209,25 +209,37 @@
     </Style>
 
     <Style TargetType="Border" x:Key="AppCalendarDayButton">
+        <Setter Property="Background" Value="{DynamicResource Primary}"/>
+        <Setter Property="Stroke" Value="{DynamicResource Secondary}"/>
+        <Setter Property="StrokeThickness" Value=".5"/>
+        <Setter Property="StrokeShape">
+            <RoundRectangle CornerRadius="10"/>
+        </Setter>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="4"/>
+
         <Setter Property="HorizontalOptions" Value="Center"/>
         <Setter Property="VerticalOptions" Value="Center"/>
         <Setter Property="WidthRequest" Value="46"/>
         <Setter Property="HeightRequest" Value="46"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
-        <Setter Property="StrokeThickness" Value="1"/>
-        <Setter Property="Stroke" Value="{DynamicResource FadedText}"/>
-        <Setter Property="StrokeShape">
-            <RoundRectangle CornerRadius="8"/>
+
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Brush="{DynamicResource Secondary}"
+                    Offset="0,2"
+                    Radius="10"
+                    Opacity="0.6"/>
+            </Setter.Value>
         </Setter>
-        <!-- POPRAWIONE: Dodany <Setter.Value> -->
+
         <Setter Property="VisualStateManager.VisualStateGroups">
             <Setter.Value>
                 <VisualStateGroupList>
                     <VisualStateGroup x:Name="CommonStates">
-                        <VisualState Name="Normal" />
-                        <VisualState Name="Pressed">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Pressed">
                             <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="{DynamicResource Tertiary}" />
+                                <Setter Property="Background" Value="{DynamicResource Tertiary}" />
                                 <Setter Property="Opacity" Value="0.8" />
                             </VisualState.Setters>
                         </VisualState>
@@ -243,7 +255,6 @@
         <Setter Property="FontAttributes" Value="Bold"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="TextColor" Value="{DynamicResource Text}"/>
-        <!-- POPRAWIONE: Dodany <Setter.Value> -->
         <Setter Property="VisualStateManager.VisualStateGroups">
             <Setter.Value>
                 <VisualStateGroupList>

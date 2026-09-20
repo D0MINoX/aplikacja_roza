@@ -77,4 +77,12 @@ public partial class BottomMenu : ContentView
             }
         }
     }
+    private async void FullRosaryButton_Tapped(object sender, TappedEventArgs e) {
+        var stack = Shell.Current.Navigation.NavigationStack.ToArray();
+        for (int i = stack.Length - 1; i > 0; i--)
+        {
+            Shell.Current.Navigation.RemovePage(stack[i]);
+        }
+        await Shell.Current.GoToAsync("FullRosary", false);
+    }
 }
