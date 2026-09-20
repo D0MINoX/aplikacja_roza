@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
-             x:Class="MauiApp1.FullMeditationPage"
-             Title="FullMeditationPage"
-             Shell.NavBarIsVisible="False"
-             BackgroundColor="{DynamicResource Primary}">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.FullRosaryPage"
+             xmlns:mauiapp1="clr-namespace:MauiApp1"
+             Title="FullRosaryPage"
+              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+ BackgroundColor="{DynamicResource Primary}"
+ Shell.NavBarIsVisible="False">
     <Grid RowDefinitions="*,auto">
         <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="20">
             <!-- Header -->
@@ -12,27 +14,24 @@
                 <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
                     Rozważania różańcowe
                 </Label>
-                <Label Grid.Row="1" x:Name="MysteryLabel" Style="{StaticResource HeaderLabel2}">
-                    Pełne rozważanie
-                </Label>
             </Grid>
 
             <!-- Całe rozważanie -->
             <Border Grid.Row="1" Style="{StaticResource MenuOption}">
                 <Grid RowDefinitions="auto,*,auto" RowSpacing="10" Padding="10" >
                     <!-- data -->
-                
-                        <Label x:Name="DateLabel" Grid.Row="0" InputTransparent="True" FontSize="22" HorizontalOptions="Center" FontAttributes="Bold" TextColor="{DynamicResource Tertiary}"/>
-                        
- 
+
+                    <Label x:Name="DateLabel" Grid.Row="0" InputTransparent="True" FontSize="22" HorizontalOptions="Center" FontAttributes="Bold" TextColor="{DynamicResource Tertiary}"/>
+
+
                     <!-- tekst rozważania -->
                     <WebView Grid.Row="1" 
-                         x:Name="MeditationWebView" 
-                         HorizontalOptions="FillAndExpand" 
-                         VerticalOptions="FillAndExpand" />
+                     x:Name="MeditationWebView" 
+                     HorizontalOptions="FillAndExpand" 
+                     VerticalOptions="FillAndExpand" />
 
                     <!-- przyciski -->
-                    <Grid ColumnDefinitions="*,*,*" Grid.Row="2">
+                    <Grid ColumnDefinitions="*,*" Grid.Row="2">
                         <Border Grid.Column="0" HorizontalOptions="Start" Style="{StaticResource NavButton}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="PreviousTapped"/>
@@ -41,14 +40,7 @@
                                 Wstecz
                             </Label>
                         </Border>
-                        <Border Grid.Column="1" HorizontalOptions="End" x:Name="Complete" Style="{StaticResource NavButton}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="CompletedTapped"/>
-                            </Border.GestureRecognizers>
-                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
-                                Ukończono
-                            </Label>
-                        </Border>
+                        
                         <Border Grid.Column="2" HorizontalOptions="End" Style="{StaticResource NavButton}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="NextTapped"/>

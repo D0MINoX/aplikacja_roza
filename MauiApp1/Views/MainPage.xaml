@@ -136,17 +136,17 @@ Opacity="0">
                 <Label Grid.Row="1" x:Name="SelectedMysteryLabel" HorizontalOptions="Center"/>
             </Grid>
 
-            <!-- NOWY REPOZYTORIUM DNI - Elastyczny Grid zamiast CollectionView -->
-            <!-- Dla 32 elementów (indeksy 0 do 31) potrzebujemy 6 wierszy i 6 kolumn (6x6 = 36 miejsc) -->
+           
             <Grid x:Name="CalendarGrid"
     Grid.Row="1"
     RowDefinitions="*,*,*,*,*,*"
     ColumnDefinitions="*,*,*,*,*,*"
     RowSpacing="8"
     ColumnSpacing="8"
-    Margin="20,0,20,20">
-                <!-- Elementy zostaną wygenerowane automatycznie w kodzie C# -->
+    Margin="20,0,20,20"  >
+              
             </Grid>
+            
         </Grid>
 
 

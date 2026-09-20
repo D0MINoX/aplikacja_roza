@@ -55,14 +55,13 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         if (_isBusy) return;
         try
         {
-            DateLabel.Text = "dzień " + date;
-            Preferences.Default.Set("LastDate", date);
+            DateLabel.Text = "Dzień " + date;
+            
 
             string selectedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
             MysteryLabel.Text = selectedMystery;
             if (string.IsNullOrEmpty(selectedMystery)) return;
 
-            // Wyświetlenie komunikatu o ładowaniu w formacie HTML
             LoadHtmlToWebView("<p style='text-align: center; font-style: italic;'>Ładowanie ....</p>");
 
             var localData = await GetMeditationFromLocalFile(this.date, selectedMystery);
@@ -169,16 +168,17 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         float newAlpha = color.Alpha < 1f ? 1f : 0.5f;
         Complete.BackgroundColor = color.WithAlpha(newAlpha);
         string todayKey = DateTime.Today.ToString("yyyy-MM-dd");
-        Preferences.Default.Set($"Done_{todayKey}", true);
-        var handler = new JwtSecurityTokenHandler();
-        var jsonToken = handler.ReadJwtToken(_authService.Token);
-        var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
-        if (int.TryParse(IdClaim?.Value, out int id))
-        {
-            await _meditationService.RecordPrayerAsync(id, DateTime.Today);
-        }
+        Preferences.Default.Set("LastCompleteDate", date);
+     //   Preferences.Default.Set($"Done_{todayKey}", true);
+      //  var handler = new JwtSecurityTokenHandler();
+      //  var jsonToken = handler.ReadJwtToken(_authService.Token);
+    //    var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
+        //if (int.TryParse(IdClaim?.Value, out int id))
+        //{
+        //    await _meditationService.RecordPrayerAsync(id, DateTime.Today);
+        //}
         
-        await _notificationService.ScheduleWeeklyReminders();
+        //await _notificationService.ScheduleWeeklyReminders();
     }
 
     private async void BackTapped(object sender, TappedEventArgs e)
