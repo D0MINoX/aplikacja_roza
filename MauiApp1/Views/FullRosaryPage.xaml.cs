@@ -60,7 +60,7 @@ namespace MauiApp1.Views
         {
             base.OnAppearing();
 
-            date = Preferences.Default.Get("LastDate", 1);
+            date = Preferences.Default.Get("LastCompleteDate", 1);
             if (date <= 0) date = 1;
 
             LoadFullRosary();
