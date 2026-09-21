@@ -64,21 +64,36 @@ namespace MauiApp1
             _meditationService = meditationService;
             _authService = authService;
             _rosaryService = rosaryService;
+            StarterAnimation();
+            foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            {
+                btn.TranslationX = btn.TranslationY = 0;
+                btn.Scale = 0.33;
+                btn.Opacity = 0;
+            }
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            _selectedPart = null;
-            await StarterAnimation();
-            GenerateCalendarGrid();
-
-            foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            string previousPart = Preferences.Default.Get("LastPart", string.Empty);
+            if (!string.IsNullOrEmpty(previousPart))
             {
-                btn.TranslationX = btn.TranslationY = 0;
-                btn.Scale = 0.33;
-                btn.Opacity = 0;
+                _selectedPart = previousPart;
+                Grid activeRosaryGrid = _selectedPart switch
+                {
+                    "Radosne" => Radosne,
+                    "Światła" => Swiatla,
+                    "Bolesne" => Bolesne,
+                    "Chwalebne" => Chwalebne,
+                    _ => null
+                };
+                    activeRosaryGrid.IsVisible = true;
+            }
+            else
+            {
+                _selectedPart = null;
             }
         }
 
@@ -139,10 +154,10 @@ namespace MauiApp1
         {
             Grid s = sender as Grid;
             string partName = e.Parameter.ToString();
-
+            Preferences.Default.Set("LastPart", partName);
             if (_selectedPart == partName)
             {
-                await CloseMystryAnimation();
+                await CloseMysteryAnimation();
 
                 var scale = s.ScaleToAsync(0.66, 750, Easing.SinInOut);
                 Task t, o1, o2, o3, labelScale, labelFade;
@@ -307,7 +322,7 @@ namespace MauiApp1
             await Task.WhenAll(animationTasks);
         }
 
-        private async Task CloseMystryAnimation()
+        private async Task CloseMysteryAnimation()
         {
             var animationTasks = new List<Task>();
 
@@ -554,7 +569,7 @@ namespace MauiApp1
 
             await Shell.Current.GoToAsync("FullMeditation");
 
-            await CloseMystryAnimation();
+            await CloseMysteryAnimation();
             await StarterAnimation();
         }
 
