@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
     <style>
-        /* Definicja palety kolorów jako zmienne CSS */
         :root {
             --bg-color: #FFFFFF;
             --text-color: #333333;
@@ -14,9 +14,8 @@
             --toolbar-bg: #F3F3F3;
         }
 
-        /* Automatyczne mapowanie, gdy ciało strony ma klasę .dark */
         body.dark {
-            --bg-color: #1E1E1E; /* Dopasuj ten kolor do koloru tła Twojej aplikacji (Primary) */
+            --bg-color: #1E1E1E;
             --text-color: #FFFFFF;
             --border-color: #444444;
             --toolbar-bg: #2D2D2D;
@@ -43,7 +42,6 @@
             text-align: justify;
         }
 
-        /* Dostosowanie paska narzędzi Quill do motywów */
         .ql-toolbar.ql-snow {
             background-color: var(--toolbar-bg);
             border: 1px solid var(--border-color) !important;
@@ -54,7 +52,7 @@
             border-top: none !important;
         }
 
-        /* Kolory ikon paska narzędzi w ciemnym motywie */
+        /* Motyw ciemny edytora */
         body.dark .ql-snow .ql-stroke {
             stroke: #FFFFFF;
         }
@@ -71,22 +69,90 @@
             background-color: #2D2D2D;
             border-color: #444444;
         }
+
         p, body {
             text-align: justify;
-            text-justify: inter-word; 
-            -webkit-hyphens: auto; 
+            text-justify: inter-word;
+            -webkit-hyphens: auto;
             -ms-hyphens: auto;
-            hyphens: auto; 
+            hyphens: auto;
+        }
+
+        /* --- DEFINICJE CZCIONEK SYSTEMOWYCH --- */
+        .ql-font-arial {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        .ql-font-georgia {
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .ql-font-times {
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        .ql-font-courier {
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        .ql-font-trebuchet {
+            font-family: "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
+        }
+
+        .ql-font-verdana {
+            font-family: Verdana, Geneva, sans-serif;
+        }
+
+        /* Style etykiet na liście wyboru w Quill */
+        .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="arial"]::before,
+        .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="arial"]::before {
+            content: 'Bezszeryfowa (Arial/Roboto)';
+            font-family: Arial, sans-serif;
+        }
+
+        .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="georgia"]::before,
+        .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="georgia"]::before {
+            content: 'Georgia';
+            font-family: Georgia, serif;
+        }
+
+        .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="times"]::before,
+        .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="times"]::before {
+            content: 'Times New Roman';
+            font-family: "Times New Roman", serif;
+        }
+
+        .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="trebuchet"]::before,
+        .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="trebuchet"]::before {
+            content: 'Trebuchet MS';
+            font-family: "Trebuchet MS", sans-serif;
+        }
+
+        .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="verdana"]::before,
+        .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="verdana"]::before {
+            content: 'Verdana';
+            font-family: Verdana, sans-serif;
+        }
+
+        .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="courier"]::before,
+        .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="courier"]::before {
+            content: 'Maszynopis (Courier)';
+            font-family: "Courier New", monospace;
         }
     </style>
 </head>
 <body class="light">
     <div id="editor-container"></div>
     <script>
-        // Konfiguracja modułu klawiatury dla obsługi Soft Enter (Shift+Enter)
+        // Rejestracja czcionek w Quill JS
+        var Font = Quill.import('formats/font');
+        Font.whitelist = ['arial', 'georgia', 'times', 'trebuchet', 'verdana', 'courier'];
+        Quill.register(Font, true);
+
         var quill = new Quill('#editor-container', {
             modules: {
                 toolbar: [
+                    [{ 'font': Font.whitelist }],
                     [{ 'header': [1, 2, 3, false] }],
                     ['bold', 'italic', 'underline'],
                     [{ 'align': [] }],
@@ -94,16 +160,13 @@
                 ],
                 keyboard: {
                     bindings: {
-                        // Przechwytujemy Shift + Enter
                         shiftEnter: {
                             key: 'Enter',
                             shiftKey: true,
                             handler: function (range, context) {
-                                // Wstawiamy znak nowej linii (soft break) w miejscu kursora
                                 this.quill.insertText(range.index, '\n', 'user');
-                                // Przesuwamy kursor o 1 znak do przodu za wstawione złamanie
                                 this.quill.setSelection(range.index + 1, 'silent');
-                                return false; // Blokuje domyślne zachowanie edytora
+                                return false;
                             }
                         }
                     }
@@ -112,7 +175,6 @@
             theme: 'snow'
         });
 
-        // Funkcje sterujące motywem z poziomu C#
         function setDarkMode(isDark) {
             if (isDark) {
                 document.body.classList.remove('light');

@@ -76,6 +76,17 @@ namespace MauiApp1
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            if (Preferences.Get("app_main_theme", false))
+            {
+                background.Source = "mainpagebackgrounddark.png";
+            }
+            else
+            {
+                background.Source = "mainpagebackground.png";
+            }
+          
+
+          
 
             string previousPart = Preferences.Default.Get("LastPart", string.Empty);
             if (!string.IsNullOrEmpty(previousPart))

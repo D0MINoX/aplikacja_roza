@@ -8,7 +8,7 @@
              Shell.NavBarIsVisible="False">
 
     <Grid RowDefinitions="auto,*,auto">
-        <Image Source="mainpagebackground.png" 
+        <Image x:Name="background"
             Aspect="AspectFill"
             Grid.RowSpan="2" />
         <!-- ten label jest tylko po to zeby zmieniac kolor ikonek dynamicnie -->

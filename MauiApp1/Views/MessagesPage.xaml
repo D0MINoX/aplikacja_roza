@@ -19,7 +19,7 @@
                 </Image.GestureRecognizers>
             </Image>
             <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
-                Panel logowania
+                Wiadomości
             </Label>
         </Grid>
         <!-- Wiadomości -->

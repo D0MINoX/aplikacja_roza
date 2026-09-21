@@ -106,6 +106,13 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     {
         if (MeditationWebView == null) return;
 
+        bool isDark = Application.Current?.UserAppTheme == AppTheme.Dark
+            || (Application.Current?.UserAppTheme == AppTheme.Unspecified && Application.Current?.RequestedTheme == AppTheme.Dark);
+
+        string bgColor = isDark ? "#121212" : "#FFFFFF";
+        string textColor = isDark ? "#E0E0E0" : "#333333";
+        string headingColor = isDark ? "#FFFFFF" : "#111111";
+
         string fullHtmlPage = $@"
 <!DOCTYPE html>  
 <html lang='pl'>  
@@ -114,41 +121,49 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>      
     <style>          
         body {{              
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;              
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;              
             font-size: 16px;              
             line-height: 1.6;              
-            color: #333333;              
-            padding: 5px;              
+            color: {textColor};              
+            padding: 8px;              
             margin: 0;              
-            background-color: transparent;                              
+            background-color: {bgColor};                              
             text-align: justify;              
             text-justify: inter-word;                              
             -webkit-hyphens: auto;              
             -moz-hyphens: auto;              
             -ms-hyphens: auto;              
             hyphens: auto;
-            white-space: pre-line; 
         }}          
         p {{              
             text-align: justify;              
             text-justify: inter-word;              
-            margin-bottom: 14px;                              
-            -webkit-hyphens: auto;              
-            -moz-hyphens: auto;              
-            -ms-hyphens: auto;              
-            hyphens: auto;
-            white-space: pre-line; 
+            margin-top: 0;
+            margin-bottom: 12px;
         }}          
         h1, h2, h3 {{               
-             color: #111111;               
-             margin-top: 18px;               
-             text-align: left;              
+            color: {headingColor};               
+            margin-top: 18px; 
+            margin-bottom: 8px;              
+            text-align: left;              
             -webkit-hyphens: none !important;              
             -ms-hyphens: none !important;              
             hyphens: none !important;               
-             word-break: keep-all; 
-             white-space: normal; 
-        }}      
+            word-break: keep-all; 
+        }}
+        
+        /* Mapowanie czcionek systemowych z edytora Quill */
+        .ql-font-arial {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; }}
+        .ql-font-georgia {{ font-family: Georgia, 'Times New Roman', serif; }}
+        .ql-font-times {{ font-family: 'Times New Roman', Times, serif; }}
+        .ql-font-courier {{ font-family: 'Courier New', Courier, monospace; }}
+        .ql-font-trebuchet {{ font-family: 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif; }}
+        .ql-font-verdana {{ font-family: Verdana, Geneva, sans-serif; }}
+
+        /* Wyrównania tekstu Quill */
+        .ql-align-center {{ text-align: center; }}
+        .ql-align-right {{ text-align: right; }}
+        .ql-align-justify {{ text-align: justify; }}
     </style>  
 </head>  
 <body>      
@@ -156,7 +171,6 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
 </body>  
 </html>";
 
-        
         MeditationWebView.Source = new HtmlWebViewSource
         {
             Html = fullHtmlPage
