@@ -57,7 +57,6 @@ public partial class MeditationAddPage : ContentPage
     }
     private async void OnDetailChanged(object sender, EventArgs e)
     {
-        
         if (!_isWebViewLoaded) return;
 
         if (MysteryPicker.SelectedItem != null && DayPicker.SelectedItem != null)
@@ -69,9 +68,7 @@ public partial class MeditationAddPage : ContentPage
             if (data != null)
             {
                 string safeHtml = System.Web.HttpUtility.JavaScriptStringEncode(data.Content);
-                await HtmlEditorWebView.EvaluateJavaScriptAsync($"setHtml('{safeHtml}')");
-
-                
+                await HtmlEditorWebView.EvaluateJavaScriptAsync($"setHtml(\"{safeHtml}\")");
             }
             else
             {
