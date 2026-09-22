@@ -57,6 +57,7 @@ namespace MauiApp1
         };
 
         private string _selectedPart = null;
+        private bool _firstload;
 
         public MainPage(MeditationsService meditationService, AuthService authService, RosaryService rosaryService)
         {
@@ -64,13 +65,7 @@ namespace MauiApp1
             _meditationService = meditationService;
             _authService = authService;
             _rosaryService = rosaryService;
-            StarterAnimation();
-            foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
-            {
-                btn.TranslationX = btn.TranslationY = 0;
-                btn.Scale = 0.33;
-                btn.Opacity = 0;
-            }
+            _firstload = true;
         }
 
         protected override async void OnAppearing()
@@ -84,15 +79,17 @@ namespace MauiApp1
             {
                 background.Source = "mainpagebackground.png";
             }
-          
 
-          
+            if(_firstload)
+            {
+                _firstload = false;
+                await StarterAnimation();
+            }
 
             string previousPart = Preferences.Default.Get("LastPart", string.Empty);
             if (!string.IsNullOrEmpty(previousPart))
             {
-                _selectedPart = previousPart;
-                Grid activeRosaryGrid = _selectedPart switch
+                Grid activeRosaryGrid = previousPart switch
                 {
                     "Radosne" => Radosne,
                     "Światła" => Swiatla,
@@ -110,6 +107,12 @@ namespace MauiApp1
 
         private async Task StarterAnimation()
         {
+            foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            {
+                btn.TranslationX = btn.TranslationY = 0;
+                btn.Scale = 0.33;
+                btn.Opacity = 0;
+            }
             foreach (var btn in new[] { Radosne, Swiatla, Bolesne, Chwalebne })
             {
                 btn.TranslationX = btn.TranslationY = 0;
@@ -169,6 +172,11 @@ namespace MauiApp1
             if (_selectedPart == partName)
             {
                 await CloseMysteryAnimation();
+
+                Radosne.InputTransparent = false;
+                Swiatla.InputTransparent = false;
+                Bolesne.InputTransparent = false;
+                Chwalebne.InputTransparent = false;
 
                 var scale = s.ScaleToAsync(0.66, 750, Easing.SinInOut);
                 Task t, o1, o2, o3, labelScale, labelFade;
@@ -230,9 +238,15 @@ namespace MauiApp1
                 Task o1, o2, o3, labelScale, labelFade;
                 Border border = null;
 
+                Radosne.InputTransparent = true;
+                Swiatla.InputTransparent = true;
+                Bolesne.InputTransparent = true;
+                Chwalebne.InputTransparent = true;
+
                 switch (partName)
                 {
                     case "Radosne":
+                        Radosne.InputTransparent = false;
                         border = RadosneBorder;
                         o1 = Swiatla.FadeToAsync(0, 750, Easing.SinInOut);
                         o2 = Bolesne.FadeToAsync(0, 750, Easing.SinInOut);
@@ -241,6 +255,7 @@ namespace MauiApp1
                         labelFade = RadosneLabel.FadeToAsync(0, 750, Easing.SinInOut);
                         break;
                     case "Światła":
+                        Swiatla.InputTransparent = false;
                         border = SwiatlaBorder;
                         o1 = Radosne.FadeToAsync(0, 750, Easing.SinInOut);
                         o2 = Bolesne.FadeToAsync(0, 750, Easing.SinInOut);
@@ -249,6 +264,7 @@ namespace MauiApp1
                         labelFade = SwiatlaLabel.FadeToAsync(0, 750, Easing.SinInOut);
                         break;
                     case "Bolesne":
+                        Bolesne.InputTransparent = false;
                         border = BolesneBorder;
                         o1 = Radosne.FadeToAsync(0, 750, Easing.SinInOut);
                         o2 = Swiatla.FadeToAsync(0, 750, Easing.SinInOut);
@@ -258,6 +274,7 @@ namespace MauiApp1
                         break;
                     case "Chwalebne":
                     default:
+                        Chwalebne.InputTransparent = false;
                         border = ChwalebneBorder;
                         o1 = Radosne.FadeToAsync(0, 750, Easing.SinInOut);
                         o2 = Swiatla.FadeToAsync(0, 750, Easing.SinInOut);
@@ -583,13 +600,5 @@ namespace MauiApp1
             await CloseMysteryAnimation();
             await StarterAnimation();
         }
-
-        private async void RosaryMeditations_Tapped(object sender, TappedEventArgs e)
-        {
-            await Shell.Current.GoToAsync("RosaryMeditations");
-        }
-        private async void OnFullRosary_Tapped(object sender, TappedEventArgs e)
-        { 
-        }
-        }
+    }
 }
