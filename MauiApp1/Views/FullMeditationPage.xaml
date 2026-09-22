@@ -23,13 +23,36 @@
                     <!-- data -->
                 
                         <Label x:Name="DateLabel" Grid.Row="0" InputTransparent="True" FontSize="22" HorizontalOptions="Center" FontAttributes="Bold" TextColor="{DynamicResource Tertiary}"/>
-                        
- 
-                    <!-- tekst rozważania -->
-                    <WebView Grid.Row="1" 
-                         x:Name="MeditationWebView" 
-                         HorizontalOptions="FillAndExpand" 
-                         VerticalOptions="FillAndExpand" />
+
+                    <Grid Grid.Row="1">
+
+                        <WebView
+                            x:Name="MeditationWebView"
+                            HorizontalOptions="FillAndExpand" 
+                            VerticalOptions="FillAndExpand" 
+                            IsVisible="False" />
+
+                        <Grid
+                        x:Name="LoadingPanel"
+                        IsVisible="True">
+
+                            <VerticalStackLayout
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Spacing="14">
+
+                                <ActivityIndicator
+                                x:Name="LoadingIndicator"
+                                IsRunning="True"/>
+
+                                <Label
+                                Text="Ładowanie rozważania..."
+                                HorizontalTextAlignment="Center"/>
+
+                            </VerticalStackLayout>
+
+                        </Grid>
+                    </Grid>
 
                     <!-- przyciski -->
                     <Grid ColumnDefinitions="*,*,*" Grid.Row="2">
