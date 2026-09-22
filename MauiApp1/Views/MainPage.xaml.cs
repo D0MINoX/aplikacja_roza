@@ -1,5 +1,6 @@
 ﻿using MauiApp1.Models;
 using MauiApp1.Services;
+using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -513,64 +514,6 @@ namespace MauiApp1
             }
         }
 
-        private void GenerateCalendarGrid()
-        {
-            CalendarGrid.Children.Clear();
-            int totalItems = 32; // Liczba dni: od 0 do 31
-            int columnsCount = 6; // 6 kolumn w rzędzie
-            int lastDate = Preferences.Get("LastCompleteDate", -1);
-
-            for (int i = 0; i < totalItems; i++)
-            {
-                int dayNumber = i;
-                int row = i / columnsCount;
-                int col = i % columnsCount;
-
-                var border = new Border
-                {
-                    HorizontalOptions = LayoutOptions.Fill,
-                    VerticalOptions = LayoutOptions.Fill,
-                };
-
-                if (App.Current.Resources.TryGetValue("AppCalendarDayButton", out var borderStyle))
-                {
-                    border.Style = (Style)borderStyle;
-                }
-
-                var label = new Label
-                {
-                    Text = dayNumber.ToString(),
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
-                };
-
-                if (App.Current.Resources.TryGetValue("AppCalendarDayLabel", out var labelStyle))
-                {
-                    label.Style = (Style)labelStyle;
-                }
-
-                border.Content = label;
-
-                if (dayNumber <= lastDate)
-                {
-                    border.Opacity = 0.2;
-                }
-
-                var tapGesture = new TapGestureRecognizer();
-                tapGesture.Tapped += async (s, e) =>
-                {
-                    await border.ScaleToAsync(0.9, 50, Easing.Linear);
-                    await border.ScaleToAsync(1.0, 50, Easing.Linear);
-                    HandleDaySelection(dayNumber);
-                };
-                border.GestureRecognizers.Add(tapGesture);
-
-                Grid.SetRow(border, row);
-                Grid.SetColumn(border, col);
-                CalendarGrid.Children.Add(border);
-            }
-        }
-
         private async void HandleDaySelection(int wybranyDzien)
         {
             this.date = wybranyDzien;
@@ -599,6 +542,46 @@ namespace MauiApp1
 
             await CloseMysteryAnimation();
             await StarterAnimation();
+				
+		// Ilość dni w kalendarzu
+        public ObservableCollection<int> Days { get; } = new(Enumerable.Range(0, 32));
+
+        private int _currentSpan;
+
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+
+            SetResponsiveLayout(width);
+        }
+
+        private void SetResponsiveLayout(double pageWidth)
+        {
+            if (pageWidth <= 0)
+                return;
+
+            const double buttonWidth = 50;
+            const double spacing = 10;
+            double availableWidth = pageWidth - Padding.HorizontalThickness;
+
+            int columns = Math.Max( 1, (int)Math.Floor((availableWidth + spacing) / (buttonWidth + spacing)) );
+
+            columns = Math.Min(columns, 8);
+
+            if (columns == _currentSpan)
+                return;
+
+            _currentSpan = columns;
+
+            CalendarGridLayout.Span = columns;
+        }
+
+        private async void DayButton_Clicked(object sender, EventArgs e)
+        {
+            if (sender is not Button button || button.CommandParameter is not int number)
+                return;
+
+			HandleDaySelection(number);
         }
     }
 }
