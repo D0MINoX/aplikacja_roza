@@ -173,6 +173,11 @@ namespace MauiApp1
             {
                 await CloseMysteryAnimation();
 
+                Radosne.InputTransparent = false;
+                Swiatla.InputTransparent = false;
+                Bolesne.InputTransparent = false;
+                Chwalebne.InputTransparent = false;
+
                 var scale = s.ScaleToAsync(0.66, 750, Easing.SinInOut);
                 Task t, o1, o2, o3, labelScale, labelFade;
 
@@ -233,9 +238,15 @@ namespace MauiApp1
                 Task o1, o2, o3, labelScale, labelFade;
                 Border border = null;
 
+                Radosne.InputTransparent = true;
+                Swiatla.InputTransparent = true;
+                Bolesne.InputTransparent = true;
+                Chwalebne.InputTransparent = true;
+
                 switch (partName)
                 {
                     case "Radosne":
+                        Radosne.InputTransparent = false;
                         border = RadosneBorder;
                         o1 = Swiatla.FadeToAsync(0, 750, Easing.SinInOut);
                         o2 = Bolesne.FadeToAsync(0, 750, Easing.SinInOut);
@@ -244,6 +255,7 @@ namespace MauiApp1
                         labelFade = RadosneLabel.FadeToAsync(0, 750, Easing.SinInOut);
                         break;
                     case "Światła":
+                        Swiatla.InputTransparent = false;
                         border = SwiatlaBorder;
                         o1 = Radosne.FadeToAsync(0, 750, Easing.SinInOut);
                         o2 = Bolesne.FadeToAsync(0, 750, Easing.SinInOut);
@@ -252,6 +264,7 @@ namespace MauiApp1
                         labelFade = SwiatlaLabel.FadeToAsync(0, 750, Easing.SinInOut);
                         break;
                     case "Bolesne":
+                        Bolesne.InputTransparent = false;
                         border = BolesneBorder;
                         o1 = Radosne.FadeToAsync(0, 750, Easing.SinInOut);
                         o2 = Swiatla.FadeToAsync(0, 750, Easing.SinInOut);
@@ -261,6 +274,7 @@ namespace MauiApp1
                         break;
                     case "Chwalebne":
                     default:
+                        Chwalebne.InputTransparent = false;
                         border = ChwalebneBorder;
                         o1 = Radosne.FadeToAsync(0, 750, Easing.SinInOut);
                         o2 = Swiatla.FadeToAsync(0, 750, Easing.SinInOut);
