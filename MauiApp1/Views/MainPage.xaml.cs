@@ -57,6 +57,7 @@ namespace MauiApp1
         };
 
         private string _selectedPart = null;
+        private bool _firstload;
 
         public MainPage(MeditationsService meditationService, AuthService authService, RosaryService rosaryService)
         {
@@ -64,13 +65,7 @@ namespace MauiApp1
             _meditationService = meditationService;
             _authService = authService;
             _rosaryService = rosaryService;
-            StarterAnimation();
-            foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
-            {
-                btn.TranslationX = btn.TranslationY = 0;
-                btn.Scale = 0.33;
-                btn.Opacity = 0;
-            }
+            _firstload = true;
         }
 
         protected override async void OnAppearing()
@@ -84,15 +79,17 @@ namespace MauiApp1
             {
                 background.Source = "mainpagebackground.png";
             }
-          
 
-          
+            if(_firstload)
+            {
+                _firstload = false;
+                await StarterAnimation();
+            }
 
             string previousPart = Preferences.Default.Get("LastPart", string.Empty);
             if (!string.IsNullOrEmpty(previousPart))
             {
-                _selectedPart = previousPart;
-                Grid activeRosaryGrid = _selectedPart switch
+                Grid activeRosaryGrid = previousPart switch
                 {
                     "Radosne" => Radosne,
                     "Światła" => Swiatla,
@@ -110,6 +107,12 @@ namespace MauiApp1
 
         private async Task StarterAnimation()
         {
+            foreach (var btn in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            {
+                btn.TranslationX = btn.TranslationY = 0;
+                btn.Scale = 0.33;
+                btn.Opacity = 0;
+            }
             foreach (var btn in new[] { Radosne, Swiatla, Bolesne, Chwalebne })
             {
                 btn.TranslationX = btn.TranslationY = 0;
@@ -583,13 +586,5 @@ namespace MauiApp1
             await CloseMysteryAnimation();
             await StarterAnimation();
         }
-
-        private async void RosaryMeditations_Tapped(object sender, TappedEventArgs e)
-        {
-            await Shell.Current.GoToAsync("RosaryMeditations");
-        }
-        private async void OnFullRosary_Tapped(object sender, TappedEventArgs e)
-        { 
-        }
-        }
+    }
 }
