@@ -136,17 +136,34 @@ Opacity="0">
                 <Label Grid.Row="1" x:Name="SelectedMysteryLabel" HorizontalOptions="Center"/>
             </Grid>
 
-           
-            <Grid x:Name="CalendarGrid"
-    Grid.Row="1"
-    RowDefinitions="*,*,*,*,*,*"
-    ColumnDefinitions="*,*,*,*,*,*"
-    RowSpacing="8"
-    ColumnSpacing="8"
-    Margin="20,0,20,20"  >
-              
-            </Grid>
-            
+            <CollectionView x:Name="ButtonsCollectionView"
+                            Grid.Row="2"
+                            ItemsSource="{Binding Numbers}"
+                            Margin="10">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout x:Name="GridLayout"
+                                     Orientation="Vertical"
+                                     Span="4"
+                                     HorizontalItemSpacing="8"
+                                     VerticalItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="x:Int32">
+                        <Border Style="{StaticResource AppCalendarDayButton}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NumberTappedCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+
+                            <Label Text="{Binding .}"
+                                   Style="{StaticResource AppCalendarDayLabel}" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
         </Grid>
 
 

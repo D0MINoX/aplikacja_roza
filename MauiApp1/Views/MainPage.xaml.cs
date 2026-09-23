@@ -1,7 +1,9 @@
 ﻿using MauiApp1.Models;
 using MauiApp1.Services;
+using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Windows.Input;
 
 namespace MauiApp1
 {
@@ -59,6 +61,10 @@ namespace MauiApp1
         private string _selectedPart = null;
         private bool _firstload;
 
+
+        public ObservableCollection<int> Numbers { get; } = new(Enumerable.Range(0, 32));
+        public ICommand NumberTappedCommand { get; }
+
         public MainPage(MeditationsService meditationService, AuthService authService, RosaryService rosaryService)
         {
             InitializeComponent();
@@ -66,6 +72,9 @@ namespace MauiApp1
             _authService = authService;
             _rosaryService = rosaryService;
             _firstload = true;
+
+            NumberTappedCommand = new Command<int>(HandleDaySelection);
+            BindingContext = this;
         }
 
         protected override async void OnAppearing()
@@ -282,7 +291,6 @@ namespace MauiApp1
                 await ShowMysteryAnimation(border);
             }
         }
-
         private async void SetImageAndLabel()
         {
             Mystery1Image.Source = _imagesMap[_selectedPart][0];
@@ -335,7 +343,6 @@ namespace MauiApp1
             }
             await Task.WhenAll(animationTasks);
         }
-
         private async Task CloseMysteryAnimation()
         {
             var animationTasks = new List<Task>();
@@ -414,7 +421,7 @@ namespace MauiApp1
             }
 
             Preferences.Default.Set("LastMystery", mysteries[index].FullDescription);
-            GenerateCalendarGrid();
+            //GenerateCalendarGrid();
 
             SelectedMysteryPreview.IsVisible = true;
             SelectedMysteryPreview.Opacity = 1;
@@ -499,63 +506,63 @@ namespace MauiApp1
             }
         }
 
-        private void GenerateCalendarGrid()
-        {
-            CalendarGrid.Children.Clear();
-            int totalItems = 32; // Liczba dni: od 0 do 31
-            int columnsCount = 6; // 6 kolumn w rzędzie
-            int lastDate = Preferences.Get("LastCompleteDate", -1);
+        //private void GenerateCalendarGrid()
+        //{
+        //    CalendarGrid.Children.Clear();
+        //    int totalItems = 32; // Liczba dni: od 0 do 31
+        //    int columnsCount = 6; // 6 kolumn w rzędzie
+        //    int lastDate = Preferences.Get("LastCompleteDate", -1);
 
-            for (int i = 0; i < totalItems; i++)
-            {
-                int dayNumber = i;
-                int row = i / columnsCount;
-                int col = i % columnsCount;
+        //    for (int i = 0; i < totalItems; i++)
+        //    {
+        //        int dayNumber = i;
+        //        int row = i / columnsCount;
+        //        int col = i % columnsCount;
 
-                var border = new Border
-                {
-                    HorizontalOptions = LayoutOptions.Fill,
-                    VerticalOptions = LayoutOptions.Fill,
-                };
+        //        var border = new Border
+        //        {
+        //            HorizontalOptions = LayoutOptions.Fill,
+        //            VerticalOptions = LayoutOptions.Fill,
+        //        };
 
-                if (App.Current.Resources.TryGetValue("AppCalendarDayButton", out var borderStyle))
-                {
-                    border.Style = (Style)borderStyle;
-                }
+        //        if (App.Current.Resources.TryGetValue("AppCalendarDayButton", out var borderStyle))
+        //        {
+        //            border.Style = (Style)borderStyle;
+        //        }
 
-                var label = new Label
-                {
-                    Text = dayNumber.ToString(),
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
-                };
+        //        var label = new Label
+        //        {
+        //            Text = dayNumber.ToString(),
+        //            HorizontalOptions = LayoutOptions.Center,
+        //            VerticalOptions = LayoutOptions.Center
+        //        };
 
-                if (App.Current.Resources.TryGetValue("AppCalendarDayLabel", out var labelStyle))
-                {
-                    label.Style = (Style)labelStyle;
-                }
+        //        if (App.Current.Resources.TryGetValue("AppCalendarDayLabel", out var labelStyle))
+        //        {
+        //            label.Style = (Style)labelStyle;
+        //        }
 
-                border.Content = label;
+        //        border.Content = label;
 
-                if (dayNumber <= lastDate)
-                {
-                    border.Opacity = 0.2;
-                }
+        //        if (dayNumber <= lastDate)
+        //        {
+        //            border.Opacity = 0.2;
+        //        }
 
-                var tapGesture = new TapGestureRecognizer();
-                tapGesture.Tapped += async (s, e) =>
-                {
-                    await border.ScaleToAsync(0.9, 50, Easing.Linear);
-                    await border.ScaleToAsync(1.0, 50, Easing.Linear);
-                    HandleDaySelection(dayNumber);
-                };
-                border.GestureRecognizers.Add(tapGesture);
+        //        var tapGesture = new TapGestureRecognizer();
+        //        tapGesture.Tapped += async (s, e) =>
+        //        {
+        //            await border.ScaleToAsync(0.9, 50, Easing.Linear);
+        //            await border.ScaleToAsync(1.0, 50, Easing.Linear);
+        //            HandleDaySelection(dayNumber);
+        //        };
+        //        border.GestureRecognizers.Add(tapGesture);
 
-                Grid.SetRow(border, row);
-                Grid.SetColumn(border, col);
-                CalendarGrid.Children.Add(border);
-            }
-        }
+        //        Grid.SetRow(border, row);
+        //        Grid.SetColumn(border, col);
+        //        CalendarGrid.Children.Add(border);
+        //    }
+        //}
 
         private async void HandleDaySelection(int wybranyDzien)
         {
@@ -585,6 +592,31 @@ namespace MauiApp1
 
             await CloseMysteryAnimation();
             await StarterAnimation();
+        }
+
+        private void OnPageSizeChanged(object sender, EventArgs e)
+        {
+            double width = this.Width;
+
+            int span = width switch
+            {
+                <= 0 => 4,
+                < 400 => 3,   // telefon w pionie, wąski ekran
+                < 600 => 4,   // telefon szerszy / mały tablet
+                < 900 => 6,   // tablet w pionie
+                < 1200 => 8,  // tablet w poziomie / mały desktop
+                _ => 10       // duży desktop
+            };
+
+            GridLayout.Span = span;
+        }
+
+        private void OnButtonClicked(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            int number = (int)button.CommandParameter;
+
+            HandleDaySelection(number);
         }
     }
 }
