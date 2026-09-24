@@ -84,7 +84,7 @@
         <Setter Property="StrokeShape">
             <RoundRectangle CornerRadius="20"/>
         </Setter>
-        <Setter Property="MinimumWidthRequest" Value="100"/>
+        
         <Setter Property="Padding" Value="10"/>
         <Setter Property="Margin" Value="10"/>
     </Style>

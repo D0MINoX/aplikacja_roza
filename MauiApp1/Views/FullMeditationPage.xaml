@@ -33,15 +33,15 @@
 
                     <!-- przyciski -->
                     <Grid ColumnDefinitions="*,*,*" Grid.Row="2">
-                        <Border Grid.Column="0" HorizontalOptions="Start" Style="{StaticResource NavButton}">
+                        <Border Grid.Column="0"  Style="{StaticResource NavButton}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="PreviousTapped"/>
                             </Border.GestureRecognizers>
-                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
-                                Wstecz
-                            </Label>
+                            <Label InputTransparent="True" Text="&lt;" Style="{StaticResource OptionLabel}"/>
+
+
                         </Border>
-                        <Border Grid.Column="1" HorizontalOptions="End" x:Name="Complete" Style="{StaticResource NavButton}">
+                        <Border Grid.Column="1" x:Name="Complete" Style="{StaticResource NavButton}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="CompletedTapped"/>
                             </Border.GestureRecognizers>
@@ -49,12 +49,12 @@
                                 Ukończono
                             </Label>
                         </Border>
-                        <Border Grid.Column="2" HorizontalOptions="End" Style="{StaticResource NavButton}">
+                        <Border Grid.Column="2" Style="{StaticResource NavButton}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="NextTapped"/>
                             </Border.GestureRecognizers>
                             <Label InputTransparent="True" Style="{StaticResource OptionLabel}" Margin="0,0,0,0">
-                                Dalej
+                                >
                             </Label>
                         </Border>
                     </Grid>
