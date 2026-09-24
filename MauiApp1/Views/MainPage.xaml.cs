@@ -75,11 +75,15 @@ namespace MauiApp1
 
             NumberTappedCommand = new Command<int>(HandleDaySelection);
             BindingContext = this;
+
+            this.Loaded += MainPage_Loaded;
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+
+
             if (Preferences.Get("app_main_theme", false))
             {
                 background.Source = "mainpagebackgrounddark.png";
@@ -611,12 +615,25 @@ namespace MauiApp1
             GridLayout.Span = span;
         }
 
-        private void OnButtonClicked(object sender, EventArgs e)
+        private async void OnButtonClicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
             int number = (int)button.CommandParameter;
 
+            await button.ScaleToAsync(0.9, 50, Easing.Linear);
+            await button.ScaleToAsync(1.0, 50, Easing.Linear);
+
             HandleDaySelection(number);
+        }
+
+        private void MainPage_Loaded(object sender, EventArgs e)
+        {
+            OnPageSizeChanged(sender, e);
+            // Tutaj bezpiecznie można ustawiać IsVisible na Windows
+            CalendarContainer.IsVisible = false;
+
+            // Odpinamy handler, żeby nie wykonał się ponownie przy kolejnych "Loaded"
+            this.Loaded -= MainPage_Loaded;
         }
     }
 }
