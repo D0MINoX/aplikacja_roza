@@ -106,12 +106,11 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     {
         if (MeditationWebView == null) return;
 
-        bool isDark = Application.Current?.UserAppTheme == AppTheme.Dark
-            || (Application.Current?.UserAppTheme == AppTheme.Unspecified && Application.Current?.RequestedTheme == AppTheme.Dark);
+        bool isDark = Preferences.Get("app_main_theme", false);
 
-        string bgColor = isDark ? "#121212" : "#FFFFFF";
-        string textColor = isDark ? "#E0E0E0" : "#333333";
-        string headingColor = isDark ? "#FFFFFF" : "#111111";
+        string bgColor = isDark ? "#080808" : "#FAFAFA";
+        string textColor = isDark ? "#F1F1F1" : "#1F1F1F";
+        string headingColor = isDark ? "#F1F1F1" : "#1F1F1F";
 
         string fullHtmlPage = $@"
 <!DOCTYPE html>  
@@ -195,10 +194,6 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         //await _notificationService.ScheduleWeeklyReminders();
     }
 
-    private async void BackTapped(object sender, TappedEventArgs e)
-    {
-        await Navigation.PopAsync();
-    }
     private async Task<LocalMeditation> GetMeditationFromLocalFile(int day, string mystery)
     {
         try

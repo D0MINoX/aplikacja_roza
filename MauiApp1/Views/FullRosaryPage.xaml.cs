@@ -60,7 +60,7 @@ namespace MauiApp1.Views
         {
             base.OnAppearing();
 
-            date = Preferences.Default.Get("LastDate", 1);
+            date = Preferences.Default.Get("LastCompleteDate", 1);
             if (date <= 0) date = 1;
 
             LoadFullRosary();
@@ -150,12 +150,11 @@ namespace MauiApp1.Views
         {
             if (MeditationWebView == null) return;
 
-            bool isDark = Application.Current?.UserAppTheme == AppTheme.Dark
-                || (Application.Current?.UserAppTheme == AppTheme.Unspecified && Application.Current?.RequestedTheme == AppTheme.Dark);
+            bool isDark = Preferences.Get("app_main_theme", false);
 
-            string bgColor = isDark ? "#121212" : "#FFFFFF";
-            string textColor = isDark ? "#E0E0E0" : "#333333";
-            string headingColor = isDark ? "#FFFFFF" : "#111111";
+            string bgColor = isDark ? "#080808" : "#FAFAFA";
+            string textColor = isDark ? "#F1F1F1" : "#1F1F1F";
+            string headingColor = isDark ? "#F1F1F1" : "#1F1F1F";
 
             string fullHtmlPage = $@"
 <!DOCTYPE html>  
