@@ -136,17 +136,17 @@ Opacity="0">
                 <Label Grid.Row="1" x:Name="SelectedMysteryLabel" HorizontalOptions="Center"/>
             </Grid>
 
-           
+
             <Grid x:Name="CalendarGrid"
-    Grid.Row="1"
-    RowDefinitions="*,*,*,*,*,*"
-    ColumnDefinitions="*,*,*,*,*,*"
-    RowSpacing="8"
-    ColumnSpacing="8"
-    Margin="20,0,20,20"  >
-              
+      Grid.Row="1"
+      RowDefinitions="*,*,*,*,*,*,*"
+      ColumnDefinitions="*,*,*,*,*,*"
+      RowSpacing="8"
+      ColumnSpacing="8"
+      Margin="20,0,20,20"
+      HorizontalOptions="FillAndExpand">
             </Grid>
-            
+
         </Grid>
 
 

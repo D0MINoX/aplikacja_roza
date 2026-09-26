@@ -55,7 +55,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         if (_isBusy) return;
         try
         {
-            DateLabel.Text = "Dzień " + date;
+           // DateLabel.Text = "Dzień " + date;
             
 
             string selectedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");

@@ -19,7 +19,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>Żywa Róża</ApplicationTitle>
+		<ApplicationTitle>Różańcowy Szlak</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.mauiapp1</ApplicationId>
@@ -54,7 +54,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appicon.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.png" Foreground="Resources\AppIcon\appicon.png" Color="#FFFFFF" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#072C72" BaseSize="340,512" TintSuffix="False" />
@@ -68,6 +68,8 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
+
+	
 
 
 

@@ -516,15 +516,73 @@ namespace MauiApp1
         private void GenerateCalendarGrid()
         {
             CalendarGrid.Children.Clear();
-            int totalItems = 32; // Liczba dni: od 0 do 31
-            int columnsCount = 6; // 6 kolumn w rzędzie
+
+            int columnsCount = 6;
             int lastDate = Preferences.Get("LastCompleteDate", -1);
 
-            for (int i = 0; i < totalItems; i++)
+            // =========================
+            // WPROWADZENIE - cały wiersz
+            // =========================
+
+            var borderWprowadzenie = new Border
             {
-                int dayNumber = i;
-                int row = i / columnsCount;
-                int col = i % columnsCount;
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+            };
+
+            if (App.Current.Resources.TryGetValue("AppCalendarDayButton", out var borderStyleWprowadzenie))
+            {
+                borderWprowadzenie.Style = (Style)borderStyleWprowadzenie;
+            }
+
+            var labelWprowadzenie = new Label
+            {
+                Text = "Wprowadzenie",
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+            };
+
+            if (App.Current.Resources.TryGetValue("AppCalendarDayLabel", out var labelStyleWprowadzenie))
+            {
+                labelWprowadzenie.Style = (Style)labelStyleWprowadzenie;
+            }
+
+            borderWprowadzenie.Content = labelWprowadzenie;
+
+            if (lastDate >= 0)
+            {
+                borderWprowadzenie.Opacity = 0.2;
+            }
+
+            var tapGestureWprowadzenie = new TapGestureRecognizer();
+
+            tapGestureWprowadzenie.Tapped += async (s, e) =>
+            {
+                await borderWprowadzenie.ScaleToAsync(0.9, 50, Easing.Linear);
+                await borderWprowadzenie.ScaleToAsync(1.0, 50, Easing.Linear);
+
+                HandleDaySelection(0);
+            };
+
+            borderWprowadzenie.GestureRecognizers.Add(tapGestureWprowadzenie);
+
+            Grid.SetRow(borderWprowadzenie, 0);
+            Grid.SetColumn(borderWprowadzenie, 0);
+            Grid.SetColumnSpan(borderWprowadzenie, 6);
+
+            CalendarGrid.Children.Add(borderWprowadzenie);
+
+
+            // =========================
+            // DNI 1 - 30
+            // =========================
+
+            for (int dayNumber = 1; dayNumber <= 30; dayNumber++)
+            {
+                int index = dayNumber - 1;
+
+                int row = (index / columnsCount) + 1;
+                int col = index % columnsCount;
 
                 var border = new Border
                 {
@@ -556,19 +614,89 @@ namespace MauiApp1
                     border.Opacity = 0.2;
                 }
 
+                int selectedDay = dayNumber;
+
                 var tapGesture = new TapGestureRecognizer();
+
                 tapGesture.Tapped += async (s, e) =>
                 {
                     await border.ScaleToAsync(0.9, 50, Easing.Linear);
                     await border.ScaleToAsync(1.0, 50, Easing.Linear);
-                    HandleDaySelection(dayNumber);
+
+                    HandleDaySelection(selectedDay);
                 };
+
                 border.GestureRecognizers.Add(tapGesture);
 
                 Grid.SetRow(border, row);
                 Grid.SetColumn(border, col);
+
                 CalendarGrid.Children.Add(border);
             }
+
+
+            // =========================
+            // DODATEK - dzień 31
+            // cały dolny wiersz
+            // =========================
+
+            int dodatekDay = 31;
+
+            // 30 dni / 6 kolumn = 5 wierszy
+            // Wprowadzenie = row 0
+            // Dni = row 1-5
+            // Dodatek = row 6
+            int dodatekRow = 6;
+
+            var borderDodatek = new Border
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                
+            };
+
+            if (App.Current.Resources.TryGetValue("AppCalendarDayButton", out var borderStyleDodatek))
+            {
+                borderDodatek.Style = (Style)borderStyleDodatek;
+            }
+
+            var labelDodatek = new Label
+            {
+                Text = "Dodatek",
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+                
+            };
+
+            if (App.Current.Resources.TryGetValue("AppCalendarDayLabel", out var labelStyleDodatek))
+            {
+                labelDodatek.Style = (Style)labelStyleDodatek;
+            }
+
+            borderDodatek.Content = labelDodatek;
+
+            if (dodatekDay <= lastDate)
+            {
+                borderDodatek.Opacity = 0.2;
+            }
+
+            var tapGestureDodatek = new TapGestureRecognizer();
+
+            tapGestureDodatek.Tapped += async (s, e) =>
+            {
+                await borderDodatek.ScaleToAsync(0.9, 50, Easing.Linear);
+                await borderDodatek.ScaleToAsync(1.0, 50, Easing.Linear);
+
+                HandleDaySelection(31);
+            };
+
+            borderDodatek.GestureRecognizers.Add(tapGestureDodatek);
+
+            Grid.SetRow(borderDodatek, 6);
+            Grid.SetColumn(borderDodatek, 0);
+            Grid.SetColumnSpan(borderDodatek, 6);
+
+            CalendarGrid.Children.Add(borderDodatek);
         }
 
         private async void HandleDaySelection(int wybranyDzien)
