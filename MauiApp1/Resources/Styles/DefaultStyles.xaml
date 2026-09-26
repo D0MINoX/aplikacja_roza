@@ -61,7 +61,7 @@
     </Style>
 
     <Style TargetType="Label" x:Key="HeaderLabel">
-        <Setter Property="VerticalOptions" Value="Start"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="Title"/>
         <Setter Property="FontAttributes" Value="Bold"/>
     </Style>
@@ -220,8 +220,7 @@
 
         <Setter Property="HorizontalOptions" Value="Center"/>
         <Setter Property="VerticalOptions" Value="Center"/>
-        <Setter Property="WidthRequest" Value="46"/>
-        <Setter Property="HeightRequest" Value="46"/>
+       
 
         <Setter Property="Shadow">
             <Setter.Value>
