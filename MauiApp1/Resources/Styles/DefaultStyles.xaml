@@ -197,8 +197,8 @@
     </Style>
 
     <Style TargetType="Border" x:Key="MeditationButton">
-        <Setter Property="HorizontalOptions" Value="Center"/>
-        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
         <Setter Property="WidthRequest" Value="120"/>
         <Setter Property="HeightRequest" Value="120"/>
         <Setter Property="StrokeShape">

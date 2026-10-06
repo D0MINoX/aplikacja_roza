@@ -148,9 +148,12 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="x:Int32">
-                        <Border Style="{StaticResource AppCalendarDayButton}">
+                        <Border Style="{StaticResource AppCalendarDayButton}"
+                                BindingContextChanged="OnDayBorderBindingContextChanged"
+                                Loaded="OnDayBorderLoaded">
+
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer
+                                <TapGestureRecognizer 
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NumberTappedCommand}"
                                     CommandParameter="{Binding .}" />
                             </Border.GestureRecognizers>

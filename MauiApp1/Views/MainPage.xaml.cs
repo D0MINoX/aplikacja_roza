@@ -61,6 +61,8 @@ namespace MauiApp1
         private string _selectedPart = null;
         private bool _firstload;
 
+        private int lastDate;
+
 
         public ObservableCollection<int> Numbers { get; } = new(Enumerable.Range(0, 32));
         public ICommand NumberTappedCommand { get; }
@@ -83,6 +85,7 @@ namespace MauiApp1
         {
             base.OnAppearing();
 
+            lastDate = Preferences.Get("LastCompleteDate", -1);
 
             if (Preferences.Get("app_main_theme", false))
             {
@@ -370,6 +373,7 @@ namespace MauiApp1
         private async void Mystery_Tapped(object sender, TappedEventArgs e)
         {
             if (string.IsNullOrEmpty(_selectedPart)) return;
+            RefreshCalendar();
 
             int mysteryNumber = int.Parse(e.Parameter.ToString());
             int index = mysteryNumber - 1; // Indeks listy (0-4)
@@ -425,7 +429,6 @@ namespace MauiApp1
             }
 
             Preferences.Default.Set("LastMystery", mysteries[index].FullDescription);
-            //GenerateCalendarGrid();
 
             SelectedMysteryPreview.IsVisible = true;
             SelectedMysteryPreview.Opacity = 1;
@@ -510,64 +513,6 @@ namespace MauiApp1
             }
         }
 
-        //private void GenerateCalendarGrid()
-        //{
-        //    CalendarGrid.Children.Clear();
-        //    int totalItems = 32; // Liczba dni: od 0 do 31
-        //    int columnsCount = 6; // 6 kolumn w rzędzie
-        //    int lastDate = Preferences.Get("LastCompleteDate", -1);
-
-        //    for (int i = 0; i < totalItems; i++)
-        //    {
-        //        int dayNumber = i;
-        //        int row = i / columnsCount;
-        //        int col = i % columnsCount;
-
-        //        var border = new Border
-        //        {
-        //            HorizontalOptions = LayoutOptions.Fill,
-        //            VerticalOptions = LayoutOptions.Fill,
-        //        };
-
-        //        if (App.Current.Resources.TryGetValue("AppCalendarDayButton", out var borderStyle))
-        //        {
-        //            border.Style = (Style)borderStyle;
-        //        }
-
-        //        var label = new Label
-        //        {
-        //            Text = dayNumber.ToString(),
-        //            HorizontalOptions = LayoutOptions.Center,
-        //            VerticalOptions = LayoutOptions.Center
-        //        };
-
-        //        if (App.Current.Resources.TryGetValue("AppCalendarDayLabel", out var labelStyle))
-        //        {
-        //            label.Style = (Style)labelStyle;
-        //        }
-
-        //        border.Content = label;
-
-        //        if (dayNumber <= lastDate)
-        //        {
-        //            border.Opacity = 0.2;
-        //        }
-
-        //        var tapGesture = new TapGestureRecognizer();
-        //        tapGesture.Tapped += async (s, e) =>
-        //        {
-        //            await border.ScaleToAsync(0.9, 50, Easing.Linear);
-        //            await border.ScaleToAsync(1.0, 50, Easing.Linear);
-        //            HandleDaySelection(dayNumber);
-        //        };
-        //        border.GestureRecognizers.Add(tapGesture);
-
-        //        Grid.SetRow(border, row);
-        //        Grid.SetColumn(border, col);
-        //        CalendarGrid.Children.Add(border);
-        //    }
-        //}
-
         private async void HandleDaySelection(int wybranyDzien)
         {
             this.date = wybranyDzien;
@@ -613,6 +558,51 @@ namespace MauiApp1
             };
 
             GridLayout.Span = span;
+        }
+
+        private void OnDayBorderBindingContextChanged(object sender, EventArgs e)
+        {
+            if (sender is Border border)
+                UpdateDayBorder(border);
+        }
+
+        private void OnDayBorderLoaded(object sender, EventArgs e)
+        {
+            if (sender is Border border)
+                UpdateDayBorder(border);
+        }
+
+        private void UpdateDayBorder(Border border)
+        {
+            if (border.BindingContext is not int dayNumber)
+                return;
+
+            // Czytamy aktualną wartość, zamiast pola z OnAppearing.
+            //int completedDay = Preferences.Default.Get("LastCompleteDate", -1);
+
+            border.Opacity = dayNumber <= lastDate ? 0.2 : 1.0;
+        }
+
+        private async void RefreshCalendar()
+        {
+            Dispatcher.Dispatch(() =>
+            {
+                if (ButtonsCollectionView.ItemsSource
+                    is not ObservableCollection<int> numbers)
+                {
+                    return;
+                }
+
+                // Zapamiętujemy aktualne elementy przed wyczyszczeniem.
+                int[] days = numbers.ToArray();
+
+                numbers.Clear();
+
+                foreach (int day in days)
+                {
+                    numbers.Add(day);
+                }
+            });
         }
 
         private async void OnButtonClicked(object sender, EventArgs e)
