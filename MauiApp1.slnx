@@ -1,5 +1,4 @@
 <Solution>
-  <Project Path="../Users/jedrz/source/repos/WebAPI/WebAPI/WebAPI.csproj" />
   <Project Path="MauiApp1/MauiApp1.csproj">
     <Deploy Solution="Debug|*" />
   </Project>

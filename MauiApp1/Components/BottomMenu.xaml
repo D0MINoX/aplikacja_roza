@@ -19,7 +19,7 @@
         <Border.StrokeShape>
             <RoundRectangle CornerRadius="20,20,0,0"/>
         </Border.StrokeShape>
-        <Grid ColumnDefinitions="*,*,*,*,*">
+        <Grid ColumnDefinitions="*,*,*,*">
             <!-- ten label jest tylko po to zeby zmieniac kolor ikonek dynamicnie -->
             <Label x:Name="Ref" BackgroundColor="{DynamicResource Tertiary}" IsEnabled="False" IsVisible="False" />
             
@@ -38,21 +38,8 @@
                 </Label>
             </Grid>
             
-            <!-- Rozważania -->
+            <!-- Różaniec -->
             <Grid RowDefinitions="auto,auto" Grid.Column="1">
-                <Image Grid.Row="0" Source="book.png" Style="{StaticResource OptionImage}">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="MeditationsButton_Tapped"/>
-                    </Image.GestureRecognizers>
-                    <Image.Behaviors>
-                        <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
-                    </Image.Behaviors>
-                </Image>
-                <Label Grid.Row="1" TextColor="{DynamicResource Text}" HorizontalOptions="Center">
-                    Rozważania
-                </Label>
-            </Grid>
-            <Grid RowDefinitions="auto,auto" Grid.Column="2">
                 <Image Grid.Row="0" Source="book.png" Style="{StaticResource OptionImage}">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="FullRosaryButton_Tapped"/>
@@ -66,7 +53,8 @@
                 </Label>
             </Grid>
             
-            <Grid RowDefinitions="auto,auto" Grid.Column="3">
+            <!-- Róża -->
+            <Grid RowDefinitions="auto,auto" Grid.Column="2">
                 <Image Grid.Row="0" Source="flower.png" Style="{StaticResource OptionImage}">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="RosaryButton_Tapped"/>
@@ -81,7 +69,7 @@
             </Grid>
 
             <!-- Ustawienia -->
-            <Grid RowDefinitions="auto,auto" Grid.Column="4">
+            <Grid RowDefinitions="auto,auto" Grid.Column="3">
                 <Image Grid.Row="0" Source="settings.png" Style="{StaticResource OptionImage}">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="SettingsButton_Tapped"/>
