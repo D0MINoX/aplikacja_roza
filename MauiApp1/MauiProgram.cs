@@ -28,7 +28,7 @@ namespace MauiApp1
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-            string baseAddress = "https://api.rosaryapi.pl";
+            string baseAddress = "https://rosary.zse-2.krakow.pl";
             //#if DEBUG
             //            var handler = new HttpClientHandler();
             //            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;

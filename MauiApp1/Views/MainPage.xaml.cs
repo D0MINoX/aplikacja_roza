@@ -12,6 +12,9 @@ namespace MauiApp1
         public AuthService _authService;
         public RosaryService _rosaryService;
 
+        private const int CalendarResetDay = 28;
+        private const string RestoreCalendarPreference = "RestoreCalendarOnStart";
+
         private static readonly Dictionary<string, List<MysteryItem>> _itemsMap = new()
         {
             ["Radosne"] = new()
@@ -58,6 +61,7 @@ namespace MauiApp1
 
         private string _selectedPart = null;
         private bool _firstload;
+        private bool _resetMenuOnReturn;
 
         public MainPage(MeditationsService meditationService, AuthService authService, RosaryService rosaryService)
         {
@@ -80,29 +84,92 @@ namespace MauiApp1
                 background.Source = "mainpagebackground.png";
             }
 
-            if(_firstload)
+            bool firstLoad = _firstload;
+            _firstload = false;
+
+            if (!CalendarContainer.IsVisible && TryRestoreCalendar())
             {
-                _firstload = false;
+                _resetMenuOnReturn = false;
+                return;
+            }
+
+            if (firstLoad)
+            {
                 await StarterAnimation();
             }
 
-            string previousPart = Preferences.Default.Get("LastPart", string.Empty);
-            if (!string.IsNullOrEmpty(previousPart))
+            if (_resetMenuOnReturn)
             {
-                Grid activeRosaryGrid = previousPart switch
+                _resetMenuOnReturn = false;
+                ResetRosaryMenu();
+            }
+        }
+
+        private bool TryRestoreCalendar()
+        {
+            // U poprzednich użytkowników zapamiętany dzień określa, czy cykl się zakończył.
+            bool previousCycleInProgress = Preferences.Default.Get("LastDate", 0) < CalendarResetDay;
+            if (!Preferences.Default.Get(RestoreCalendarPreference, previousCycleInProgress))
+                return false;
+
+            string savedMystery = Preferences.Default.Get("LastMystery", string.Empty);
+            foreach (var (part, mysteries) in _itemsMap)
+            {
+                int index = mysteries.FindIndex(mystery =>
+                    string.Equals(mystery.FullDescription, savedMystery, StringComparison.OrdinalIgnoreCase));
+                if (index < 0)
+                    continue;
+
+                ResetRosaryMenu();
+                foreach (var partGrid in new[] { Radosne, Swiatla, Bolesne, Chwalebne })
                 {
-                    "Radosne" => Radosne,
-                    "Światła" => Swiatla,
-                    "Bolesne" => Bolesne,
-                    "Chwalebne" => Chwalebne,
-                    _ => null
-                };
-                    activeRosaryGrid.IsVisible = true;
+                    partGrid.Opacity = 0;
+                    partGrid.InputTransparent = true;
+                }
+
+                CenterImage.IsVisible = false;
+                ShowCalendar(part, index, opacity: 1, scale: 1);
+                return true;
             }
-            else
+
+            return false;
+        }
+
+        private void ResetRosaryMenu()
+        {
+            _selectedPart = null;
+            CalendarContainer.IsVisible = false;
+            CalendarContainer.InputTransparent = false;
+            SelectedMysteryPreview.IsVisible = false;
+            SelectedMysteryPreview.Opacity = 0;
+
+            foreach (var mystery in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
             {
-                _selectedPart = null;
+                mystery.TranslationX = mystery.TranslationY = 0;
+                mystery.Scale = 0.33;
+                mystery.Opacity = 0;
             }
+
+            foreach (var (part, label, x, y) in new[]
+            {
+                (Radosne, RadosneLabel, 100, -100),
+                (Swiatla, SwiatlaLabel, 100, 100),
+                (Bolesne, BolesneLabel, -100, 100),
+                (Chwalebne, ChwalebneLabel, -100, -100)
+            })
+            {
+                part.TranslationX = x;
+                part.TranslationY = y;
+                part.Scale = 0.66;
+                part.Opacity = 1;
+                part.InputTransparent = false;
+                label.Scale = 1.5;
+                label.Opacity = 1;
+            }
+
+            CenterImage.Scale = 2;
+            CenterImage.Opacity = 1;
+            CenterImage.IsVisible = true;
         }
 
         private async Task StarterAnimation()
@@ -168,7 +235,6 @@ namespace MauiApp1
         {
             Grid s = sender as Grid;
             string partName = e.Parameter.ToString();
-            Preferences.Default.Set("LastPart", partName);
             if (_selectedPart == partName)
             {
                 await CloseMysteryAnimation();
@@ -377,14 +443,8 @@ namespace MauiApp1
             int mysteryNumber = int.Parse(e.Parameter.ToString());
             int index = mysteryNumber - 1; // Indeks listy (0-4)
 
-            List<MysteryItem> mysteries = _itemsMap[_selectedPart];
-            string newMystery = mysteries[index].FullDescription;
-
-            if (_imagesMap.ContainsKey(_selectedPart))
-            {
-                SelectedMysteryImage.Source = _imagesMap[_selectedPart][index];
-            }
-            SelectedMysteryLabel.Text = mysteries[index].ShortLabel;
+            string part = _selectedPart;
+            string newMystery = _itemsMap[part][index].FullDescription;
 
             var hideTasks = new List<Task>();
 
@@ -427,20 +487,30 @@ namespace MauiApp1
                 System.Diagnostics.Debug.WriteLine($"Wybrano tę samą tajemnicę: '{newMystery}' -> Zachowano postęp LastDate.");
             }
 
-            Preferences.Default.Set("LastMystery", mysteries[index].FullDescription);
+            Preferences.Default.Set("LastMystery", newMystery);
+            Preferences.Default.Set(RestoreCalendarPreference, true);
+            ShowCalendar(part, index, opacity: 0, scale: 0.8);
+
+            await Task.WhenAll(
+                CalendarContainer.FadeToAsync(1, 450, Easing.SinInOut),
+                CalendarContainer.ScaleToAsync(1, 450, Easing.SinInOut)
+            );
+        }
+
+        private void ShowCalendar(string part, int index, double opacity, double scale)
+        {
+            SelectedMysteryImage.Source = _imagesMap[part][index];
+            SelectedMysteryLabel.Text = _itemsMap[part][index].ShortLabel;
             GenerateCalendarGrid();
 
             SelectedMysteryPreview.IsVisible = true;
             SelectedMysteryPreview.Opacity = 1;
             SelectedMysteryPreview.Scale = 0.8;
 
+            CalendarContainer.Opacity = opacity;
+            CalendarContainer.Scale = scale;
+            CalendarContainer.InputTransparent = false;
             CalendarContainer.IsVisible = true;
-            CalendarContainer.Scale = 0.8;
-
-            await Task.WhenAll(
-                CalendarContainer.FadeToAsync(1, 450, Easing.SinInOut),
-                CalendarContainer.ScaleToAsync(1, 450, Easing.SinInOut)
-            );
         }
 
         private async void OnBackToMysteries_Tapped(object sender, TappedEventArgs e)
@@ -452,6 +522,12 @@ namespace MauiApp1
 
             CalendarContainer.IsVisible = false;
             SelectedMysteryPreview.IsVisible = false;
+
+            if (_selectedPart == null)
+            {
+                ResetRosaryMenu();
+                return;
+            }
 
             Grid activeRosaryGrid = _selectedPart switch
             {
@@ -701,8 +777,13 @@ namespace MauiApp1
 
         private async void HandleDaySelection(int wybranyDzien)
         {
+            if (!CalendarContainer.IsVisible || CalendarContainer.InputTransparent)
+                return;
+
+            CalendarContainer.InputTransparent = true;
             this.date = wybranyDzien;
             Preferences.Default.Set("LastDate", date);
+            Preferences.Default.Set(RestoreCalendarPreference, date < CalendarResetDay);
 
             await Task.WhenAll(
                 CalendarContainer.FadeToAsync(0, 300, Easing.SinInOut),
@@ -711,22 +792,8 @@ namespace MauiApp1
 
             CalendarContainer.IsVisible = false;
             SelectedMysteryPreview.IsVisible = false;
-            SelectedMysteryPreview.Opacity = 0;
-
-            foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
-            {
-                layout.Scale = 0.33;
-                layout.Opacity = 0;
-                layout.TranslationX = 0;
-                layout.TranslationY = 0;
-            }
-
-            _selectedPart = null;
-
+            _resetMenuOnReturn = true;
             await Shell.Current.GoToAsync("FullMeditation");
-
-            await CloseMysteryAnimation();
-            await StarterAnimation();
         }
     }
 }

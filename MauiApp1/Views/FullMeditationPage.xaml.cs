@@ -9,6 +9,10 @@ namespace MauiApp1;
 
 public partial class FullMeditationPage : ContentPage, IQueryAttributable
 {
+    private static readonly Lazy<Task<Dictionary<string, Dictionary<int, string>>>> SectionTitles =
+        new(LoadSectionTitlesAsync);
+    private int _dateUpdateVersion;
+
     public int date;
     private string _meditationText;
     private bool _isBusy = false;
@@ -53,50 +57,83 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     private async void UpdateDate()
     {
         if (_isBusy) return;
+
+        int updateVersion = ++_dateUpdateVersion;
+        int selectedDay = date;
+        SectionTitleLabel.IsVisible = false;
+
         try
         {
-           // DateLabel.Text = "Dzień " + date;
-            
-
             string selectedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
             MysteryLabel.Text = selectedMystery;
             if (string.IsNullOrEmpty(selectedMystery)) return;
 
             LoadHtmlToWebView("<p style='text-align: center; font-style: italic;'>Ładowanie ....</p>");
 
-            var localData = await GetMeditationFromLocalFile(this.date, selectedMystery);
+            string? sectionTitle = await GetSectionTitleAsync(selectedMystery, selectedDay);
+            if (updateVersion != _dateUpdateVersion) return;
 
-            if (localData != null)
+            SectionTitleLabel.Text = sectionTitle;
+            SectionTitleLabel.IsVisible = !string.IsNullOrWhiteSpace(sectionTitle);
+
+            var data = await GetMeditationFromLocalFile(selectedDay, selectedMystery);
+            if (data == null &&
+                Preferences.Default.Get("AutoDownloadMeditations", false) &&
+                await DownloadAllMeditationsForMystery(selectedMystery))
             {
-                ApplyMeditationData(localData);
-                return;
+                data = await GetMeditationFromLocalFile(selectedDay, selectedMystery);
             }
 
-            bool autoDownload = Preferences.Default.Get("AutoDownloadMeditations", false);
-
-            if (autoDownload)
-            {
-                bool downloaded = await DownloadAllMeditationsForMystery(selectedMystery);
-                if (downloaded)
-                {
-                    var freshLocalData = await GetMeditationFromLocalFile(this.date, selectedMystery);
-                    if (freshLocalData != null)
-                    {
-                        ApplyMeditationData(freshLocalData);
-                        return;
-                    }
-                }
-            }
-
-            var data = await _meditationService.GetMeditationData(this.date, selectedMystery);
-            ApplyMeditationData(data);
+            data ??= await _meditationService.GetMeditationData(selectedDay, selectedMystery);
+            if (updateVersion == _dateUpdateVersion)
+                ApplyMeditationData(data);
         }
         catch (Exception ex)
         {
-            LoadHtmlToWebView("<p style='text-align: center; color: red;'>Błąd połączenia</p>");
+            if (updateVersion == _dateUpdateVersion)
+                LoadHtmlToWebView("<p style='text-align: center; color: red;'>Błąd połączenia</p>");
+
             System.Diagnostics.Debug.WriteLine(ex.Message);
         }
     }
+
+    private static async Task<string?> GetSectionTitleAsync(string mystery, int day)
+    {
+        int sectionStart = day switch
+        {
+            >= 1 and <= 4 => 1,
+            >= 5 and <= 11 => 5,
+            >= 12 and <= 18 => 12,
+            >= 19 and <= 25 => 19,
+            >= 26 and <= 30 => 26,
+            _ => 0
+        };
+        if (sectionStart == 0) return null;
+
+        var titles = await SectionTitles.Value;
+        return titles.TryGetValue(mystery, out var sections) &&
+               sections.TryGetValue(sectionStart, out var title)
+            ? title
+            : null;
+    }
+
+    private static async Task<Dictionary<string, Dictionary<int, string>>> LoadSectionTitlesAsync()
+    {
+        try
+        {
+            using var stream = await FileSystem.OpenAppPackageFileAsync("meditation-section-titles.json");
+            var titles = await JsonSerializer.DeserializeAsync<Dictionary<string, Dictionary<int, string>>>(stream);
+            if (titles != null)
+                return new(titles, StringComparer.OrdinalIgnoreCase);
+        }
+        catch (Exception ex) when (ex is IOException or JsonException)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.Message);
+        }
+
+        return new(StringComparer.OrdinalIgnoreCase);
+    }
+
     private void ApplyMeditationData(LocalMeditation data)
     {
         string rawContent = data?.Content ?? "Brak rozważania";
