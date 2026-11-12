@@ -7,12 +7,17 @@
              BackgroundColor="{DynamicResource Primary}">
     <Grid RowDefinitions="*,auto">
         <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="10">
-            <!-- Header -->
-            
-                <Label Grid.Row="0" x:Name="MysteryLabel" Style="{StaticResource HeaderLabel}">
+            <VerticalStackLayout Grid.Row="0" Spacing="2">
+                <Label x:Name="MysteryLabel" Style="{StaticResource HeaderLabel}">
                     Rozważania różańcowe
                 </Label>
-               
+                <Label x:Name="SectionTitleLabel"
+                       IsVisible="False"
+                       Margin="16,0"
+                       FontSize="18"
+                       HorizontalTextAlignment="Center"
+                       TextColor="{DynamicResource Text}" />
+            </VerticalStackLayout>
 
             <!-- Całe rozważanie -->
             <Border Grid.Row="1" Style="{StaticResource MenuOption}">
