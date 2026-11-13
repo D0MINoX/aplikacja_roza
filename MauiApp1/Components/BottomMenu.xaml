@@ -37,6 +37,8 @@
                     Start
                 </Label>
             </Grid>
+            
+            <!-- Różaniec -->
             <Grid RowDefinitions="auto,auto" Grid.Column="1">
                 <Image Grid.Row="0" Source="book.png" Style="{StaticResource OptionImage}">
                     <Image.GestureRecognizers>
@@ -51,6 +53,7 @@
                 </Label>
             </Grid>
             
+            <!-- Róża -->
             <Grid RowDefinitions="auto,auto" Grid.Column="2">
                 <Image Grid.Row="0" Source="flower.png" Style="{StaticResource OptionImage}">
                     <Image.GestureRecognizers>

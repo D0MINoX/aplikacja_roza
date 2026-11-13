@@ -38,7 +38,7 @@
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="PreviousTapped"/>
                             </Border.GestureRecognizers>
-                            <Label InputTransparent="True" Text="&lt;" Style="{StaticResource OptionLabel}"/>
+                            <Label InputTransparent="True" Text="&lt;" Style="{StaticResource OptionLabel}" FontAttributes="Bold" FontSize="20"/>
 
 
                         </Border>
@@ -54,7 +54,7 @@
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="NextTapped"/>
                             </Border.GestureRecognizers>
-                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}" Margin="0,0,0,0">
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}" Margin="0,0,0,0" FontAttributes="Bold" FontSize="20">
                                 >
                             </Label>
                         </Border>
