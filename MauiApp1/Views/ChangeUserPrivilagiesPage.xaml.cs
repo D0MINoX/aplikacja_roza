@@ -15,6 +15,8 @@ public partial class ChangeUserPrivilagiesPage : ContentPage
 	{
         _adminService = adminService;
 		InitializeComponent();
+        if (DeviceInfo.Idiom == DeviceIdiom.Phone)
+            UsersList.ItemTemplate = (DataTemplate)Resources["PhoneUserTemplate"];
 	}
     protected override void OnAppearing()
     {

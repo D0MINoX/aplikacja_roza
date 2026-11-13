@@ -5,6 +5,7 @@
 
     <Color x:Key="Primary">#FAFAFA</Color>
     <Color x:Key="Text">#1F1F1F</Color>
+    <Color x:Key="LinkText">#2845A0</Color>
     <Color x:Key="FadedText">#AA1F1F1F</Color>
 
 </ResourceDictionary>

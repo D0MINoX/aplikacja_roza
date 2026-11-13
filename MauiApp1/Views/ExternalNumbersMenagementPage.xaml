@@ -10,12 +10,12 @@
    
     <Grid RowDefinitions="Auto, *" Margin="10" Grid.Row="0">
         <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*, 150" BackgroundColor="{DynamicResource Secondary}" Padding="10">
-            <Label Text="Użytkownik" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>
-            <Label Text="Numer telefonu" FontAttributes="Bold" TextColor="White" Grid.Column="1"/>
-            <Label Text="Róża" FontAttributes="Bold" TextColor="White" Grid.Column="2"/>
-            <Label Text="Dodano" FontAttributes="Bold" TextColor="White" Grid.Column="3"/>
+            <Label Text="Użytkownik" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="0"/>
+            <Label Text="Numer telefonu" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="1"/>
+            <Label Text="Róża" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="2"/>
+            <Label Text="Dodano" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="3"/>
 
-            <Label Text="Akcje" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="4"/>
+            <Label Text="Akcje" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" HorizontalOptions="Center" Grid.Column="4"/>
         </Grid>
 
             <CollectionView Grid.Row="1" x:Name="NumbersList" VerticalScrollBarVisibility="Always">
@@ -35,7 +35,7 @@
                                         </Label.Triggers>
                                     </Label>
 
-                                    <Entry Text="{Binding Name}" TextColor="Black">
+                                    <Entry Text="{Binding Name}" TextColor="{DynamicResource Text}">
                                         <Entry.Triggers>
                                             <DataTrigger TargetType="Entry"
                                                  Binding="{Binding IsEditing}"
@@ -55,7 +55,7 @@
                                     </Label>
                                     <Entry x:Name="SurnameEntry"
                                         Placeholder="Nazwisko"
-                                           Text="{Binding Surname}" TextColor="Black">
+                                           Text="{Binding Surname}" TextColor="{DynamicResource Text}">
                                         <Entry.Triggers>
                                             <DataTrigger TargetType="Entry"
                                                  Binding="{Binding IsEditing}"
@@ -82,7 +82,7 @@
                                 <Entry x:Name="PhoneNumberEntry"
                                     Placeholder="numer telefonu"
                                     Grid.Column="1" 
-                                       TextColor="Black"
+                                       TextColor="{DynamicResource Text}"
                                     Text="{Binding PhoneNumber}">
                                     <Entry.Triggers>
                                         <DataTrigger TargetType="Entry"

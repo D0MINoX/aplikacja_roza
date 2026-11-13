@@ -68,6 +68,7 @@ namespace MauiApp1.Services
             try
             {
                 Token = null;
+                _httpClient.DefaultRequestHeaders.Authorization = null;
                 SecureStorage.Default.Remove(TokenKey);
                 return true;
 
@@ -168,8 +169,7 @@ namespace MauiApp1.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    SecureStorage.Default.Remove(TokenKey);
-                    return true;
+                    return await Logout();
                 }
                 return false;
             }

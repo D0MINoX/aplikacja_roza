@@ -8,6 +8,9 @@
              Shell.NavBarIsVisible="False">
 
     <Grid RowDefinitions="auto,*,auto">
+        <Grid.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Right" Swiped="Back_Swiped" />
+        </Grid.GestureRecognizers>
         <Image x:Name="background"
             Aspect="AspectFill"
             Grid.RowSpan="2" />

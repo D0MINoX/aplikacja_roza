@@ -9,9 +9,9 @@
     </ContentPage.Resources>
     <Grid RowDefinitions="Auto, *" Margin="10">
         <Grid Grid.Row="0" ColumnDefinitions="*, *, 150" BackgroundColor="{DynamicResource Secondary}" Padding="10">
-            <Label Text="Użytkownik" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>
-            <Label Text="Email" FontAttributes="Bold" TextColor="White" Grid.Column="1"/>
-            <Label Text="Akcje" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="2"/>
+            <Label Text="Użytkownik" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="0"/>
+            <Label Text="Email" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="1"/>
+            <Label Text="Akcje" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" HorizontalOptions="Center" Grid.Column="2"/>
         </Grid>
 
         <CollectionView Grid.Row="1" x:Name="UsersList" VerticalScrollBarVisibility="Always">

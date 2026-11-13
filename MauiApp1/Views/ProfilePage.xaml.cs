@@ -84,7 +84,6 @@ public partial class ProfilePage : ContentPage
         string username = nameClaim?.Value ?? "Brak Imienia";
 
         var roleClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "role" || c.Type == ClaimTypes.Role);
-        string userRole = roleClaim?.Value ?? "Nie jesteś członkiem róży";
         var emailClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "email" || c.Type == ClaimTypes.Email);
         UserEmail = emailClaim?.Value ?? "Brak adresu Email";
         var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
@@ -95,20 +94,17 @@ public partial class ProfilePage : ContentPage
         List<string> roles = ["Rola: admin", "Rola: główny zeletor", "Zelator: ", "Członek rózy: "];
 
         Name.Text = "Witaj " + username;
-        UserName = username.Split(" ")[0];
-        UserSurname = username.Split(" ")[1];
-        UserRole = int.Parse(userRole);
-        Role.Text = roles[UserRole];
-        if (UserId == 1)
-        {
-            adminBtn.IsVisible = true;
-        }
-        
-#if WINDOWS || MACCATALYST
-        if (UserRole < 3 || UserId==1)
-        {
-            adminBtn.IsVisible = true;
-        }
+        var names = username.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+        UserName = names.ElementAtOrDefault(0) ?? string.Empty;
+        UserSurname = names.ElementAtOrDefault(1) ?? string.Empty;
+        UserRole = int.TryParse(roleClaim?.Value, out int role) ? role : 4;
+        Role.Text = UserRole >= 0 && UserRole < roles.Count ? roles[UserRole] : "Brak roli";
+#if WINDOWS
+        adminBtn.IsVisible = UserRole is 0 or 1 or 2;
+#elif ANDROID || IOS
+        adminBtn.IsVisible = UserId == 1 && (UserRole is 0 or 1 or 2);
+#else
+        adminBtn.IsVisible = false;
 #endif
         }
 
