@@ -16,19 +16,22 @@ public partial class ReportBugPage : ContentPage
 	private async void SendReport_Tapped(object sender, TappedEventArgs e)
 	{
         
-        string errorMessage = PageName.Text + ": " + Description.Text;
-        string? userPhone = Phone.Text; 
-
-        if (string.IsNullOrWhiteSpace(errorMessage))
+        string? description = Description.Text?.Trim();
+        if (string.IsNullOrWhiteSpace(description))
         {
             await DisplayAlertAsync("Błąd", "Musisz podać opis błędu!", "OK");
             return;
         }
 
+        string? pageName = PageName.Text?.Trim();
+        string errorMessage = string.IsNullOrEmpty(pageName)
+            ? description
+            : $"{pageName}: {description}";
+
         ErrorReport errorReport = new ErrorReport
         {
             ErrorMessage = errorMessage,
-            UserPhone = userPhone
+            UserPhone = Phone.Text?.Trim()
         };
 
         var response = await _errorService.SubmitErrorAsync(errorReport);

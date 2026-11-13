@@ -7,6 +7,7 @@ namespace MauiApp1.Views;
 public partial class SelectParish : ContentPage
 {
     private readonly ParishService _parishService;
+    private bool _loadingParishes;
     public int UserId { get; set; }
     private int selectedParish {  get; set; }
     public SelectParish(ParishService parishService)
@@ -23,34 +24,34 @@ public partial class SelectParish : ContentPage
 
     private async void RosariesShow()
     {
-        //await DisplayAlertAsync("INFO", UserId.ToString(), "OK");
-        var res = await _parishService.AllParish();
-        List<Parish> allParishes = res.Data;
-        MainThread.BeginInvokeOnMainThread(() =>
-        {
-            ParishContainer.BatchBegin();
-            try
-            {
-                ParishContainer.Children.Clear();
+        if (_loadingParishes)
+            return;
 
-                foreach (var parish in allParishes)
-                {
-                    try
-                    {
-                        var border = CreateRosaryCard(parish);
-                        ParishContainer.Children.Add(border);
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"Błąd tworzenia kafelka: {ex.Message}");
-                    }
-                }
-            }
-            finally
+        _loadingParishes = true;
+        try
+        {
+            while (true)
             {
-                ParishContainer.BatchCommit();
+                var result = await _parishService.AllParish();
+                if (result.isSuccess && result.Data is not null)
+                {
+                    ParishContainer.Children.Clear();
+                    selectedParish = 0;
+                    foreach (var parish in result.Data)
+                        ParishContainer.Children.Add(CreateRosaryCard(parish));
+                    return;
+                }
+
+                bool retry = await DisplayAlertAsync("Błąd połączenia",
+                    "Nie udało się pobrać listy parafii.", "Spróbuj ponownie", "Anuluj");
+                if (!retry)
+                    return;
             }
-        });
+        }
+        finally
+        {
+            _loadingParishes = false;
+        }
     }
 
     private Border CreateRosaryCard(Parish parish)

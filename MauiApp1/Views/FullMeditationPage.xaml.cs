@@ -154,6 +154,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
 <html lang='pl'>  
 <head>      
     <meta charset='utf-8'>      
+    <meta http-equiv='Content-Security-Policy' content=""script-src 'none'; object-src 'none'; frame-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'"">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>      
     <style>          
         body {{              
@@ -219,6 +220,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         Complete.BackgroundColor = color.WithAlpha(newAlpha);
         string todayKey = DateTime.Today.ToString("yyyy-MM-dd");
         Preferences.Default.Set("LastCompleteDate", date);
+        RosaryCycle.SelectDay(date, DateTime.Today);
      //   Preferences.Default.Set($"Done_{todayKey}", true);
       //  var handler = new JwtSecurityTokenHandler();
       //  var jsonToken = handler.ReadJwtToken(_authService.Token);

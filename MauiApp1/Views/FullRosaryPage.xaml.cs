@@ -161,6 +161,7 @@ namespace MauiApp1.Views
 <html lang='pl'>  
 <head>      
     <meta charset='utf-8'>      
+    <meta http-equiv='Content-Security-Policy' content=""script-src 'none'; object-src 'none'; frame-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'"">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>      
     <style>          
         body {{              

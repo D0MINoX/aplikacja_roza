@@ -33,7 +33,6 @@ public partial class LoginPage : ContentPage
             if (success)
             {
                 await DisplayAlertAsync("Sukces", "Zalogowano!", "OK");
-                _isBusy = false;
                 var stack = Shell.Current.Navigation.NavigationStack.ToArray();
                 Shell.Current.Navigation.RemovePage(stack[stack.Length - 1]);
 
@@ -42,13 +41,20 @@ public partial class LoginPage : ContentPage
             else
             {
                 await DisplayAlertAsync("Błąd", "Nieprawidłowe dane", "OK");
-                _isBusy = false;
             }
 
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
         {
-            await DisplayAlertAsync("Błąd techniczny", ex.Message, "OK");
+            await DisplayAlertAsync("Błąd połączenia", "Sprawdź połączenie z internetem i spróbuj ponownie.", "OK");
+        }
+        catch (Exception)
+        {
+            await DisplayAlertAsync("Błąd logowania", "Nie udało się zalogować. Spróbuj ponownie.", "OK");
+        }
+        finally
+        {
+            _isBusy = false;
         }
     }
     private async void CheckLoginStatus()

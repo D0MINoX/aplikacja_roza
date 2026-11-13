@@ -1,4 +1,4 @@
-﻿using MauiApp1.Models;
+using MauiApp1.Models;
 using MauiApp1.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,8 +12,7 @@ namespace MauiApp1
         public AuthService _authService;
         public RosaryService _rosaryService;
 
-        private const int CalendarResetDay = 28;
-        private const string RestoreCalendarPreference = "RestoreCalendarOnStart";
+        private const double CompletedOpacity = 0.2;
 
         private static readonly Dictionary<string, List<MysteryItem>> _itemsMap = new()
         {
@@ -37,7 +36,7 @@ namespace MauiApp1
             {
                 new MysteryItem("Modlitwa", "Modlitwa Pana Jezusa w Ogrójcu"),
                 new MysteryItem("Biczowanie", "Biczowanie Pana Jezusa"),
-                new MysteryItem("ukoronowanie", "Cierniem ukoronowanie Pana Jezusa"),
+                new MysteryItem("Ukoronowanie", "Cierniem ukoronowanie Pana Jezusa"),
                 new MysteryItem("Dźwiganie krzyża", "Dźwiganie krzyża na Kalwarię"),
                 new MysteryItem("Ukrzyżowanie", "Ukrzyżowanie i śmierć Pana Jezusa")
             },
@@ -62,6 +61,9 @@ namespace MauiApp1
         private string _selectedPart = null;
         private bool _firstload;
         private bool _resetMenuOnReturn;
+        private bool _transitionInProgress;
+        private string? _calendarPart;
+        private Window? _observedWindow;
 
         public MainPage(MeditationsService meditationService, AuthService authService, RosaryService rosaryService)
         {
@@ -75,6 +77,11 @@ namespace MauiApp1
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            if (Window is { } window && _observedWindow == null)
+            {
+                _observedWindow = window;
+                window.Resumed += OnWindowResumed;
+            }
             if (Preferences.Get("app_main_theme", false))
             {
                 background.Source = "mainpagebackgrounddark.png";
@@ -86,6 +93,8 @@ namespace MauiApp1
 
             bool firstLoad = _firstload;
             _firstload = false;
+            if (ResetExpiredCalendar())
+                return;
 
             if (!CalendarContainer.IsVisible && TryRestoreCalendar())
             {
@@ -95,7 +104,9 @@ namespace MauiApp1
 
             if (firstLoad)
             {
-                await StarterAnimation();
+                _transitionInProgress = true;
+                try { await StarterAnimation(); }
+                finally { _transitionInProgress = false; }
             }
 
             if (_resetMenuOnReturn)
@@ -105,11 +116,35 @@ namespace MauiApp1
             }
         }
 
+        protected override void OnDisappearing()
+        {
+            if (_observedWindow is { } window)
+            {
+                window.Resumed -= OnWindowResumed;
+                _observedWindow = null;
+            }
+            base.OnDisappearing();
+        }
+
+        private void OnWindowResumed(object? sender, EventArgs e)
+        {
+            if (!_transitionInProgress)
+                ResetExpiredCalendar();
+        }
+
+        private bool ResetExpiredCalendar()
+        {
+            if (!RosaryCycle.ExpireIfDue(DateTime.Today))
+                return false;
+
+            _resetMenuOnReturn = false;
+            ResetRosaryMenu();
+            return true;
+        }
+
         private bool TryRestoreCalendar()
         {
-            // U poprzednich użytkowników zapamiętany dzień określa, czy cykl się zakończył.
-            bool previousCycleInProgress = Preferences.Default.Get("LastDate", 0) < CalendarResetDay;
-            if (!Preferences.Default.Get(RestoreCalendarPreference, previousCycleInProgress))
+            if (!RosaryCycle.CanRestore(DateTime.Today))
                 return false;
 
             string savedMystery = Preferences.Default.Get("LastMystery", string.Empty);
@@ -138,6 +173,7 @@ namespace MauiApp1
         private void ResetRosaryMenu()
         {
             _selectedPart = null;
+            _calendarPart = null;
             CalendarContainer.IsVisible = false;
             CalendarContainer.InputTransparent = false;
             SelectedMysteryPreview.IsVisible = false;
@@ -199,42 +235,56 @@ namespace MauiApp1
                 await CenterImage.FadeToAsync(1, 400, Easing.SinInOut);
             }
 
-            Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(750), () =>
-            {
-                var b1Fade = Radosne.FadeToAsync(1, 500, Easing.SinInOut);
-                var b2Fade = Swiatla.FadeToAsync(1, 500, Easing.SinInOut);
-                var b3Fade = Bolesne.FadeToAsync(1, 500, Easing.SinInOut);
-                var b4Fade = Chwalebne.FadeToAsync(1, 500, Easing.SinInOut);
+            await Task.Delay(750);
+            var b1Fade = Radosne.FadeToAsync(1, 500, Easing.SinInOut);
+            var b2Fade = Swiatla.FadeToAsync(1, 500, Easing.SinInOut);
+            var b3Fade = Bolesne.FadeToAsync(1, 500, Easing.SinInOut);
+            var b4Fade = Chwalebne.FadeToAsync(1, 500, Easing.SinInOut);
 
-                var img = CenterImage.ScaleToAsync(2, 500, Easing.SinInOut);
+            var img = CenterImage.ScaleToAsync(2, 500, Easing.SinInOut);
 
-                var b1 = Radosne.TranslateToAsync(+100, -100, 750, Easing.SinInOut);
-                var b1Scale = Radosne.ScaleToAsync(0.66, 750, Easing.SinInOut);
-                var b1LabelScale = RadosneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
+            var b1 = Radosne.TranslateToAsync(+100, -100, 750, Easing.SinInOut);
+            var b1Scale = Radosne.ScaleToAsync(0.66, 750, Easing.SinInOut);
+            var b1LabelScale = RadosneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
-                var b2 = Swiatla.TranslateToAsync(+100, +100, 750, Easing.SinInOut);
-                var b2Scale = Swiatla.ScaleToAsync(0.66, 750, Easing.SinInOut);
-                var b2LabelScale = SwiatlaLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
+            var b2 = Swiatla.TranslateToAsync(+100, +100, 750, Easing.SinInOut);
+            var b2Scale = Swiatla.ScaleToAsync(0.66, 750, Easing.SinInOut);
+            var b2LabelScale = SwiatlaLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
-                var b3 = Bolesne.TranslateToAsync(-100, +100, 750, Easing.SinInOut);
-                var b3Scale = Bolesne.ScaleToAsync(0.66, 750, Easing.SinInOut);
-                var b3LabelScale = BolesneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
+            var b3 = Bolesne.TranslateToAsync(-100, +100, 750, Easing.SinInOut);
+            var b3Scale = Bolesne.ScaleToAsync(0.66, 750, Easing.SinInOut);
+            var b3LabelScale = BolesneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
-                var b4 = Chwalebne.TranslateToAsync(-100, -100, 750, Easing.SinInOut);
-                var b4Scale = Chwalebne.ScaleToAsync(0.66, 750, Easing.SinInOut);
-                var b4LabelScale = ChwalebneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
+            var b4 = Chwalebne.TranslateToAsync(-100, -100, 750, Easing.SinInOut);
+            var b4Scale = Chwalebne.ScaleToAsync(0.66, 750, Easing.SinInOut);
+            var b4LabelScale = ChwalebneLabel.ScaleToAsync(1.5, 750, Easing.SinInOut);
 
-                var logo = CenterImage.FadeToAsync(1, 400, Easing.SinInOut);
-                CenterImage.IsVisible = true;
+            var logo = CenterImage.FadeToAsync(1, 400, Easing.SinInOut);
+            CenterImage.IsVisible = true;
 
-                Task.WhenAll(logo, b1, b1Scale, b2, b2Scale, b3, b3Scale, b4, b4Scale, b1Fade, b2Fade, b3Fade, b4Fade);
-            });
+            await Task.WhenAll(logo, img, b1, b1Scale, b2, b2Scale, b3, b3Scale, b4, b4Scale,
+                b1Fade, b2Fade, b3Fade, b4Fade, b1LabelScale, b2LabelScale, b3LabelScale, b4LabelScale);
         }
 
         private async void RosaryPart_Tapped(object sender, TappedEventArgs e)
         {
-            Grid s = sender as Grid;
-            string partName = e.Parameter.ToString();
+            if (sender is not Grid partGrid || e.Parameter is not string partName ||
+                CalendarContainer.IsVisible || _transitionInProgress)
+                return;
+
+            ResetExpiredCalendar();
+            await RunTransitionAsync(() => ToggleRosaryPartAsync(partGrid, partName));
+        }
+
+        private async Task RunTransitionAsync(Func<Task> transition)
+        {
+            _transitionInProgress = true;
+            try { await transition(); }
+            finally { _transitionInProgress = false; }
+        }
+
+        private async Task ToggleRosaryPartAsync(Grid s, string partName)
+        {
             if (_selectedPart == partName)
             {
                 await CloseMysteryAnimation();
@@ -363,7 +413,7 @@ namespace MauiApp1
             }
         }
 
-        private async void SetImageAndLabel()
+        private void SetImageAndLabel()
         {
             Mystery1Image.Source = _imagesMap[_selectedPart][0];
             Mystery2Image.Source = _imagesMap[_selectedPart][1];
@@ -378,6 +428,13 @@ namespace MauiApp1
             Mystery5Label.Text = _itemsMap[_selectedPart][4].ShortLabel;
         }
 
+        private int GetSavedMysteryIndex(string part)
+        {
+            var savedMystery = Preferences.Default.Get("LastMystery", string.Empty);
+            return _itemsMap[part].FindIndex(item =>
+                string.Equals(item.FullDescription, savedMystery, StringComparison.OrdinalIgnoreCase));
+        }
+
         private async Task ShowMysteryAnimation(Border s)
         {
             SetImageAndLabel();
@@ -389,6 +446,7 @@ namespace MauiApp1
             double center = s.Width / 2;
             double angleOffset = -2 * Math.PI / 5 - Math.PI / 10;
             int i = 0;
+            int savedIndex = GetSavedMysteryIndex(_selectedPart);
 
             foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
             {
@@ -401,7 +459,7 @@ namespace MauiApp1
                 double ty = center + radius * Math.Sin(angle) - btnSize / 2 + 20;
 
                 Task btnTranslate = layout.TranslateToAsync(tx, ty, 750, Easing.SinInOut);
-                Task btnFade = layout.FadeToAsync(1, 750, Easing.SinInOut);
+                Task btnFade = layout.FadeToAsync(i < savedIndex ? CompletedOpacity : 1, 750, Easing.SinInOut);
                 Task btnScale = layout.ScaleToAsync(0.66, 750, Easing.SinInOut);
                 animationTasks.Add(btnTranslate);
                 animationTasks.Add(btnFade);
@@ -438,11 +496,17 @@ namespace MauiApp1
 
         private async void Mystery_Tapped(object sender, TappedEventArgs e)
         {
-            if (string.IsNullOrEmpty(_selectedPart)) return;
+            if (_selectedPart == null || _transitionInProgress || CalendarContainer.IsVisible)
+                return;
+            if (ResetExpiredCalendar())
+                return;
 
             int mysteryNumber = int.Parse(e.Parameter.ToString());
-            int index = mysteryNumber - 1; // Indeks listy (0-4)
+            await RunTransitionAsync(() => OpenCalendarAsync(mysteryNumber - 1));
+        }
 
+        private async Task OpenCalendarAsync(int index)
+        {
             string part = _selectedPart;
             string newMystery = _itemsMap[part][index].FullDescription;
 
@@ -476,19 +540,7 @@ namespace MauiApp1
             await Task.WhenAll(hideTasks);
             CenterImage.IsVisible = false;
 
-            string previousMystery = Preferences.Default.Get("LastMystery", string.Empty);
-            if (previousMystery != newMystery)
-            {
-                Preferences.Default.Set("LastCompleteDate", -1);
-                System.Diagnostics.Debug.WriteLine($"Zmieniono tajemnicę z '{previousMystery}' na '{newMystery}' -> Zresetowano LastDate do -1.");
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine($"Wybrano tę samą tajemnicę: '{newMystery}' -> Zachowano postęp LastDate.");
-            }
-
-            Preferences.Default.Set("LastMystery", newMystery);
-            Preferences.Default.Set(RestoreCalendarPreference, true);
+            RosaryCycle.SelectMystery(newMystery, DateTime.Today);
             ShowCalendar(part, index, opacity: 0, scale: 0.8);
 
             await Task.WhenAll(
@@ -499,6 +551,7 @@ namespace MauiApp1
 
         private void ShowCalendar(string part, int index, double opacity, double scale)
         {
+            _calendarPart = part;
             SelectedMysteryImage.Source = _imagesMap[part][index];
             SelectedMysteryLabel.Text = _itemsMap[part][index].ShortLabel;
             GenerateCalendarGrid();
@@ -515,6 +568,40 @@ namespace MauiApp1
 
         private async void OnBackToMysteries_Tapped(object sender, TappedEventArgs e)
         {
+            if (!_transitionInProgress && CalendarContainer.IsVisible && !ResetExpiredCalendar())
+                await RunTransitionAsync(CloseCalendarAsync);
+        }
+
+        protected override bool OnBackButtonPressed() => TryGoBack() || base.OnBackButtonPressed();
+
+        private void Back_Swiped(object sender, SwipedEventArgs e) => TryGoBack();
+
+        private bool TryGoBack()
+        {
+            if (_transitionInProgress || ResetExpiredCalendar())
+                return true;
+
+            if (CalendarContainer.IsVisible)
+                _ = RunTransitionAsync(CloseCalendarAsync);
+            else if (_selectedPart is { } part)
+                _ = RunTransitionAsync(() => ToggleRosaryPartAsync(GetPartGrid(part), part));
+            else
+                return false;
+
+            return true;
+        }
+
+        private Grid GetPartGrid(string part) => part switch
+        {
+            "Radosne" => Radosne,
+            "Światła" => Swiatla,
+            "Bolesne" => Bolesne,
+            "Chwalebne" => Chwalebne,
+            _ => throw new ArgumentOutOfRangeException(nameof(part))
+        };
+
+        private async Task CloseCalendarAsync()
+        {
             await Task.WhenAll(
                 CalendarContainer.FadeToAsync(0, 250, Easing.SinInOut),
                 CalendarContainer.ScaleToAsync(0.66, 250, Easing.SinInOut)
@@ -525,7 +612,10 @@ namespace MauiApp1
 
             if (_selectedPart == null)
             {
+                string? part = _calendarPart;
                 ResetRosaryMenu();
+                if (part != null)
+                    await ToggleRosaryPartAsync(GetPartGrid(part), part);
                 return;
             }
 
@@ -546,10 +636,13 @@ namespace MauiApp1
 
             showMenuTasks.Add(CenterImage.FadeToAsync(1, 250, Easing.SinInOut));
 
-            foreach (var layout in new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 })
+            int savedIndex = GetSavedMysteryIndex(_selectedPart);
+            var layouts = new[] { Mystery1, Mystery2, Mystery3, Mystery4, Mystery5 };
+            for (int i = 0; i < layouts.Length; i++)
             {
+                var layout = layouts[i];
                 layout.Scale = .66;
-                showMenuTasks.Add(layout.FadeToAsync(1, 300, Easing.SinInOut));
+                showMenuTasks.Add(layout.FadeToAsync(i < savedIndex ? CompletedOpacity : 1, 300, Easing.SinInOut));
             }
 
             await Task.WhenAll(showMenuTasks);
@@ -627,7 +720,7 @@ namespace MauiApp1
 
             if (lastDate >= 0)
             {
-                borderWprowadzenie.Opacity = 0.2;
+                borderWprowadzenie.Opacity = CompletedOpacity;
             }
 
             var tapGestureWprowadzenie = new TapGestureRecognizer();
@@ -687,7 +780,7 @@ namespace MauiApp1
 
                 if (dayNumber <= lastDate)
                 {
-                    border.Opacity = 0.2;
+                    border.Opacity = CompletedOpacity;
                 }
 
                 int selectedDay = dayNumber;
@@ -753,7 +846,7 @@ namespace MauiApp1
 
             if (dodatekDay <= lastDate)
             {
-                borderDodatek.Opacity = 0.2;
+                borderDodatek.Opacity = CompletedOpacity;
             }
 
             var tapGestureDodatek = new TapGestureRecognizer();
@@ -777,13 +870,18 @@ namespace MauiApp1
 
         private async void HandleDaySelection(int wybranyDzien)
         {
-            if (!CalendarContainer.IsVisible || CalendarContainer.InputTransparent)
+            if (!CalendarContainer.IsVisible || CalendarContainer.InputTransparent ||
+                _transitionInProgress || ResetExpiredCalendar())
                 return;
 
+            await RunTransitionAsync(() => OpenDayAsync(wybranyDzien));
+        }
+
+        private async Task OpenDayAsync(int day)
+        {
             CalendarContainer.InputTransparent = true;
-            this.date = wybranyDzien;
-            Preferences.Default.Set("LastDate", date);
-            Preferences.Default.Set(RestoreCalendarPreference, date < CalendarResetDay);
+            this.date = day;
+            RosaryCycle.SelectDay(date, DateTime.Today);
 
             await Task.WhenAll(
                 CalendarContainer.FadeToAsync(0, 300, Easing.SinInOut),

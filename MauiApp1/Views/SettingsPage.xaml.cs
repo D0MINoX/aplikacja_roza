@@ -14,7 +14,7 @@ public partial class SettingsPage : ContentPage
         InitializeComponent();
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
         IsLogged();
@@ -23,9 +23,23 @@ public partial class SettingsPage : ContentPage
         DownloadSwitch.IsToggled = Preferences.Default.Get("AutoDownloadMeditations", false);
         DownloadSwitch.Toggled += OnDownloadToggled;
 
-        ReminderSwitch.IsToggled = Preferences.Default.Get("RemindersEnabled", false);
-
-        ReminderTimePicker.SetValue(TimePicker.TimeProperty, TimeSpan.Parse(Preferences.Default.Get("ReminderTime", "20:00:00")));
+        LoadReminderTime();
+        if (Preferences.Default.Get("RemindersEnabled", false))
+        {
+            ReminderSwitch.IsEnabled = false;
+            try
+            {
+                SetRemindersEnabled(await _notificationsService.AreRemindersAllowedAsync());
+            }
+            finally
+            {
+                ReminderSwitch.IsEnabled = true;
+            }
+        }
+        else
+        {
+            SetRemindersEnabled(false);
+        }
     }
 
     private async void IsLogged()
@@ -90,24 +104,60 @@ public partial class SettingsPage : ContentPage
 
     private async void OnRemindersToggled(object sender, ToggledEventArgs e)
     {
-        bool isAllowed = e.Value;
-        Preferences.Default.Set("RemindersEnabled", isAllowed);
-        if (isAllowed)
+        ReminderSwitch.IsEnabled = false;
+        try
         {
-            ReminderTimeLayout.IsVisible=true;
-            await _notificationsService.ScheduleWeeklyReminders();
+            if (!e.Value)
+            {
+                SetRemindersEnabled(false);
+                await _notificationsService.CancelAllReminders();
+                Preferences.Default.Remove("ReminderTime");
+                LoadReminderTime();
+                return;
+            }
+
+            bool allowed = await _notificationsService.RequestReminderPermissionAsync();
+            SetRemindersEnabled(allowed);
+            if (allowed)
+                await _notificationsService.ScheduleWeeklyReminders();
+            else
+                await DisplayAlertAsync("Powiadomienia", "Zezwól na powiadomienia w ustawieniach urządzenia, aby włączyć przypomnienia.", "OK");
         }
-        else
+        catch (Exception)
         {
-            ReminderTimeLayout.IsVisible=false;
-            await _notificationsService.CancelAllReminders();
-            Preferences.Default.Remove("ReminderTime");
-            ReminderTimePicker.SetValue(TimePicker.TimeProperty, TimeSpan.Parse(Preferences.Default.Get("ReminderTime", "20:00:00")));
+            SetRemindersEnabled(false);
+            await DisplayAlertAsync("Powiadomienia", "Nie udało się ustawić przypomnień.", "OK");
         }
+        finally
+        {
+            ReminderSwitch.IsEnabled = true;
+        }
+    }
+
+    private void SetRemindersEnabled(bool enabled)
+    {
+        Preferences.Default.Set("RemindersEnabled", enabled);
+        ReminderSwitch.Toggled -= OnRemindersToggled;
+        ReminderSwitch.IsToggled = enabled;
+        ReminderSwitch.Toggled += OnRemindersToggled;
+        ReminderTimeLayout.IsVisible = enabled;
+    }
+
+    private void LoadReminderTime()
+    {
+        if (!TimeSpan.TryParse(Preferences.Default.Get("ReminderTime", "20:00:00"), out var time))
+            time = TimeSpan.FromHours(20);
+
+        ReminderTimePicker.TimeSelected -= OnTimeChanged;
+        ReminderTimePicker.SetValue(TimePicker.TimeProperty, time);
+        ReminderTimePicker.TimeSelected += OnTimeChanged;
     }
 
     private async void OnTimeChanged(object sender, TimeChangedEventArgs e)
     {
+        if (!Preferences.Default.Get("RemindersEnabled", false))
+            return;
+
         await _notificationsService.CancelAllReminders();
         Preferences.Default.Set("ReminderTime", e.NewTime.ToString());
         await _notificationsService.ScheduleWeeklyReminders();

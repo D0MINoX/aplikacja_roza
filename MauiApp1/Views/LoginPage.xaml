@@ -15,16 +15,16 @@
                 <!-- Header -->
                
                 <Grid ColumnDefinitions="auto,*" Grid.Row="0" Grid.Column="1" Style="{StaticResource Head}">
-                    <Image Grid.Column="0" Grid.Row="0"
-                            Source="back_arrow.png" 
-                            VerticalOptions="Center"
-                            HorizontalOptions="Center"
-                            Margin="10,0,10,0"
-                            HeightRequest="24" WidthRequest="24">
-                        <Image.GestureRecognizers>
+                    <Grid Grid.Column="0" Grid.Row="0" WidthRequest="24" HeightRequest="24"
+                          Margin="10,0,10,0" VerticalOptions="Center" HorizontalOptions="Center"
+                          SemanticProperties.Description="Wstecz">
+                        <Grid.GestureRecognizers>
                             <TapGestureRecognizer Tapped="BackButton_Tapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
+                        </Grid.GestureRecognizers>
+                        <Path Data="M 15,3 L 6,12 L 15,21" Stroke="{DynamicResource Text}"
+                              StrokeThickness="1.75" StrokeLineCap="Round" StrokeLineJoin="Round"
+                              HorizontalOptions="Center" VerticalOptions="Center" InputTransparent="True" />
+                    </Grid>
                     <Label Grid.Column="1" Style="{StaticResource HeaderLabel}">
                         Panel logowania
                     </Label>

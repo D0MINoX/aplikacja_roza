@@ -13,11 +13,11 @@
         <!-- Nagłówki kolumn -->
         <Grid RowDefinitions="Auto, *" Margin="10" Grid.Row="0">
             <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,150" BackgroundColor="{DynamicResource Secondary}" Padding="10">
-                <Label Text="Numer telefonu" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>
-                <Label Text="Opis błędu" FontAttributes="Bold" TextColor="White" Grid.Column="1"/>
-                <Label Text="Status" FontAttributes="Bold" TextColor="White" Grid.Column="2"/>
-                <Label Text="Utworzono" FontAttributes="Bold" TextColor="White" Grid.Column="3"/>
-                <Label Text="Akcje" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="4"/>
+                <Label Text="Numer telefonu" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="0"/>
+                <Label Text="Opis błędu" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="1"/>
+                <Label Text="Status" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="2"/>
+                <Label Text="Utworzono" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="3"/>
+                <Label Text="Akcje" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" HorizontalOptions="Center" Grid.Column="4"/>
             </Grid>
 
             <!-- Lista błędów -->
@@ -44,7 +44,7 @@
                                         ItemsSource="{Binding AvailableStatuses}" 
                                         SelectedItem="{Binding Status, Mode=TwoWay}" 
                                         IsVisible="{Binding IsEditing}"
-                                        TextColor="Black"
+                                        TextColor="{DynamicResource Text}"
                                         FontSize="12"/>
                                 <Label Text="{Binding Status}"
                                        Grid.Column="2"

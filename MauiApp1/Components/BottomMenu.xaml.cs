@@ -24,15 +24,6 @@ public partial class BottomMenu : ContentView
         await Shell.Current.GoToAsync("//Home", false);
     }
 
-    private async void MeditationsButton_Tapped(object sender, TappedEventArgs e)
-    {
-        var stack = Shell.Current.Navigation.NavigationStack.ToArray();
-        for (int i = stack.Length - 1; i > 0; i--)
-        {
-            Shell.Current.Navigation.RemovePage(stack[i]);
-        }
-        await Shell.Current.GoToAsync("FullMeditation", false);
-    }
 
     private async void SettingsButton_Tapped(object sender, TappedEventArgs e)
     {

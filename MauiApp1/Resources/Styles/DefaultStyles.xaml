@@ -5,6 +5,8 @@
     xmlns:controls="clr-namespace:MauiApp1.Controls"
     x:Class="MauiApp1.Resources.Styles.DefaultStyles">
 
+    <Color x:Key="TextOnSecondary">#1F1F1F</Color>
+
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{DynamicResource Text}"/>
     </Style>

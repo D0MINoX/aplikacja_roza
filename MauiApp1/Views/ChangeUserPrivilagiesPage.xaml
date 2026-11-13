@@ -6,19 +6,63 @@
              Title="ChangeUserPrivilagiesPage">
     <ContentPage.Resources>
         <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        <DataTemplate x:Key="PhoneUserTemplate">
+            <Border Style="{StaticResource ListElement}" Padding="12">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="{Binding UserId, StringFormat='ID {0}'}"
+                           TextColor="{DynamicResource FadedText}" FontSize="12" />
+                    <Label FontAttributes="Bold" LineBreakMode="WordWrap">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding UserName}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding UserSurname}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Text="{Binding UserEmail}" LineBreakMode="CharacterWrap" />
+                    <Label Text="{Binding UserRoleName, StringFormat='Rola: {0}'}"
+                           IsVisible="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}" />
+                    <Label Text="{Binding CanSendSmsText, StringFormat='Dostęp do wiadomości: {0}'}"
+                           IsVisible="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}" />
+                    <Picker Title="Wybierz rolę"
+                            TextColor="{DynamicResource Text}" TitleColor="{DynamicResource FadedText}"
+                            ItemsSource="{Binding AvailableRoles}" ItemDisplayBinding="{Binding Name}"
+                            SelectedItem="{Binding SelectedRoleObject, Mode=TwoWay}"
+                            IsVisible="{Binding IsEditing}" />
+                    <HorizontalStackLayout Spacing="6" IsVisible="{Binding IsEditing}">
+                        <CheckBox IsChecked="{Binding UserCanSendSMS}" Color="{DynamicResource LinkText}" />
+                        <Label Text="Dostęp do wiadomości" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <Button Text="Edytuj" Clicked="OnEditClicked" CommandParameter="{Binding .}"
+                                TextColor="{DynamicResource Text}" BackgroundColor="{DynamicResource Primary}"
+                                BorderColor="{DynamicResource LinkText}" BorderWidth="1"
+                                IsVisible="{Binding IsEditing, Converter={StaticResource InvertedBoolConverter}}" />
+                        <Button Text="Zapisz" Clicked="OnSaveClicked" CommandParameter="{Binding .}"
+                                BackgroundColor="#116438" TextColor="White"
+                                IsVisible="{Binding IsEditing}" />
+                        <Button Grid.Column="1" Text="Usuń" Clicked="OnDeleteClicked" CommandParameter="{Binding .}"
+                                BackgroundColor="#9C2020" TextColor="White" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </DataTemplate>
     </ContentPage.Resources>
     
         <Grid RowDefinitions="Auto, *" Margin="10">
-            <Grid Grid.Row="0" ColumnDefinitions="auto,*,*,*,*,*" ColumnSpacing="5" BackgroundColor="{DynamicResource Secondary}" Padding="10">
-                <Label Text="Id" FontAttributes="Bold" TextColor="White" Grid.Column="0"/>
-                <Label Text="Użytkownik" FontAttributes="Bold" TextColor="White" Grid.Column="1"/>
-                <Label Text="e-mail" FontAttributes="Bold" TextColor="White" Grid.Column="2"/>
-                <Label Text="Rola" FontAttributes="Bold" TextColor="White" Grid.Column="3"/>
-                <Label Text="Dostęp do wiadomości" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="4"/>
-                <Label Text="Akcje" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Grid.Column="5"/>
+            <Grid Grid.Row="0" ColumnDefinitions="auto,*,*,*,*,*" ColumnSpacing="5" BackgroundColor="{DynamicResource Secondary}" Padding="10"
+                  IsVisible="{OnIdiom Phone=False, Default=True}">
+                <Label Text="Id" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="0"/>
+                <Label Text="Użytkownik" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="1"/>
+                <Label Text="e-mail" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="2"/>
+                <Label Text="Rola" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" Grid.Column="3"/>
+                <Label Text="Dostęp do wiadomości" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" HorizontalOptions="Center" Grid.Column="4"/>
+                <Label Text="Akcje" FontAttributes="Bold" TextColor="{StaticResource TextOnSecondary}" HorizontalOptions="Center" Grid.Column="5"/>
             </Grid>
 
-            <CollectionView Grid.Row="1" x:Name="UsersList" VerticalScrollBarVisibility="Always">
+            <CollectionView Grid.Row="1" x:Name="UsersList" VerticalScrollBarVisibility="Always"
+                            ItemSizingStrategy="MeasureAllItems">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Border StrokeShape="RoundRectangle 0" StrokeThickness="0.5" Stroke="{DynamicResource Accent}">
@@ -39,6 +83,7 @@
                                        ItemDisplayBinding="{Binding Name}"
                                         SelectedItem="{Binding SelectedRoleObject, Mode=TwoWay}"
                                         IsVisible="{Binding IsEditing}"
+                                        TextColor="{DynamicResource Text}" TitleColor="{DynamicResource FadedText}"
                                         Title="Wybierz rolę" />
                                 </Grid>
                                 <HorizontalStackLayout Grid.Column="4" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">

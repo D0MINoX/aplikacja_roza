@@ -48,7 +48,7 @@
                                     <x:String>Biczowanie Pana Jezusa</x:String>
                                     <x:String>Cierniem ukoronowanie Pana Jezusa</x:String>
                                     <x:String>Dźwiganie krzyża na Kalwarię</x:String>
-                                    <x:String>Śmierć Pana Jezusa na Krzyżu</x:String>
+                                    <x:String>Ukrzyżowanie i śmierć Pana Jezusa</x:String>
                                     <x:String>Zmartwychwstanie Pana Jezusa</x:String>
                                     <x:String>Wniebowstąpienie Pana Jezusa</x:String>
                                     <x:String>Zesłanie Ducha Świętego</x:String>
@@ -76,8 +76,8 @@
                               HeightRequest="50"
                               Margin="0,10,0,0"
                               BackgroundColor="{DynamicResource Secondary}"
-                              TextColor="{DynamicResource Text}"/>
-    
+                              TextColor="{StaticResource TextOnSecondary}"/>
+
                     </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>

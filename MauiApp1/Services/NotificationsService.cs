@@ -14,15 +14,22 @@ namespace MauiApp1.Services
             await Task.CompletedTask;
         }
 
+        public Task<bool> AreRemindersAllowedAsync() => LocalNotificationCenter.Current.AreNotificationsEnabled();
+
+        public async Task<bool> RequestReminderPermissionAsync()
+        {
+            if (await AreRemindersAllowedAsync())
+                return true;
+
+            await LocalNotificationCenter.Current.RequestNotificationPermission();
+            return await AreRemindersAllowedAsync();
+        }
+
         public async Task ScheduleWeeklyReminders()
         {
-            if (!Preferences.Default.Get("RemindersEnabled", false))
+            if (!Preferences.Default.Get("RemindersEnabled", false) || !await AreRemindersAllowedAsync())
                 return;
 
-            if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
-            {
-                await LocalNotificationCenter.Current.RequestNotificationPermission();
-            }
             string savedTime = Preferences.Default.Get("ReminderTime", "20:00:00");
             if (!TimeSpan.TryParse(savedTime, out TimeSpan targetTime))
             {
