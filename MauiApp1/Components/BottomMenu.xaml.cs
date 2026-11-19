@@ -37,7 +37,11 @@ public partial class BottomMenu : ContentView
     private async void RosaryButton_Tapped(object sender, TappedEventArgs e)
     {
        
-        if (string.IsNullOrEmpty(_authService.Token)) return;
+        if (string.IsNullOrEmpty(_authService.Token))
+        {
+            await Shell.Current.GoToAsync("LoginRequired");
+            return;
+        }
         var handler = new JwtSecurityTokenHandler();
         var jsonToken = handler.ReadJwtToken(_authService.Token);
 
