@@ -39,6 +39,7 @@ public partial class BottomMenu : ContentView
        
         if (string.IsNullOrEmpty(_authService.Token))
         {
+            if (Shell.Current.CurrentPage is LoginRequiredPage) return;
             await Shell.Current.GoToAsync("LoginRequired");
             return;
         }
