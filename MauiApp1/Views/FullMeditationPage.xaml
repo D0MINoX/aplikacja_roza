@@ -1,67 +1,67 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
-             x:Class="MauiApp1.FullMeditationPage"
-             Title="FullMeditationPage"
-             Shell.NavBarIsVisible="False"
-             BackgroundColor="{DynamicResource Primary}">
-    <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="10">
-            <VerticalStackLayout Grid.Row="0" Spacing="2">
-                <Label x:Name="MysteryLabel" Style="{StaticResource HeaderLabel}">
-                    Rozważania różańcowe
-                </Label>
-                <Label x:Name="SectionTitleLabel"
-                       IsVisible="False"
-                       Margin="16,0"
-                       FontSize="18"
-                       HorizontalTextAlignment="Center"
-                       TextColor="{DynamicResource Text}" />
-            </VerticalStackLayout>
-
-            <!-- Całe rozważanie -->
-            <Border Grid.Row="1" Style="{StaticResource MenuOption}">
-                <Grid RowDefinitions="*,auto" RowSpacing="10" Padding="5" >
-                    <!-- data -->
-                
-                      
- 
-                    <!-- tekst rozważania -->
-                    <WebView Grid.Row="0" 
-                         x:Name="MeditationWebView" 
-                         HorizontalOptions="FillAndExpand" 
-                         VerticalOptions="FillAndExpand" />
-
-                    <!-- przyciski -->
-                    <Grid ColumnDefinitions="*,2*,*" Grid.Row="1">
-                        <Border Grid.Column="0"  Style="{StaticResource NavButton}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="PreviousTapped"/>
-                            </Border.GestureRecognizers>
-                            <Label InputTransparent="True" Text="&lt;" Style="{StaticResource OptionLabel}" FontAttributes="Bold" FontSize="20"/>
-
-
-                        </Border>
-                        <Border Grid.Column="1" x:Name="Complete" Style="{StaticResource NavButton}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="CompletedTapped"/>
-                            </Border.GestureRecognizers>
-                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
-                                Ukończono
-                            </Label>
-                        </Border>
-                        <Border Grid.Column="2" Style="{StaticResource NavButton}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="NextTapped"/>
-                            </Border.GestureRecognizers>
-                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}" Margin="0,0,0,0" FontAttributes="Bold" FontSize="20">
-                                >
-                            </Label>
-                        </Border>
-                    </Grid>
-                </Grid>
-            </Border>
-        </Grid>
-        <mauiapp1:BottomMenu Grid.Row="1"></mauiapp1:BottomMenu>
-    </Grid>
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:mauiapp1="clr-namespace:MauiApp1"
+             x:Class="MauiApp1.FullMeditationPage"
+             Title="FullMeditationPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{DynamicResource Primary}">
+    <Grid RowDefinitions="*,auto">
+        <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="4">
+            <VerticalStackLayout Grid.Row="0" Spacing="2">
+                <Label x:Name="MysteryLabel" Style="{StaticResource HeaderLabel}">
+                    Rozważania różańcowe
+                </Label>
+                <Label x:Name="SectionTitleLabel"
+                       IsVisible="False"
+                       Margin="4,0"
+                       FontSize="18"
+                       HorizontalTextAlignment="Center"
+                       TextColor="{DynamicResource Text}" />
+            </VerticalStackLayout>
+
+            <!-- Całe rozważanie -->
+            <Border Grid.Row="1" Style="{StaticResource MenuOption}" Margin="2" Padding="0">
+                <Grid RowDefinitions="*,auto" RowSpacing="4" Padding="0" >
+                    <!-- data -->
+                
+                      
+ 
+                    <!-- tekst rozważania -->
+                    <WebView Grid.Row="0" 
+                         x:Name="MeditationWebView" 
+                         HorizontalOptions="FillAndExpand" 
+                         VerticalOptions="FillAndExpand" />
+
+                    <!-- przyciski -->
+                    <Grid ColumnDefinitions="*,2*,*" Grid.Row="1" Margin="0,0,0,16">
+                        <Border Grid.Column="0"  Style="{StaticResource NavButton}" Margin="2">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="PreviousTapped"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Text="&lt;" Style="{StaticResource OptionLabel}" FontAttributes="Bold" FontSize="20"/>
+
+
+                        </Border>
+                        <Border Grid.Column="1" x:Name="Complete" Style="{StaticResource NavButton}" Margin="2">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="CompletedTapped"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                Ukończono
+                            </Label>
+                        </Border>
+                        <Border Grid.Column="2" Style="{StaticResource NavButton}" Margin="2">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="NextTapped"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}" Margin="0,0,0,0" FontAttributes="Bold" FontSize="20">
+                                >
+                            </Label>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+        <mauiapp1:BottomMenu Grid.Row="1"></mauiapp1:BottomMenu>
+    </Grid>
 </ContentPage>

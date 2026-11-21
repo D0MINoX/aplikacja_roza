@@ -40,7 +40,7 @@
             
             <!-- Różaniec -->
             <Grid RowDefinitions="auto,auto" Grid.Column="1">
-                <Image Grid.Row="0" Source="book.png" Style="{StaticResource OptionImage}">
+                <Image Grid.Row="0" Source="rosary.png" Style="{StaticResource OptionImage}">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="FullRosaryButton_Tapped"/>
                     </Image.GestureRecognizers>

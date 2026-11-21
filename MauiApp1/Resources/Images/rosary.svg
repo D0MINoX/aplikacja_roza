@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+<title>Różaniec</title>
+<g fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round">
+<path stroke-width="5" d="M141.74,28.69 L155.26,31.34"/>
+<path stroke-width="5" d="M180.30,42.31 L187.72,47.73"/>
+<path stroke-width="5" d="M203.83,69.15 L205.19,72.85"/>
+<path stroke-width="5" d="M205.19,99.15 L203.83,102.85"/>
+<path stroke-width="5" d="M187.72,124.27 L180.30,129.69"/>
+<path stroke-width="5" d="M155.26,140.66 L141.74,143.31"/>
+<path stroke-width="5" d="M114.26,143.31 L100.74,140.66"/>
+<path stroke-width="5" d="M75.70,129.69 L68.28,124.27"/>
+<path stroke-width="5" d="M52.17,102.85 L50.81,99.15"/>
+<path stroke-width="5" d="M50.81,72.85 L52.17,69.15"/>
+<path stroke-width="5" d="M68.28,47.73 L75.70,42.31"/>
+<path stroke-width="5" d="M100.74,31.34 L114.26,28.69"/>
+<circle cx="128.00" cy="26.00" r="9" stroke-width="10"/>
+<circle cx="169.00" cy="34.04" r="9" stroke-width="10"/>
+<circle cx="199.01" cy="56.00" r="9" stroke-width="10"/>
+<circle cx="210.00" cy="86.00" r="9" stroke-width="10"/>
+<circle cx="199.01" cy="116.00" r="9" stroke-width="10"/>
+<circle cx="169.00" cy="137.96" r="9" stroke-width="10"/>
+<circle cx="128.00" cy="146.00" r="9" stroke-width="10"/>
+<circle cx="87.00" cy="137.96" r="9" stroke-width="10"/>
+<circle cx="56.99" cy="116.00" r="9" stroke-width="10"/>
+<circle cx="46.00" cy="86.00" r="9" stroke-width="10"/>
+<circle cx="56.99" cy="56.00" r="9" stroke-width="10"/>
+<circle cx="87.00" cy="34.04" r="9" stroke-width="10"/>
+<path stroke-width="5" d="M128 160 V166 M128 184 V190 M128 204 V211"/>
+<circle cx="128" cy="175" r="5" stroke-width="8"/>
+<circle cx="128" cy="197" r="4" stroke-width="6"/>
+<path stroke-width="12" d="M128 211 V240 M112 222 H144"/>
+</g></svg>

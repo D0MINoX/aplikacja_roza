@@ -1,58 +1,57 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiApp1.Views.FullRosaryPage"
-             xmlns:mauiapp1="clr-namespace:MauiApp1"
-             Title="FullRosaryPage"
-              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
- BackgroundColor="{DynamicResource Primary}"
- Shell.NavBarIsVisible="False">
-    <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="20">
-            <!-- Header -->
-            <Grid Grid.Row="0" Style="{StaticResource Head}">
-                <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
-                    Rozważania różańcowe
-                </Label>
-            </Grid>
-
-            <!-- Całe rozważanie -->
-            <Border Grid.Row="1" Style="{StaticResource MenuOption}">
-                <Grid RowDefinitions="auto,*,auto" RowSpacing="10" Padding="10" >
-                    <!-- data -->
-
-                    <Label x:Name="DateLabel" Grid.Row="0" InputTransparent="True" FontSize="22" HorizontalOptions="Center" FontAttributes="Bold" TextColor="{DynamicResource Tertiary}"/>
-
-
-                    <!-- tekst rozważania -->
-                    <WebView Grid.Row="1" 
-                     x:Name="MeditationWebView" 
-                     HorizontalOptions="FillAndExpand" 
-                     VerticalOptions="FillAndExpand" />
-
-                    <!-- przyciski -->
-                    <Grid ColumnDefinitions="*,*" Grid.Row="2">
-                        <Border Grid.Column="0" HorizontalOptions="Start" Style="{StaticResource NavButton}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="PreviousTapped"/>
-                            </Border.GestureRecognizers>
-                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
-                                Wstecz
-                            </Label>
-                        </Border>
-                        
-                        <Border Grid.Column="2" HorizontalOptions="End" Style="{StaticResource NavButton}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="NextTapped"/>
-                            </Border.GestureRecognizers>
-                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}" Margin="0,0,0,0">
-                                Dalej
-                            </Label>
-                        </Border>
-                    </Grid>
-                </Grid>
-            </Border>
-        </Grid>
-        <mauiapp1:BottomMenu Grid.Row="1"></mauiapp1:BottomMenu>
-    </Grid>
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.FullRosaryPage"
+             xmlns:mauiapp1="clr-namespace:MauiApp1"
+             Title="FullRosaryPage"
+              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+ BackgroundColor="{DynamicResource Primary}"
+ Shell.NavBarIsVisible="False">
+    <Grid RowDefinitions="*,auto">
+        <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="4">
+            <!-- Header -->
+            <Grid Grid.Row="0" Style="{StaticResource Head}" Margin="4">
+                <Label Grid.Row="0" Style="{StaticResource HeaderLabel}">
+                    Rozważania różańcowe
+                </Label>
+            </Grid>
+
+            <!-- Całe rozważanie -->
+            <Border Grid.Row="1" Style="{StaticResource MenuOption}" Margin="2" Padding="0">
+                <Grid RowDefinitions="auto,*,auto" RowSpacing="4" Padding="0" >
+                    <!-- data -->
+
+                    <Label x:Name="DateLabel" Grid.Row="0" InputTransparent="True" FontSize="22" HorizontalOptions="Center" FontAttributes="Bold" TextColor="{DynamicResource Tertiary}"/>
+
+
+                    <!-- tekst rozważania -->
+                    <ScrollView Grid.Row="1">
+                        <VerticalStackLayout x:Name="MysteriesContainer" Spacing="4" />
+                    </ScrollView>
+
+                    <!-- przyciski -->
+                    <Grid ColumnDefinitions="*,*" Grid.Row="2" Margin="0,0,0,16">
+                        <Border Grid.Column="0" HorizontalOptions="Start" Style="{StaticResource NavButton}" Margin="2">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="PreviousTapped"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                Wstecz
+                            </Label>
+                        </Border>
+                        
+                        <Border Grid.Column="1" HorizontalOptions="End" Style="{StaticResource NavButton}" Margin="2">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="NextTapped"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}" Margin="0,0,0,0">
+                                Dalej
+                            </Label>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+        <mauiapp1:BottomMenu Grid.Row="1"></mauiapp1:BottomMenu>
+    </Grid>
 </ContentPage>
