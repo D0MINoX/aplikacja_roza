@@ -6,70 +6,65 @@
              Shell.NavBarIsVisible="False"
              BackgroundColor="{DynamicResource Primary}">
     <Grid RowDefinitions="*,auto">
-        <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="10">
+        <Grid RowDefinitions="auto,*" Grid.Row="0" RowSpacing="4">
             <VerticalStackLayout Grid.Row="0" Spacing="2">
                 <Label x:Name="MysteryLabel" Style="{StaticResource HeaderLabel}">
                     Rozważania różańcowe
                 </Label>
                 <Label x:Name="SectionTitleLabel"
                        IsVisible="False"
-                       Margin="16,0"
+                       Margin="4,0"
                        FontSize="18"
                        HorizontalTextAlignment="Center"
                        TextColor="{DynamicResource Text}" />
             </VerticalStackLayout>
 
             <!-- Całe rozważanie -->
-            <Border Grid.Row="1" Style="{StaticResource MenuOption}">
-                <Grid RowDefinitions="*,auto" RowSpacing="10" Padding="5" >
-                    <!-- data -->
-                
-                      
- 
+            <Border Grid.Row="1" Style="{StaticResource MenuOption}" Margin="2" Padding="0">
+                <Grid RowDefinitions="*,auto" RowSpacing="4" Padding="0">
                     <!-- tekst rozważania -->
-                    <WebView Grid.Row="0" 
-                         x:Name="MeditationWebView" 
-                         HorizontalOptions="FillAndExpand" 
-                         VerticalOptions="FillAndExpand" />
+                    <WebView Grid.Row="0"
+                             x:Name="MeditationWebView"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="FillAndExpand" />
 
                     <!-- przyciski -->
-                    <Grid ColumnDefinitions="*,2*,*,*" Grid.Row="1">
-                        <Border Grid.Column="0"  Style="{StaticResource NavButton}">
+                    <Grid ColumnDefinitions="*,2*,*,*" Grid.Row="1" Margin="0,0,0,16">
+                        <Border Grid.Column="0" Style="{StaticResource NavButton}" Margin="2">
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="PreviousTapped"/>
+                                <TapGestureRecognizer Tapped="PreviousTapped" />
                             </Border.GestureRecognizers>
-                            <Label InputTransparent="True" Text="&lt;" Style="{StaticResource OptionLabel}" FontAttributes="Bold" FontSize="20"/>
-
-
+                            <Label InputTransparent="True" Text="&lt;" Style="{StaticResource OptionLabel}" FontAttributes="Bold" FontSize="20" />
                         </Border>
-                        <Border Grid.Column="1" x:Name="Complete" Style="{StaticResource NavButton}">
+
+                        <Border Grid.Column="1" x:Name="Complete" Style="{StaticResource NavButton}" Margin="2">
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="CompletedTapped"/>
+                                <TapGestureRecognizer Tapped="CompletedTapped" />
                             </Border.GestureRecognizers>
                             <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
                                 Ukończono
                             </Label>
                         </Border>
-                        <Border Grid.Column="2" Style="{StaticResource NavButton}">
+
+                        <Border Grid.Column="2" Style="{StaticResource NavButton}" Margin="2">
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="NextTapped"/>
+                                <TapGestureRecognizer Tapped="NextTapped" />
                             </Border.GestureRecognizers>
                             <Label InputTransparent="True" Style="{StaticResource OptionLabel}" Margin="0,0,0,0" FontAttributes="Bold" FontSize="20">
-                                >
+                                &gt;
                             </Label>
                         </Border>
 
-                        <Border Grid.Column="3" x:Name="ReadButton" Style="{StaticResource NavButton}">
+                        <Border Grid.Column="3" x:Name="ReadButton" Style="{StaticResource NavButton}" Margin="2">
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="ReadTapped"/>
+                                <TapGestureRecognizer Tapped="ReadTapped" />
                             </Border.GestureRecognizers>
-                            <Label x:Name="ReadLabel" InputTransparent="True" Text="🔊" Style="{StaticResource OptionLabel}" FontSize="20"/>
+                            <Label x:Name="ReadLabel" InputTransparent="True" Text="🔊" Style="{StaticResource OptionLabel}" FontSize="20" />
                         </Border>
-                        
                     </Grid>
                 </Grid>
             </Border>
         </Grid>
-        <mauiapp1:BottomMenu Grid.Row="1"></mauiapp1:BottomMenu>
+        <mauiapp1:BottomMenu Grid.Row="1" />
     </Grid>
 </ContentPage>

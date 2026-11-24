@@ -167,4 +167,9 @@ public partial class SettingsPage : ContentPage
     {
         await Shell.Current.GoToAsync("ReportBug");
     }
+
+    private async void UserGuide_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(Views.UserGuidePage));
+    }
 }

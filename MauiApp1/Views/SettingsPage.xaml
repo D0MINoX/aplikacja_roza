@@ -22,6 +22,21 @@
                     </Label>
                 </Grid>
 
+                <Border Style="{StaticResource MenuOption}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="UserGuide_Tapped" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="auto,*" ColumnSpacing="20">
+                        <Image Source="book.png" Style="{StaticResource OptionImage}">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{Binding Source={x:Reference Ref}, Path=BackgroundColor}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label Grid.Column="1" Text="Jak używać aplikacji" FontSize="18"
+                               VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </Grid>
+                </Border>
+
                 <!-- Zaloguj się -->
                 <Border Style="{StaticResource MenuOption}" x:Name="LogIn">
                     <Border.GestureRecognizers>

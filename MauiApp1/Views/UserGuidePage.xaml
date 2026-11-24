@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.UserGuidePage"
+             Title="Jak używać aplikacji"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{DynamicResource Primary}">
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="LineHeight" Value="1.2" />
+            <Setter Property="LineBreakMode" Value="WordWrap" />
+            <Setter Property="TextColor" Value="{DynamicResource Text}" />
+        </Style>
+        <Style x:Key="GuideHeading" TargetType="Label">
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="LineBreakMode" Value="WordWrap" />
+            <Setter Property="TextColor" Value="{DynamicResource Text}" />
+            <Setter Property="SemanticProperties.HeadingLevel" Value="Level2" />
+        </Style>
+        <Style x:Key="GuideSection" TargetType="Border" BasedOn="{StaticResource MenuOption}">
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="16" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" Padding="16,12">
+            <Button Text="Wstecz" Clicked="Back_Clicked" FontSize="18" MinimumHeightRequest="48"
+                    Padding="12,8" CornerRadius="12" BorderWidth="1"
+                    BackgroundColor="{DynamicResource Primary}" TextColor="{DynamicResource Text}"
+                    BorderColor="{DynamicResource LinkText}" />
+            <Label Grid.Column="1" Text="Jak używać aplikacji" FontSize="24" FontAttributes="Bold"
+                   VerticalOptions="Center" SemanticProperties.HeadingLevel="Level1" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="18,10,18,28" Spacing="18" MaximumWidthRequest="760">
+                <Border Style="{StaticResource GuideSection}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Wróć z kalendarza do wyboru" Style="{StaticResource GuideHeading}" />
+                        <Label Text="1. Dotknij obrazka tajemnicy nad kalendarzem. Zobaczysz tajemnice z tej samej części różańca." />
+                        <Label Text="2. Dotknij dużego obrazka na środku, aby wrócić do wyboru części różańca." />
+                        <Label Text="Na ekranie Start możesz też przesunąć palcem w prawo. Na Androidzie możesz użyć przycisku lub gestu Wstecz. Każde cofnięcie wraca o jeden krok." />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource GuideSection}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Przeczytaj rozważanie" Style="{StaticResource GuideHeading}" />
+                        <Label Text="1. Dotknij Start na dole ekranu. Wybierz część różańca, a potem obrazek tajemnicy." />
+                        <Label Text="2. W kalendarzu dotknij numeru dnia. Możesz też otworzyć Wprowadzenie lub Dodatek." />
+                        <Label Text="3. Użyj strzałek pod tekstem, aby zmienić dzień. Po przeczytaniu dotknij Ukończono, a potem Start, aby wrócić do kalendarza." />
+                        <Label Text="Przygaszone dni pokazują postęp. Możesz do nich wrócić i przeczytać je ponownie." />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource GuideSection}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Wróć do zapisanej tajemnicy" Style="{StaticResource GuideHeading}" />
+                        <Label Text="Aplikacja zapamiętuje wybór na tym urządzeniu. Start otworzy kalendarz tej tajemnicy także po ponownym uruchomieniu aplikacji." />
+                        <Label Text="Wcześniejsze tajemnice z tej samej części są przygaszone. Nadal możesz je otworzyć." />
+                        <Label Text="Gdy otworzysz dzień 28, 29, 30 lub Dodatek, pełny wybór wróci w najbliższą niedzielę. Jeśli już jest niedziela, zobaczysz pełny wybór po powrocie do Startu." />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource GuideSection}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Rozważania i Różaniec na dole ekranu" Style="{StaticResource GuideHeading}" />
+                        <Label Text="Rozważania otwierają czytnik wybranej tajemnicy. Jeśli chcesz wskazać inną tajemnicę lub konkretny dzień, użyj Startu." />
+                        <Label Text="Różaniec pokazuje rozważania wszystkich pięciu tajemnic danej części na jeden dzień. Użyj przycisków Wstecz i Dalej, aby zmienić dzień." />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource GuideSection}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Czytaj bez internetu" Style="{StaticResource GuideHeading}" />
+                        <Label Text="1. Gdy masz internet, wejdź w Ustawienia i włącz Pobieraj rozważania offline." />
+                        <Label Text="2. Otwórz rozważanie z wybranej tajemnicy, aby aplikacja mogła pobrać jej teksty. Pobrane rozważania możesz czytać bez połączenia." />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource GuideSection}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Ustaw przypomnienia i motyw" Style="{StaticResource GuideHeading}" />
+                        <Label Text="W Ustawieniach wybierz Włącz przypomnienia. Jeśli telefon zapyta o zgodę na powiadomienia, wybierz Zezwól. Następnie dotknij godziny i ustaw dogodną porę." />
+                        <Label Text="Jeśli odmówisz zgody, możesz ją później włączyć w ustawieniach telefonu. Wróć wtedy do aplikacji i włącz przypomnienia." />
+                        <Label Text="Zmień motyw przełącza jasne i ciemne tło." />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource GuideSection}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Załóż konto lub zaloguj się" Style="{StaticResource GuideHeading}" />
+                        <Label Text="Do czytania rozważań możesz przejść bez konta. Konto przyda się do dołączenia do róży i czytania jej wiadomości." />
+                        <Label Text="Wejdź w Ustawienia i wybierz Zaloguj się. Wpisz e-mail i hasło. Jeśli zakładasz konto, wybierz Zarejestruj się, uzupełnij formularz i zaakceptuj regulamin oraz politykę prywatności. Parafię możesz wskazać później." />
+                        <Label Text="Po zalogowaniu w Ustawieniach pojawią się Profil i Wyloguj się. W Profilu możesz zmienić dane lub hasło." />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource GuideSection}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Dołącz do róży i odczytaj wiadomości" Style="{StaticResource GuideHeading}" />
+                        <Label Text="1. Po zalogowaniu dotknij Róża na dole ekranu. Do listy grup możesz też przejść przez Profil i Dołącz do róży." />
+                        <Label Text="2. Jeśli pojawi się wybór parafii, wskaż swoją parafię. Wybierz różę i dotknij Dołącz." />
+                        <Label Text="3. Zaczekaj, aż osoba prowadząca różę zatwierdzi zgłoszenie. Potem w zakładce Róża wybierz Zobacz wiadomości." />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource GuideSection}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Zgłoś problem" Style="{StaticResource GuideHeading}" />
+                        <Label Text="W Ustawieniach wybierz Zgłoś błąd. Napisz, co próbujesz zrobić i co dzieje się na ekranie, a potem dotknij Wyślij. Nazwę ekranu i numer telefonu możesz podać, jeśli chcesz." />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -14,6 +14,7 @@ namespace MauiApp1
             Routing.RegisterRoute("LoginRequired", typeof(LoginRequiredPage));
 
             Routing.RegisterRoute("Settings", typeof(SettingsPage));
+            Routing.RegisterRoute(nameof(UserGuidePage), typeof(UserGuidePage));
 
             Routing.RegisterRoute("FullMeditation", typeof(FullMeditationPage));
             Routing.RegisterRoute("Profile", typeof(ProfilePage));

@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 
 namespace MauiApp1;
 
-
 public partial class FullMeditationPage : ContentPage, IQueryAttributable
 {
     private static readonly Lazy<Task<Dictionary<string, Dictionary<int, string>>>> SectionTitles =
@@ -38,10 +37,8 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     {
         if (query.ContainsKey("MeditationContent"))
         {
-
             _meditationText = query["MeditationContent"] as string;
             _plainText = HtmlToPlainText(_meditationText);
-
 
             if (MeditationWebView != null)
             {
@@ -49,6 +46,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             }
         }
     }
+
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -58,7 +56,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         string savedGroup = Preferences.Default.Get("LastGroup", "Radosne");
         string savedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
         _isBusy = false;
-       // UpdateUI();
+        // UpdateUI();
         UpdateDate();
     }
 
@@ -66,8 +64,10 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     {
         if (_isBusy) return;
 
+        StopSpeaking();
         int updateVersion = ++_dateUpdateVersion;
         int selectedDay = date;
+        Complete.Opacity = 1;
         SectionTitleLabel.IsVisible = false;
 
         try
@@ -148,6 +148,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         _plainText = HtmlToPlainText(rawContent);
         LoadHtmlToWebView(rawContent);
     }
+
     private void LoadHtmlToWebView(string contentHtml)
     {
         if (MeditationWebView == null) return;
@@ -159,45 +160,45 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         string headingColor = isDark ? "#F1F1F1" : "#1F1F1F";
 
         string fullHtmlPage = $@"
-<!DOCTYPE html>  
-<html lang='pl'>  
-<head>      
-    <meta charset='utf-8'>      
+<!DOCTYPE html>
+<html lang='pl'>
+<head>
+    <meta charset='utf-8'>
     <meta http-equiv='Content-Security-Policy' content=""script-src 'none'; object-src 'none'; frame-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'"">
-    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>      
-    <style>          
-        body {{              
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;              
-            font-size: 16px;              
-            line-height: 1.6;              
-            color: {textColor};              
-            padding: 8px;              
-            margin: 0;              
-            background-color: {bgColor};                              
-            text-align: justify;              
-            text-justify: inter-word;                              
-            -webkit-hyphens: auto;              
-            -moz-hyphens: auto;              
-            -ms-hyphens: auto;              
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+    <style>
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: {textColor};
+            padding: 4px;
+            margin: 0;
+            background-color: {bgColor};
+            text-align: justify;
+            text-justify: inter-word;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
             hyphens: auto;
-        }}          
-        p {{              
-            text-align: justify;              
-            text-justify: inter-word;              
+        }}
+        p {{
+            text-align: justify;
+            text-justify: inter-word;
             margin-top: 0;
             margin-bottom: 12px;
-        }}          
-        h1, h2, h3 {{               
-            color: {headingColor};               
-            margin-top: 18px; 
-            margin-bottom: 8px;              
-            text-align: left;              
-            -webkit-hyphens: none !important;              
-            -ms-hyphens: none !important;              
-            hyphens: none !important;               
-            word-break: keep-all; 
         }}
-        
+        h1, h2, h3 {{
+            color: {headingColor};
+            margin-top: 18px;
+            margin-bottom: 8px;
+            text-align: left;
+            -webkit-hyphens: none !important;
+            -ms-hyphens: none !important;
+            hyphens: none !important;
+            word-break: keep-all;
+        }}
+
         /* Mapowanie czcionek systemowych z edytora Quill */
         .ql-font-arial {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; }}
         .ql-font-georgia {{ font-family: Georgia, 'Times New Roman', serif; }}
@@ -210,11 +211,11 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         .ql-align-center {{ text-align: center; }}
         .ql-align-right {{ text-align: right; }}
         .ql-align-justify {{ text-align: justify; }}
-    </style>  
-</head>  
-<body>      
-    {contentHtml}  
-</body>  
+    </style>
+</head>
+<body>
+    {contentHtml}
+</body>
 </html>";
 
         MeditationWebView.Source = new HtmlWebViewSource
@@ -222,24 +223,12 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             Html = fullHtmlPage
         };
     }
-    private async void CompletedTapped(object sender, TappedEventArgs e)
+
+    private void CompletedTapped(object sender, TappedEventArgs e)
     {
-        Color? color = Complete.BackgroundColor;
-        float newAlpha = color.Alpha < 1f ? 1f : 0.5f;
-        Complete.BackgroundColor = color.WithAlpha(newAlpha);
-        string todayKey = DateTime.Today.ToString("yyyy-MM-dd");
-        Preferences.Default.Set("LastCompleteDate", date);
-        RosaryCycle.SelectDay(date, DateTime.Today);
-     //   Preferences.Default.Set($"Done_{todayKey}", true);
-      //  var handler = new JwtSecurityTokenHandler();
-      //  var jsonToken = handler.ReadJwtToken(_authService.Token);
-    //    var IdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "nameid" || c.Type == ClaimTypes.NameIdentifier);
-        //if (int.TryParse(IdClaim?.Value, out int id))
-        //{
-        //    await _meditationService.RecordPrayerAsync(id, DateTime.Today);
-        //}
-        
-        //await _notificationService.ScheduleWeeklyReminders();
+        string mystery = Preferences.Default.Get("LastMystery", string.Empty);
+        RosaryCycle.Complete(mystery, date, DateTime.Today);
+        Complete.Opacity = 0.5;
     }
 
     private async Task<LocalMeditation> GetMeditationFromLocalFile(int day, string mystery)
@@ -252,7 +241,6 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             string json = await File.ReadAllTextAsync(path);
             var allMeditations = JsonSerializer.Deserialize<List<LocalMeditation>>(json);
 
-
             return allMeditations?.FirstOrDefault(m => m.Date == day);
         }
         catch { return null; }
@@ -262,7 +250,6 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     {
         try
         {
-
             var list = await _meditationService.GetAllMeditationsForMystery(mystery);
 
             if (list != null && list.Any())
@@ -279,10 +266,10 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
 
     private string GetFileName(string mystery)
     {
-
         string safeName = mystery.Replace(" ", "_").Substring(0, Math.Min(mystery.Length, 20));
         return Path.Combine(FileSystem.AppDataDirectory, $"meditations_{safeName}.json");
     }
+
     private async void PreviousTapped(object sender, EventArgs e)
     {
         if (--date < 0) date = 31;
@@ -294,7 +281,6 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         if (++date > 31) date = 0;
         UpdateDate();
     }
-
 
     private static string HtmlToPlainText(string? html)
     {

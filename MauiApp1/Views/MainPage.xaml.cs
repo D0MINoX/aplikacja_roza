@@ -147,7 +147,7 @@ namespace MauiApp1
             if (!RosaryCycle.CanRestore(DateTime.Today))
                 return false;
 
-            string savedMystery = Preferences.Default.Get("LastMystery", string.Empty);
+            string savedMystery = RosaryCycle.SavedMystery;
             foreach (var (part, mysteries) in _itemsMap)
             {
                 int index = mysteries.FindIndex(mystery =>
@@ -163,6 +163,7 @@ namespace MauiApp1
                 }
 
                 CenterImage.IsVisible = false;
+                RosaryCycle.SelectMystery(savedMystery, DateTime.Today);
                 ShowCalendar(part, index, opacity: 1, scale: 1);
                 return true;
             }
@@ -430,7 +431,7 @@ namespace MauiApp1
 
         private int GetSavedMysteryIndex(string part)
         {
-            var savedMystery = Preferences.Default.Get("LastMystery", string.Empty);
+            var savedMystery = RosaryCycle.SavedMystery;
             return _itemsMap[part].FindIndex(item =>
                 string.Equals(item.FullDescription, savedMystery, StringComparison.OrdinalIgnoreCase));
         }
@@ -687,7 +688,7 @@ namespace MauiApp1
             CalendarGrid.Children.Clear();
 
             int columnsCount = 6;
-            int lastDate = Preferences.Get("LastCompleteDate", -1);
+            int lastDate = RosaryCycle.CompletedDay(Preferences.Default.Get("LastMystery", string.Empty));
 
             // =========================
             // WPROWADZENIE - cały wiersz
