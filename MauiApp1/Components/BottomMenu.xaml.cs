@@ -1,5 +1,6 @@
 using MauiApp1.Models;
 using MauiApp1.Services;
+using MauiApp1.Views;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -17,27 +18,43 @@ public partial class BottomMenu : ContentView
         _rosaryService = IPlatformApplication.Current.Services.GetRequiredService<RosaryService>();
     }
 
+    private static async Task NavigateOnceAsync(string route, Type pageType, IDictionary<string, object>? parameters = null, bool animate = true, bool clearStack = false)
+    {
+        if (Shell.Current.CurrentPage?.GetType() == pageType) return;
+
+        if (clearStack)
+        {
+            var stack = Shell.Current.Navigation.NavigationStack.ToArray();
+            for (int i = stack.Length - 1; i > 0; i--)
+            {
+                Shell.Current.Navigation.RemovePage(stack[i]);
+            }
+        }
+
+        if (parameters == null)
+            await Shell.Current.GoToAsync(route, animate);
+        else
+            await Shell.Current.GoToAsync(route, animate, parameters);
+    }
+
     private async void HomeButton_Tapped(object sender, TappedEventArgs e)
     {
-        var stack = Shell.Current.Navigation.NavigationStack.ToArray();
-        
         await Shell.Current.GoToAsync("//Home", false);
     }
 
 
     private async void SettingsButton_Tapped(object sender, TappedEventArgs e)
     {
-        var stack = Shell.Current.Navigation.NavigationStack.ToArray();
-        for (int i = stack.Length - 1; i > 0; i--)
-        {
-            Shell.Current.Navigation.RemovePage(stack[i]);
-        }
-        await Shell.Current.GoToAsync("Settings", false);
+        await NavigateOnceAsync("Settings", typeof(SettingsPage), animate: false, clearStack: true);
     }
     private async void RosaryButton_Tapped(object sender, TappedEventArgs e)
     {
        
-        if (string.IsNullOrEmpty(_authService.Token)) return;
+        if (string.IsNullOrEmpty(_authService.Token))
+        {
+            await NavigateOnceAsync("LoginRequired", typeof(LoginRequiredPage));
+            return;
+        }
         var handler = new JwtSecurityTokenHandler();
         var jsonToken = handler.ReadJwtToken(_authService.Token);
 
@@ -45,7 +62,7 @@ public partial class BottomMenu : ContentView
         int userRole = int.Parse(roleClaim?.Value ?? "5");
         if (userRole == 0 || userRole == 1)
         {
-            await Shell.Current.GoToAsync("MyRosariesList");
+            await NavigateOnceAsync("MyRosariesList", typeof(MyRosariesListPage));
         }
         else
         {
@@ -59,21 +76,16 @@ public partial class BottomMenu : ContentView
                 {
                     rosaryId = rosaryInfos[0].Id;
                     var navigationParameter = new Dictionary<string, object> { { "RosaryId", rosaryId.ToString() }, { "UserRole", userRole } };
-                    await Shell.Current.GoToAsync("MyRosaryGroup", navigationParameter);
+                    await NavigateOnceAsync("MyRosaryGroup", typeof(MyRosaryPage), navigationParameter);
                 }
                 else
                 {
-                    await Shell.Current.GoToAsync("SelectParish", new Dictionary<string, object> { { "UserId", Id } });
+                    await NavigateOnceAsync("SelectParish", typeof(SelectParish), new Dictionary<string, object> { { "UserId", Id } });
                 }
             }
         }
     }
     private async void FullRosaryButton_Tapped(object sender, TappedEventArgs e) {
-        var stack = Shell.Current.Navigation.NavigationStack.ToArray();
-        for (int i = stack.Length - 1; i > 0; i--)
-        {
-            Shell.Current.Navigation.RemovePage(stack[i]);
-        }
-        await Shell.Current.GoToAsync("FullRosary", false);
+        await NavigateOnceAsync("FullRosary", typeof(FullRosaryPage), animate: false, clearStack: true);
     }
 }

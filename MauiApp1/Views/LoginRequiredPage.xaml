@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mauiapp1="clr-namespace:MauiApp1"
+             x:Class="MauiApp1.LoginRequiredPage"
+             Title="LoginRequiredPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{DynamicResource Primary}">
+
+    <Grid RowDefinitions="*,auto">
+        <ScrollView Grid.Row="0">
+            <Grid RowDefinitions="auto,*" RowSpacing="20">
+                <Grid Grid.Row="0" Style="{StaticResource Head}">
+                    <Label Style="{StaticResource HeaderLabel}">
+                        Twoja róża
+                    </Label>
+                </Grid>
+
+                <Border Grid.Row="1" Style="{StaticResource MenuOption}" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Wymagane logowanie"
+                               Style="{StaticResource HeaderLabel}"
+                               HorizontalOptions="Center"/>
+
+                        <Label Text="Aby zobaczyć panel swojej róży, musisz się zalogować lub założyć konto."
+                               HorizontalTextAlignment="Center"
+                               TextColor="{DynamicResource Text}"/>
+
+                        <Border Style="{StaticResource NavButton}" HeightRequest="50" WidthRequest="250">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnLoginClicked"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                ZALOGUJ SIĘ
+                            </Label>
+                        </Border>
+
+                        <Border Style="{StaticResource NavButton}" HeightRequest="50" WidthRequest="250">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnRegisterClicked"/>
+                            </Border.GestureRecognizers>
+                            <Label InputTransparent="True" Style="{StaticResource OptionLabel}">
+                                ZAREJESTRUJ SIĘ
+                            </Label>
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+        </ScrollView>
+        <mauiapp1:BottomMenu Grid.Row="1"/>
+    </Grid>
+</ContentPage>

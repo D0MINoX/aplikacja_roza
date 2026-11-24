@@ -1,4 +1,4 @@
-﻿using MauiApp1.Views;
+using MauiApp1.Views;
 
 namespace MauiApp1
 {
@@ -11,6 +11,7 @@ namespace MauiApp1
             Routing.RegisterRoute("RosaryMeditations", typeof(RosaryMeditationsPage));
 
             Routing.RegisterRoute("Login", typeof(LoginPage));
+            Routing.RegisterRoute("LoginRequired", typeof(LoginRequiredPage));
 
             Routing.RegisterRoute("Settings", typeof(SettingsPage));
             Routing.RegisterRoute(nameof(UserGuidePage), typeof(UserGuidePage));
