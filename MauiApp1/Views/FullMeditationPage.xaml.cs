@@ -1,8 +1,10 @@
 using MauiApp1.Models;
 using MauiApp1.Services;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace MauiApp1;
 
@@ -19,6 +21,11 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     private readonly NotificationsService _notificationService;
     public MeditationsService _meditationService;
     public AuthService _authService;
+
+    private string _plainText = "";
+    private CancellationTokenSource? _ttsCts;
+    private bool _isSpeaking;
+
     public FullMeditationPage(NotificationsService notificationsService, MeditationsService meditationService, AuthService authService)
     {
         InitializeComponent();
@@ -33,6 +40,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         {
 
             _meditationText = query["MeditationContent"] as string;
+            _plainText = HtmlToPlainText(_meditationText);
 
 
             if (MeditationWebView != null)
@@ -137,6 +145,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     private void ApplyMeditationData(LocalMeditation data)
     {
         string rawContent = data?.Content ?? "Brak rozważania";
+        _plainText = HtmlToPlainText(rawContent);
         LoadHtmlToWebView(rawContent);
     }
     private void LoadHtmlToWebView(string contentHtml)
@@ -284,5 +293,103 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     {
         if (++date > 31) date = 0;
         UpdateDate();
+    }
+
+
+    private static string HtmlToPlainText(string? html)
+    {
+        if (string.IsNullOrWhiteSpace(html)) return "";
+
+        // nagłówki: kropka, żeby lektor zrobił pauzę
+        string t = Regex.Replace(html, @"</h[1-6]\s*>", ".\n", RegexOptions.IgnoreCase);
+        t = Regex.Replace(t, @"</p\s*>|<br\s*/?>|</li\s*>", "\n", RegexOptions.IgnoreCase);
+        t = Regex.Replace(t, @"<[^>]+>", "");
+        t = WebUtility.HtmlDecode(t).Replace('\u00A0', ' ');
+        t = Regex.Replace(t, @"[ \t]+", " ");
+        t = Regex.Replace(t, @"\n\s*\n+", "\n");
+        return t.Trim();
+    }
+
+    // Android ogranicza długość jednego Speak (~4000 znaków), więc dzielimy po akapitach
+    private static IEnumerable<string> SplitForSpeech(string text, int maxLen = 3000)
+    {
+        var sb = new System.Text.StringBuilder();
+        foreach (var para in text.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+        {
+            if (sb.Length + para.Length + 1 > maxLen && sb.Length > 0)
+            {
+                yield return sb.ToString();
+                sb.Clear();
+            }
+            if (para.Length > maxLen)
+            {
+                foreach (var s in Regex.Split(para, @"(?<=[\.\!\?])\s+"))
+                {
+                    if (sb.Length + s.Length + 1 > maxLen && sb.Length > 0)
+                    {
+                        yield return sb.ToString();
+                        sb.Clear();
+                    }
+                    sb.Append(s).Append(' ');
+                }
+            }
+            else sb.Append(para).Append('\n');
+        }
+        if (sb.Length > 0) yield return sb.ToString();
+    }
+
+    private async void ReadTapped(object sender, TappedEventArgs e)
+    {
+        if (_isSpeaking)
+        {
+            StopSpeaking();
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(_plainText)) return;
+
+        _ttsCts = new CancellationTokenSource();
+        var token = _ttsCts.Token;
+        _isSpeaking = true;
+        ReadLabel.Text = "⏹";
+
+        try
+        {
+            var locales = await TextToSpeech.Default.GetLocalesAsync();
+            var pl = locales.FirstOrDefault(l => l.Language.StartsWith("pl", StringComparison.OrdinalIgnoreCase));
+            var options = new SpeechOptions { Locale = pl };
+
+            foreach (var chunk in SplitForSpeech(_plainText))
+            {
+                token.ThrowIfCancellationRequested();
+                await TextToSpeech.Default.SpeakAsync(chunk, options, token);
+            }
+        }
+        catch (OperationCanceledException) { }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"TTS error: {ex.Message}");
+            await DisplayAlert("Błąd", "Nie udało się odczytać tekstu.", "OK");
+        }
+        finally
+        {
+            _isSpeaking = false;
+            ReadLabel.Text = "🔊";
+        }
+    }
+
+    private void StopSpeaking()
+    {
+        if (_ttsCts is { IsCancellationRequested: false })
+            _ttsCts.Cancel();
+        _ttsCts?.Dispose();
+        _ttsCts = null;
+        _isSpeaking = false;
+        ReadLabel.Text = "🔊";
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        StopSpeaking();
     }
 }
