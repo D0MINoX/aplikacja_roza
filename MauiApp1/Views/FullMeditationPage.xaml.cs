@@ -1,5 +1,6 @@
 using MauiApp1.Models;
 using MauiApp1.Services;
+using Plugin.Maui.Audio;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
@@ -15,22 +16,36 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
     private int _dateUpdateVersion;
 
     public int date;
+    private string _currentMystery = "Zwiastowanie Najświętszej Maryi Pannie";
     private string _meditationText;
     private bool _isBusy = false;
     private readonly NotificationsService _notificationService;
     public MeditationsService _meditationService;
     public AuthService _authService;
+    private readonly MeditationAudioService _audioService;
+    private readonly IAudioManager _audioManager;
 
     private string _plainText = "";
     private CancellationTokenSource? _ttsCts;
     private bool _isSpeaking;
+    private bool _isLoadingAudio;
+    private bool _isAudioPaused;
+    private IAudioPlayer? _audioPlayer;
+    private Stream? _audioStream;
 
-    public FullMeditationPage(NotificationsService notificationsService, MeditationsService meditationService, AuthService authService)
+    public FullMeditationPage(
+        NotificationsService notificationsService,
+        MeditationsService meditationService,
+        AuthService authService,
+        MeditationAudioService audioService,
+        IAudioManager audioManager)
     {
         InitializeComponent();
         _notificationService = notificationsService;
         _meditationService = meditationService;
         _authService = authService;
+        _audioService = audioService;
+        _audioManager = audioManager;
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -73,6 +88,7 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         try
         {
             string selectedMystery = Preferences.Default.Get("LastMystery", "Zwiastowanie Najświętszej Maryi Pannie");
+            _currentMystery = selectedMystery;
             MysteryLabel.Text = selectedMystery;
             if (string.IsNullOrEmpty(selectedMystery)) return;
 
@@ -90,6 +106,11 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
                 await DownloadAllMeditationsForMystery(selectedMystery))
             {
                 data = await GetMeditationFromLocalFile(selectedDay, selectedMystery);
+            }
+
+            if (Preferences.Default.Get(MeditationAudioService.AutoDownloadAudioPreferenceKey, false))
+            {
+                _audioService.EnsureMysteryAudioDownloadedInBackground(selectedMystery, selectedDay);
             }
 
             data ??= await _meditationService.GetMeditationData(selectedDay, selectedMystery);
@@ -326,20 +347,60 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
 
     private async void ReadTapped(object sender, TappedEventArgs e)
     {
-        if (_isSpeaking)
+        // Jeśli trwa pobieranie lub lektor TTS właśnie czyta -> zatrzymaj
+        if (_isLoadingAudio || _isSpeaking)
         {
             StopSpeaking();
             return;
         }
-        if (string.IsNullOrWhiteSpace(_plainText)) return;
+
+        // Jeśli gra nagranie MP3 -> pauza / wznowienie w tym samym miejscu
+        if (_audioPlayer != null)
+        {
+            if (_audioPlayer.IsPlaying)
+            {
+                _audioPlayer.Pause();
+                _isAudioPaused = true;
+                ReadLabel.Text = "▶";
+                return;
+            }
+            if (_isAudioPaused)
+            {
+                _audioPlayer.Play();
+                _isAudioPaused = false;
+                ReadLabel.Text = "⏸";
+                return;
+            }
+        }
 
         _ttsCts = new CancellationTokenSource();
         var token = _ttsCts.Token;
-        _isSpeaking = true;
-        ReadLabel.Text = "⏹";
+        _isLoadingAudio = true;
+        ReadLabel.Text = "⏳";
 
         try
         {
+            // 1. Spróbuj odtworzyć nagranie MP3 (z lokalnego cache offline lub z serwera WebAPI)
+            string? audioPath = await _audioService.GetOrDownloadAudioPathAsync(_currentMystery, date, token);
+            token.ThrowIfCancellationRequested();
+
+            if (!string.IsNullOrEmpty(audioPath) && TryStartAudioPlayer(audioPath))
+            {
+                _isLoadingAudio = false;
+                return;
+            }
+
+            // 2. Fallback: brak nagrania na serwerze lub brak sieci i cache -> systemowy TTS
+            _isLoadingAudio = false;
+            if (string.IsNullOrWhiteSpace(_plainText))
+            {
+                ReadLabel.Text = "🔊";
+                return;
+            }
+
+            _isSpeaking = true;
+            ReadLabel.Text = "⏹";
+
             var locales = await TextToSpeech.Default.GetLocalesAsync();
             var pl = locales.FirstOrDefault(l => l.Language.StartsWith("pl", StringComparison.OrdinalIgnoreCase));
             var options = new SpeechOptions { Locale = pl };
@@ -353,14 +414,68 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
         catch (OperationCanceledException) { }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"TTS error: {ex.Message}");
-            await DisplayAlert("Błąd", "Nie udało się odczytać tekstu.", "OK");
+            System.Diagnostics.Debug.WriteLine($"Audio/TTS error: {ex.Message}");
+            await DisplayAlertAsync("Błąd", "Nie udało się odtworzyć rozważania.", "OK");
         }
         finally
         {
-            _isSpeaking = false;
-            ReadLabel.Text = "🔊";
+            _isLoadingAudio = false;
+            if (_audioPlayer == null)
+            {
+                _isSpeaking = false;
+                ReadLabel.Text = "🔊";
+            }
         }
+    }
+
+    private bool TryStartAudioPlayer(string filePath)
+    {
+        try
+        {
+            DisposeAudioPlayer();
+            _audioStream = File.OpenRead(filePath);
+            _audioPlayer = _audioManager.CreatePlayer(_audioStream);
+            _audioPlayer.PlaybackEnded += OnAudioPlaybackEnded;
+            _audioPlayer.Play();
+            _isAudioPaused = false;
+            ReadLabel.Text = "⏸";
+            return true;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"MP3 playback error: {ex.Message}");
+            DisposeAudioPlayer();
+            return false;
+        }
+    }
+
+    private void OnAudioPlaybackEnded(object? sender, EventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            DisposeAudioPlayer();
+            ReadLabel.Text = "🔊";
+        });
+    }
+
+    private void DisposeAudioPlayer()
+    {
+        if (_audioPlayer != null)
+        {
+            _audioPlayer.PlaybackEnded -= OnAudioPlaybackEnded;
+            try
+            {
+                if (_audioPlayer.IsPlaying)
+                    _audioPlayer.Stop();
+            }
+            catch { }
+            _audioPlayer.Dispose();
+            _audioPlayer = null;
+        }
+
+        _audioStream?.Dispose();
+        _audioStream = null;
+        _isAudioPaused = false;
     }
 
     private void StopSpeaking()
@@ -369,7 +484,9 @@ public partial class FullMeditationPage : ContentPage, IQueryAttributable
             _ttsCts.Cancel();
         _ttsCts?.Dispose();
         _ttsCts = null;
+        _isLoadingAudio = false;
         _isSpeaking = false;
+        DisposeAudioPlayer();
         ReadLabel.Text = "🔊";
     }
 
