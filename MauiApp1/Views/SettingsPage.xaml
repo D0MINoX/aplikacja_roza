@@ -117,6 +117,18 @@
                     </HorizontalStackLayout>
                 </Border>
 
+                <!--auto pobieranie audio-->
+                <Border Style="{StaticResource MenuOption}">
+                    <HorizontalStackLayout Spacing="20">
+                        <Label Text="Pobieraj audio offline" VerticalOptions="Center" />
+                        <Switch x:Name="DownloadAudioSwitch"
+                                Toggled="OnDownloadAudioToggled"
+                                ThumbColor="{DynamicResource Tertiary}"
+                                OnColor="{DynamicResource TertiaryFaded}"
+                                OffColor="{DynamicResource FadedText}"/>
+                    </HorizontalStackLayout>
+                </Border>
+
                 <!-- Przypomnienia -->
                 <Border Style="{StaticResource MenuOption}">
                     <VerticalStackLayout Spacing="10" Padding="20">

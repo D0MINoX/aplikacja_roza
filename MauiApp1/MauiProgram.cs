@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Platform;
 using Plugin.LocalNotification;
+using Plugin.Maui.Audio;
 
 
 #if ANDROID
@@ -23,13 +24,14 @@ namespace MauiApp1
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .UseLocalNotification()
+                .AddAudio()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-            string baseAddress = "https://rosary.zse-2.krakow.pl";
-            //string baseAddress = "https://api.rosaryapi.pl";
+            //string baseAddress = "https://rosary.zse-2.krakow.pl";
+            string baseAddress = "https://api.rosaryapi.pl";
             //#if DEBUG
             //            var handler = new HttpClientHandler();
             //            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
@@ -93,6 +95,7 @@ namespace MauiApp1
             builder.Services.AddSingleton<ParishService>();
             builder.Services.AddSingleton<MessagesService>();
             builder.Services.AddSingleton<MeditationsService>();
+            builder.Services.AddSingleton<MeditationAudioService>();
             builder.Services.AddSingleton<RosaryService>();
             builder.Services.AddSingleton<AdminService>(); 
             builder.Services.AddSingleton<NotificationsService>();
@@ -100,6 +103,8 @@ namespace MauiApp1
 
 
             builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<FullMeditationPage>();
+            builder.Services.AddTransient<SettingsPage>();
             builder.Services.AddTransient<MyRosaryPage>();
             builder.Services.AddTransient<RosaryMeditationsPage>();
             builder.Services.AddTransient<LoginPage>();

@@ -6,10 +6,12 @@ public partial class SettingsPage : ContentPage
 {
     private readonly AuthService _authService;
     private readonly NotificationsService _notificationsService;
-    public SettingsPage(AuthService authService,NotificationsService notificationsService)
+    private readonly MeditationAudioService _audioService;
+    public SettingsPage(AuthService authService, NotificationsService notificationsService, MeditationAudioService audioService)
     {
         _authService = authService;
         _notificationsService = notificationsService;
+        _audioService = audioService;
 
         InitializeComponent();
     }
@@ -22,6 +24,10 @@ public partial class SettingsPage : ContentPage
         DownloadSwitch.Toggled -= OnDownloadToggled;
         DownloadSwitch.IsToggled = Preferences.Default.Get("AutoDownloadMeditations", false);
         DownloadSwitch.Toggled += OnDownloadToggled;
+
+        DownloadAudioSwitch.Toggled -= OnDownloadAudioToggled;
+        DownloadAudioSwitch.IsToggled = Preferences.Default.Get(MeditationAudioService.AutoDownloadAudioPreferenceKey, false);
+        DownloadAudioSwitch.Toggled += OnDownloadAudioToggled;
 
         LoadReminderTime();
         if (Preferences.Default.Get("RemindersEnabled", false))
@@ -100,6 +106,24 @@ public partial class SettingsPage : ContentPage
             await DisplayAlertAsync("Offline", "Aplikacja pobierze teraz rozważania na cały miesiąc.", "OK");
         }
 
+    }
+
+    private async void OnDownloadAudioToggled(object sender, ToggledEventArgs e)
+    {
+        bool isAllowed = e.Value;
+        Preferences.Default.Set(MeditationAudioService.AutoDownloadAudioPreferenceKey, isAllowed);
+
+        if (isAllowed)
+        {
+            string lastMystery = Preferences.Default.Get("LastMystery", string.Empty);
+            int lastDay = Preferences.Default.Get("LastDate", 0);
+            if (!string.IsNullOrWhiteSpace(lastMystery))
+            {
+                _audioService.EnsureMysteryAudioDownloadedInBackground(lastMystery, lastDay);
+            }
+
+            await DisplayAlertAsync("Audio offline", "Aplikacja będzie pobierać nagrania audio (32 pliki, ok. 25–35 MB) dla otwartej tajemnicy różańcowej.", "OK");
+        }
     }
 
     private async void OnRemindersToggled(object sender, ToggledEventArgs e)

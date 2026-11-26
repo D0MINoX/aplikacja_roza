@@ -23,7 +23,7 @@ namespace MauiApp1
             {
                
                 var meditation = await _httpClient.GetFromJsonAsync<List<LocalMeditation>>(
-                    $"api/meditations/search?date={date}&title={title}");
+                    $"api/meditations/search?date={date}&title={Uri.EscapeDataString(title)}");
 
                 return meditation?.FirstOrDefault();
             }
