@@ -28,6 +28,17 @@ public static class ThemeManager
             d is ChwalebneTheme ||
             d is SwiatlaTheme);
 
+        bool alreadyApplied = themeName switch
+        {
+            "Chwalebne" => currentTheme is ChwalebneTheme,
+            "Bolesne" => currentTheme is BolesneTheme,
+            "Światła" => currentTheme is SwiatlaTheme,
+            _ => currentTheme is RadosneTheme
+        };
+
+        if (alreadyApplied)
+            return;
+
         if (currentTheme != null)
             merged.Remove(currentTheme);
 
