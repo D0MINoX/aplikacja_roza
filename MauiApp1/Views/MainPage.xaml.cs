@@ -114,6 +114,10 @@ namespace MauiApp1
                 _resetMenuOnReturn = false;
                 ResetRosaryMenu();
             }
+
+            string? activePart = CalendarContainer.IsVisible ? _calendarPart : _selectedPart;
+            if (!string.IsNullOrEmpty(activePart))
+                ThemeManager.SetTheme(activePart);
         }
 
         protected override void OnDisappearing()
@@ -553,6 +557,7 @@ namespace MauiApp1
         private void ShowCalendar(string part, int index, double opacity, double scale)
         {
             _calendarPart = part;
+            ThemeManager.SetTheme(part);
             SelectedMysteryImage.Source = _imagesMap[part][index];
             SelectedMysteryLabel.Text = _itemsMap[part][index].ShortLabel;
             GenerateCalendarGrid();
